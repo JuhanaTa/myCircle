@@ -43,9 +43,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#f4f6f8",
     alignItems: "center",
     justifyContent: "flex-start",
-    margin: "10% 5%",
   },
   content: {
+    backgroundColor: "#f4f6f8",
     color: "red",
     fontFamily: "OpenSans_400Regular",
   },
