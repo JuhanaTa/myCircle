@@ -48,7 +48,6 @@ export default function HeatMapButton(props) {
           >
             <LinearGradient
               start={{ x: -0.2, y: 0 }}
-              locations={[0.3]}
               colors={["rgba(0,0,0,0.4)", "transparent"]}
               style={styles.background}
             >
