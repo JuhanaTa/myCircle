@@ -1,11 +1,10 @@
-
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 
-export default function ProfileScreen({navigation}) {
+export default function NewReport({navigation}) {
   return (
     <View style={styles.container}>
-        <Text>Profile</Text>
+        <Text>NewReport</Text>
     </View>
   );
 }
