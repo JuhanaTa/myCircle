@@ -15,7 +15,7 @@ import {
   OpenSans_800ExtraBold_Italic,
 } from "@expo-google-fonts/open-sans";
 import HeatMapButton from "../components/HeatMapButton";
-
+import FrontPageAlert from "../components/FrontPageAlert";
 export default function HomeScreen({ navigation }) {
   let [fontsLoaded] = useFonts({
     OpenSans_300Light,
@@ -30,6 +30,7 @@ export default function HomeScreen({ navigation }) {
     return (
       <View style={styles.container}>
         <HeatMapButton></HeatMapButton>
+        <FrontPageAlert></FrontPageAlert>
         <Text style={styles.content}>HomeScreen</Text>
       </View>
     );
