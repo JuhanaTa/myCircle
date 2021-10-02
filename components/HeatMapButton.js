@@ -1,7 +1,7 @@
 import React from "react";
 import { AntDesign } from "@expo/vector-icons";
 import AppLoading from "expo-app-loading";
-
+import { LinearGradient } from "expo-linear-gradient";
 import {
   Text,
   StyleSheet,
@@ -46,20 +46,27 @@ export default function HeatMapButton(props) {
             resizeMode="cover"
             style={styles.image}
           >
-            <Text style={styles.text}>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry.
-            </Text>
-            <View style={styles.containerButton}>
-              <View style={styles.buttonContent}>
-                <AntDesign
-                  style={styles.buttonArrow}
-                  name="right"
-                  size={20}
-                  color="#dc0368"
-                />
+            <LinearGradient
+              start={{ x: -0.2, y: 0 }}
+              locations={[0.3]}
+              colors={["rgba(0,0,0,0.4)", "transparent"]}
+              style={styles.background}
+            >
+              <Text style={styles.text}>
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry.
+              </Text>
+              <View style={styles.containerButton}>
+                <View style={styles.buttonContent}>
+                  <AntDesign
+                    style={styles.buttonArrow}
+                    name="right"
+                    size={20}
+                    color="#dc0368"
+                  />
+                </View>
               </View>
-            </View>
+            </LinearGradient>
           </ImageBackground>
         </Pressable>
       </View>
@@ -108,6 +115,9 @@ const styles = StyleSheet.create({
     shadowColor: "#888",
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.5,
+    borderRadius: 5,
+  },
+  background: {
     borderRadius: 5,
   },
 });
