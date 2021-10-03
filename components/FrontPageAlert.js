@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
   header: {
     color: "#112454",
     paddingLeft: "5%",
+    paddingRight: "5%",
     paddingTop: "5%",
     fontSize: 16,
     fontFamily: "OpenSans_600SemiBold",
@@ -134,7 +135,9 @@ const styles = StyleSheet.create({
   text: {
     display: "flex",
     paddingLeft: "5%",
+    paddingRight: "5%",
     paddingTop: "2%",
+    paddingBottom: "2%",
     fontFamily: "OpenSans_400Regular",
     fontSize: 14,
     color: "#727aa3",
