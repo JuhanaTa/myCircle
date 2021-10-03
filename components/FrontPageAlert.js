@@ -40,27 +40,30 @@ export default function FrontPageAlert(props) {
     return (
       <View style={styles.container}>
         <Pressable style={styles.button}>
-          <View style={styles.imageContainer}>
-            <Image
-              source={require("../assets/placeholderMap.jpg")}
-              resizeMode="cover"
-              style={styles.image}
-            />
-          </View>
+          <Text style={styles.header}> Lorem Ipsum is simply dummy text</Text>
           <View style={styles.content}>
-            <Text style={styles.text}>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum is simply dummy text of the printing and
-              typesetting industry.
-            </Text>
-            <View style={styles.containerButton}>
-              <View style={styles.buttonContent}>
-                <AntDesign
-                  style={styles.buttonArrow}
-                  name="right"
-                  size={20}
-                  color="#dc0368"
-                />
+            <View style={styles.imageContainer}>
+              <Image
+                source={require("../assets/placeholderMap.jpg")}
+                resizeMode="cover"
+                style={styles.image}
+              />
+            </View>
+            <View style={styles.textcontent}>
+              <Text style={styles.text}>
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry. Lorem Ipsum is simply dummy text of the printing and
+                typesetting industry.
+              </Text>
+              <View style={styles.containerButton}>
+                <View style={styles.buttonContent}>
+                  <AntDesign
+                    style={styles.buttonArrow}
+                    name="right"
+                    size={20}
+                    color="#dc0368"
+                  />
+                </View>
               </View>
             </View>
           </View>
@@ -72,6 +75,29 @@ export default function FrontPageAlert(props) {
 const styles = StyleSheet.create({
   container: {
     display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-start",
+  },
+  header: {
+    padding: "4%",
+    fontWeight: "600",
+    paddingBottom: "1%",
+  },
+  button: {
+    width: 400,
+    backgroundColor: "#FFFF",
+    shadowColor: "#888",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    margin: "1%",
+    padding: "1%",
+    justifyContent: "center",
+    flexDirection: "column",
+    borderRadius: 5,
+  },
+  content: {
+    display: "flex",
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-start",
   },
@@ -87,24 +113,11 @@ const styles = StyleSheet.create({
     width: "100%",
     borderRadius: 5,
   },
-  content: {
+  textcontent: {
     width: "100%",
     flex: 2,
     display: "flex",
     flexDirection: "column",
-  },
-  button: {
-    width: 400,
-    backgroundColor: "#FFFF",
-    shadowColor: "#888",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.8,
-    margin: "5%",
-    padding: "1%",
-    alignItems: "flex-start",
-    justifyContent: "center",
-    flexDirection: "row",
-    borderRadius: 5,
   },
 
   text: {

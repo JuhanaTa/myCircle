@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, Button, ScrollView } from "react-native";
 import AppLoading from "expo-app-loading";
 import {
   useFonts,
@@ -30,8 +30,14 @@ export default function HomeScreen({ navigation }) {
     return (
       <View style={styles.container}>
         <HeatMapButton></HeatMapButton>
-        <FrontPageAlert></FrontPageAlert>
-        <Text style={styles.content}>HomeScreen</Text>
+        {/*Maybe 5 newest  notifications*/}
+        <ScrollView style={styles.list}>
+          <FrontPageAlert></FrontPageAlert>
+          <FrontPageAlert></FrontPageAlert>
+          <FrontPageAlert></FrontPageAlert>
+          <FrontPageAlert></FrontPageAlert>
+          <FrontPageAlert></FrontPageAlert>
+        </ScrollView>
       </View>
     );
   }
@@ -49,5 +55,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#f4f6f8",
     color: "red",
     fontFamily: "OpenSans_400Regular",
+  },
+  list: {
+    padding: 0,
+    margin: 0,
   },
 });
