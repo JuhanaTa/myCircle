@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Button } from "react-native";
-import { TextInput } from "react-native-paper";
+import { StyleSheet, View } from "react-native";
+import { TextInput, Button } from "react-native-paper";
 import ImagePicker from "../components/reports/ImagePicker";
 import ReportTopics from "../components/reports/ReportTopics";
 
@@ -8,18 +8,20 @@ const NewReport = ({ navigation }) => {
   const [description, setDescription] = useState("");
   const [open, setDialog] = useState(false);
   const [checkedTopic, setCheckedTopic] = useState();
-  console.log('checked', checkedTopic);
-  
+  console.log("checked", checkedTopic);
+
   const openDialog = () => setDialog(true);
   const closeDialog = () => setDialog(false);
   const handleChecked = (topic) => setCheckedTopic(topic);
   return (
     <View style={styles.container}>
       <Button
+        mode="outlined"
         onPress={openDialog}
-        title="choose report topic"
         accessibilityLabel="select a topic to report"
-      />
+      >
+        choose report topic
+      </Button>
       <ReportTopics
         open={open}
         closeDialog={closeDialog}
@@ -34,7 +36,7 @@ const NewReport = ({ navigation }) => {
           multiline={true}
           mode="outlined"
           label="description"
-          numberOfLines={4}
+          numberOfLines={3}
         ></TextInput>
       </View>
       <ImagePicker />

@@ -1,32 +1,56 @@
-import React from "react";
-import { StyleSheet, View, Button, Image } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View, Image } from "react-native";
+import { Button, Menu, Divider } from "react-native-paper";
 import useCamera from "../../hooks/useCamera";
 
-const ImagePicker = ({  }) => {
+const ImagePicker = ({}) => {
   const { image, video, getImage, launchCamera } = useCamera();
+  const [open, setMenu] = useState(false);
+
+  const closeMenu = () => setMenu(false);
+  const openMenu = () => {
+    setMenu(true);
+  };
+  const handleImagPicer = () => {
+    getImage();
+    closeMenu();
+  };
+  const handleCameraLaunch = () => {
+    launchCamera();
+    closeMenu();
+  };
+
+  const anchorEl = () => (
+    <Button
+      onPress={openMenu}
+      icon="camera"
+      mode="outlined"
+      accessibilityLabel="pick image from gallery or take a camera shot"
+    >
+      Pick Image
+    </Button>
+  );
+
   return (
-      <View style={styles.imageContainer}>
-        {image && (
-          <Image
-            source={{
-              uri: image.uri,
-            }}
-            style={styles.image}
+    <View style={styles.imageContainer}>
+      {image && (
+        <Image
+          source={{
+            uri: image.uri,
+          }}
+          style={styles.image}
+        />
+      )}
+      <View style={styles.buttons}>
+        <Menu visible={open} onDismiss={closeMenu} anchor={anchorEl()}>
+          <Menu.Item
+            onPress={handleImagPicer}
+            title="Pick Image from Gallery"
           />
-        )}
-        <View style={styles.buttons}>
-          <Button
-            onPress={getImage}
-            title="Pick Image"
-            accessibilityLabel="pick image from gallery or take a camera shot"
-          />
-          <Button
-            onPress={launchCamera}
-            title="Take Photo"
-            accessibilityLabel="Take a photo shot from your camera"
-          />
-        </View>
+          <Menu.Item onPress={handleCameraLaunch} title="camera" />
+        </Menu>
       </View>
+    </View>
   );
 };
 
@@ -37,15 +61,15 @@ const styles = StyleSheet.create({
     width: 300,
   },
   image: {
-    alignSelf: 'center',
-    height: 150,
-    width: 150,
+    alignSelf: "center",
+    height: 250,
+    width: 250,
     resizeMode: "contain",
   },
   buttons: {
     flexDirection: "row",
     padding: 4,
-    justifyContent: "space-between",
+    justifyContent: "center",
   },
 });
 

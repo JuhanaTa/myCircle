@@ -39,6 +39,8 @@ const useCamera = () => {
     let result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       base64: true,
+      aspect: [4, 3],
+      quality: 1
     });
     console.log(result);
 
