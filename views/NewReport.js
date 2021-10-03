@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, Button } from "react-native";
 import { TextInput } from "react-native-paper";
 import ImagePicker from "../components/reports/ImagePicker";
-import ReportTopicDialog from "../components/reports/ReportTopicsDialog";
+import ReportTopics from "../components/reports/ReportTopics";
 
 const NewReport = ({ navigation }) => {
   const [description, setDescription] = useState("");
@@ -20,7 +20,7 @@ const NewReport = ({ navigation }) => {
         title="choose report topic"
         accessibilityLabel="select a topic to report"
       />
-      <ReportTopicDialog
+      <ReportTopics
         open={open}
         closeDialog={closeDialog}
         checked={checkedTopic}
