@@ -14,24 +14,28 @@ import {
 } from "react-native";
 import {
   useFonts,
-  OpenSans_300Light,
-  OpenSans_300Light_Italic,
-  OpenSans_400Regular,
-  OpenSans_400Regular_Italic,
-  OpenSans_600SemiBold,
-  OpenSans_600SemiBold_Italic,
-  OpenSans_700Bold,
-  OpenSans_700Bold_Italic,
-  OpenSans_800ExtraBold,
-  OpenSans_800ExtraBold_Italic,
-} from "@expo-google-fonts/open-sans";
+  Inter_100Thin,
+  Inter_200ExtraLight,
+  Inter_300Light,
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_600SemiBold,
+  Inter_700Bold,
+  Inter_800ExtraBold,
+  Inter_900Black,
+} from "@expo-google-fonts/inter";
 const image = { uri: "https://reactjs.org/logo-og.png" };
 export default function HeatMapButton(props) {
   let [fontsLoaded] = useFonts({
-    OpenSans_300Light,
-    OpenSans_400Regular,
-    OpenSans_600SemiBold,
-    OpenSans_700Bold,
+    Inter_900Black,
+    Inter_100Thin,
+    Inter_200ExtraLight,
+    Inter_300Light,
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
+    Inter_800ExtraBold,
   });
 
   if (!fontsLoaded) {
@@ -41,31 +45,25 @@ export default function HeatMapButton(props) {
       <View style={styles.container}>
         <Pressable style={styles.button}>
           <ImageBackground
-            imageStyle={{ borderRadius: 5 }}
+            imageStyle={{ borderRadius: 25 }}
             source={require("../assets/placeholderMap.jpg")}
             resizeMode="cover"
             style={styles.image}
           >
-            <LinearGradient
-              start={{ x: -0.2, y: 0 }}
-              colors={["rgba(0,0,0,0.4)", "transparent"]}
-              style={styles.background}
-            >
-              <Text style={styles.text}>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry.
-              </Text>
-              <View style={styles.containerButton}>
-                <View style={styles.buttonContent}>
-                  <AntDesign
-                    style={styles.buttonArrow}
-                    name="right"
-                    size={20}
-                    color="#dc0368"
-                  />
-                </View>
+            <Text style={styles.text}>
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry.
+            </Text>
+            <View style={styles.containerButton}>
+              <View style={styles.buttonContent}>
+                <AntDesign
+                  style={styles.buttonArrow}
+                  name="right"
+                  size={18}
+                  color="#007bff"
+                />
               </View>
-            </LinearGradient>
+            </View>
           </ImageBackground>
         </Pressable>
       </View>
@@ -77,18 +75,21 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "flex-start",
+    elevation: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.15,
+    shadowRadius: 5,
   },
   button: {
-    width: 400,
+    width: 380,
     backgroundColor: "#FFFF",
-    shadowColor: "#888",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.8,
+
     margin: "5%",
 
     alignItems: "flex-start",
     justifyContent: "center",
-    borderRadius: 5,
+    borderRadius: 25,
   },
 
   image: {
@@ -97,9 +98,11 @@ const styles = StyleSheet.create({
   text: {
     width: "50%",
     padding: "5%",
-    fontFamily: "OpenSans_600SemiBold",
-    fontSize: 14,
-    color: "#000",
+    paddingLeft: "4%",
+    paddingBottom: "2%",
+    fontSize: 15,
+    fontFamily: "Inter_400Regular",
+    color: "#112454",
   },
   containerButton: {
     padding: "5%",
@@ -108,17 +111,18 @@ const styles = StyleSheet.create({
     padding: "2%",
     alignItems: "flex-end",
     justifyContent: "flex-end",
+    borderRadius: 25,
   },
   buttonContent: {
-    padding: "2%",
-    backgroundColor: "#FFFF",
+    padding: "3%",
+    backgroundColor: "#fff",
     shadowColor: "#888",
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.5,
-    borderRadius: 5,
+    borderRadius: 25,
   },
   background: {
     padding: "1%",
-    borderRadius: 5,
+    borderRadius: 25,
   },
 });

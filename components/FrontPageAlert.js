@@ -40,7 +40,6 @@ export default function FrontPageAlert(props) {
     return (
       <View style={styles.container}>
         <Pressable style={styles.button}>
-          <Text style={styles.header}> Lorem Ipsum is simply dummy text</Text>
           <View style={styles.content}>
             <View style={styles.imageContainer}>
               <Image
@@ -50,6 +49,9 @@ export default function FrontPageAlert(props) {
               />
             </View>
             <View style={styles.textcontent}>
+              <Text style={styles.header}>
+                Lorem Ipsum is simply dummy text
+              </Text>
               <Text style={styles.text}>
                 Lorem Ipsum is simply dummy text of the printing and typesetting
                 industry. Lorem Ipsum is simply dummy text of the printing and
@@ -60,8 +62,8 @@ export default function FrontPageAlert(props) {
                   <AntDesign
                     style={styles.buttonArrow}
                     name="right"
-                    size={20}
-                    color="#dc0368"
+                    size={18}
+                    color="#007bff"
                   />
                 </View>
               </View>
@@ -78,72 +80,80 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
-  header: {
-    padding: "4%",
-    fontWeight: "600",
-    paddingBottom: "1%",
-  },
+
   button: {
-    width: 400,
-    backgroundColor: "#FFFF",
-    shadowColor: "#888",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.8,
-    margin: "1%",
-    padding: "1%",
+    width: 380,
+    backgroundColor: "#FFF",
+    margin: "2%",
     justifyContent: "center",
     flexDirection: "column",
-    borderRadius: 5,
+    borderRadius: 25,
+    elevation: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.15,
+    shadowRadius: 5,
   },
+
   content: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "flex-start",
   },
   imageContainer: {
-    flex: 1.5,
-    height: "100%",
-    padding: "4%",
-    borderRadius: 5,
+    width: "100%",
+    flex: 2,
+    height: "20%",
+    borderTopRightRadius: 25,
+    overflow: "hidden",
+    borderTopLeftRadius: 25,
   },
   image: {
-    flex: 1.5,
-    height: "100%",
-    width: "100%",
-    borderRadius: 5,
+    height: 150,
+    borderTopRightRadius: 25,
+    overflow: "hidden",
+    borderTopLeftRadius: 25,
   },
   textcontent: {
     width: "100%",
-    flex: 2,
+    flex: 1,
     display: "flex",
     flexDirection: "column",
   },
-
+  header: {
+    color: "#112454",
+    paddingLeft: "5%",
+    paddingTop: "5%",
+    fontSize: 16,
+    fontFamily: "OpenSans_600SemiBold",
+  },
   text: {
     display: "flex",
-    padding: "5%",
+    paddingLeft: "5%",
+    paddingTop: "2%",
     fontFamily: "OpenSans_400Regular",
-    fontSize: 12,
-    color: "#000",
+    fontSize: 14,
+    color: "#727aa3",
   },
   containerButton: {
     padding: "5%",
     display: "flex",
-    width: "100%",
-
+    width: "100%%",
+    padding: "2%",
     alignItems: "flex-end",
     justifyContent: "flex-end",
+    borderRadius: 25,
   },
   buttonContent: {
-    padding: "4%",
-    backgroundColor: "#FFFF",
+    padding: "3%",
+    backgroundColor: "#fff",
     shadowColor: "#888",
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.5,
-    borderRadius: 5,
-  },
-  background: {
-    borderRadius: 5,
+    borderRadius: 25,
   },
 });
