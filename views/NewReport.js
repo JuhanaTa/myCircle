@@ -23,6 +23,8 @@ const NewReport = ({ navigation }) => {
   };
   const handlePreviewClosing = () => setPreview(false);
   const openPreview = () => setPreview(true);
+
+  const closeSnackbar = () => setSnackbar(false);
   const handleReportSubmission = () => {
     setDescription('');
     setCheckedTopic('');
@@ -78,10 +80,7 @@ const NewReport = ({ navigation }) => {
         description={description}
         image={image}
       />
-      <Snackbar
-        visible={isSnackbarLanuched}
-        onDismiss={() => setSnackbar(false)}
-      >
+      <Snackbar visible={isSnackbarLanuched} onDismiss={closeSnackbar}>
         Report successfully submitted!
       </Snackbar>
     </View>
