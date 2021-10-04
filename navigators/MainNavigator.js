@@ -1,11 +1,12 @@
-import React from "react";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { NavigationContainer } from "@react-navigation/native";
-import HomeScreen from "../views/HomeScreen";
-import ProfileScreen from "../views/ProfileScreen";
-import NewReport from "../views/NewReport";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import React from 'react';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { NavigationContainer } from '@react-navigation/native';
+import HomeScreen from '../views/HomeScreen';
+import ProfileScreen from '../views/ProfileScreen';
+import NewReport from '../views/NewReport';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Provider as PaperProvider } from 'react-native-paper';
 
 //tab
 const Tab = createBottomTabNavigator();
@@ -58,45 +59,51 @@ const ProfileStackScreen = () => {
 const MainNavigator = () => {
   return (
     <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen
-          name="Home"
-          component={HomeStackScreen}
-          options={{
-            tabBarLabel: "Home",
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="home" color={color} size={26} />
-            ),
-            //headerShown: false
-          }}
-        />
-        <Tab.Screen
-          name="New"
-          component={NewStackScreen}
-          options={{
-            tabBarLabel: "New",
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons
-                name="plus-circle"
-                color={color}
-                size={26}
-              />
-            ),
-            //headerShown: false
-          }}
-        />
-        <Tab.Screen
-          name="Profile"
-          component={ProfileStackScreen}
-          options={{
-            tabBarLabel: "Profile",
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="account" color={color} size={26} />
-            ),
-            //headerShown: false
-          }}
-        />
-      </Tab.Navigator>
+      <PaperProvider>
+        <Tab.Navigator>
+          <Tab.Screen
+            name="Home"
+            component={HomeStackScreen}
+            options={{
+              tabBarLabel: 'Home',
+              tabBarIcon: ({ color }) => (
+                <MaterialCommunityIcons name="home" color={color} size={26} />
+              )
+              //headerShown: false
+            }}
+          />
+          <Tab.Screen
+            name="New"
+            component={NewStackScreen}
+            options={{
+              tabBarLabel: 'New',
+              tabBarIcon: ({ color }) => (
+                <MaterialCommunityIcons
+                  name="plus-circle"
+                  color={color}
+                  size={26}
+                />
+              )
+              //headerShown: false
+            }}
+          />
+          <Tab.Screen
+            name="Profile"
+            component={ProfileStackScreen}
+            options={{
+              tabBarLabel: 'Profile',
+              tabBarIcon: ({ color }) => (
+                <MaterialCommunityIcons
+                  name="account"
+                  color={color}
+                  size={26}
+                />
+              )
+              //headerShown: false
+            }}
+          />
+        </Tab.Navigator>
+      </PaperProvider>
     </NavigationContainer>
   );
 };
