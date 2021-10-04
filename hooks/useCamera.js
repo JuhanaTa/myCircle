@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { Platform } from "react-native";
-import * as ImagePicker from "expo-image-picker";
+import { useState, useEffect } from 'react';
+import { Platform } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 
 const useCamera = () => {
   const [image, setImage] = useState(null);
@@ -8,12 +8,12 @@ const useCamera = () => {
 
   useEffect(() => {
     (async () => {
-      if (Platform.OS !== "web") {
+      if (Platform.OS !== 'web') {
         const { status } =
           await ImagePicker.requestMediaLibraryPermissionsAsync();
         await ImagePicker.requestCameraPermissionsAsync();
-        if (status !== "granted") {
-          alert("Sorry, we need access to your media files");
+        if (status !== 'granted') {
+          alert('Sorry, we need access to your media files');
         }
       }
     })();
@@ -21,14 +21,14 @@ const useCamera = () => {
 
   const setMedia = (result) => {
     if (!result.cancelled) {
-      result.type === "image" && setImage(result);
-      result.type === "video" && setVideo(result);
+      result.type === 'image' && setImage(result);
+      result.type === 'video' && setVideo(result);
     }
   };
 
   const getImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.All
     });
     console.log(result);
 

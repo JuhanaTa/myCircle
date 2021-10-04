@@ -1,9 +1,16 @@
-import React from "react";
-import { View, StyleSheet, Image, ScrollView } from "react-native";
-import { Paragraph, Subheading, Title } from "react-native-paper";
-import ModalDialog from "../globalReUseAbles/ModalDialog";
+import React from 'react';
+import { StyleSheet, Image, ScrollView } from 'react-native';
+import { Paragraph, Subheading, Title } from 'react-native-paper';
+import ModalDialog from '../globalReUseAbles/ModalDialog';
 
-const PreviewReport = ({ open, closeDialog, action, topic, image, description }) => {
+const PreviewReport = ({
+  open,
+  closeDialog,
+  action,
+  topic,
+  image,
+  description
+}) => {
   // preview new report before sending to server
   return (
     <ModalDialog
@@ -25,16 +32,16 @@ const PreviewReport = ({ open, closeDialog, action, topic, image, description })
 
 const styles = StyleSheet.create({
   container: {
-    height: 300,
+    height: 300
   },
   text: {
-    padding: 10,
+    padding: 10
   },
   image: {
     height: 200,
     width: 200,
-    resizeMode: "contain",
-  },
+    resizeMode: 'contain'
+  }
 });
 
 export default PreviewReport;

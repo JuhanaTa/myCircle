@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Image } from "react-native";
-import { Button, Menu, Divider } from "react-native-paper";
+import React, { useState } from 'react';
+import { StyleSheet, View, Image } from 'react-native';
+import { Button, Menu, Divider } from 'react-native-paper';
 
-const ImagePicker = ({image, video, getImage, launchCamera }) => {
+const ImagePicker = ({ image, getImage, launchCamera }) => {
   const [open, setMenu] = useState(false);
 
   const closeMenu = () => setMenu(false);
@@ -34,7 +34,7 @@ const ImagePicker = ({image, video, getImage, launchCamera }) => {
       {image && (
         <Image
           source={{
-            uri: image.uri,
+            uri: image.uri
           }}
           style={styles.image}
         />
@@ -45,7 +45,7 @@ const ImagePicker = ({image, video, getImage, launchCamera }) => {
             onPress={handleImagPicer}
             title="Pick Image from Gallery"
           />
-          <Divider/>
+          <Divider />
           <Menu.Item onPress={handleCameraLaunch} title="camera" />
         </Menu>
       </View>
@@ -57,19 +57,19 @@ const styles = StyleSheet.create({
   imageContainer: {
     marginTop: 8,
 
-    width: 300,
+    width: 300
   },
   image: {
-    alignSelf: "center",
+    alignSelf: 'center',
     height: 250,
     width: 250,
-    resizeMode: "contain",
+    resizeMode: 'contain'
   },
   buttons: {
-    flexDirection: "row",
+    flexDirection: 'row',
     padding: 4,
-    justifyContent: "center",
-  },
+    justifyContent: 'center'
+  }
 });
 
 export default ImagePicker;

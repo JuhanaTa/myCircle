@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { TextInput, Title, Button, Snackbar } from "react-native-paper";
-import ImagePicker from "../components/reports/ImagePicker";
-import PreviewReport from "../components/reports/PreviewReport";
-import ReportTopics from "../components/reports/ReportTopics";
-import useCamera from "../hooks/useCamera";
+import React, { useState } from 'react';
+import { StyleSheet, View, Text } from 'react-native';
+import { TextInput, Button, Snackbar } from 'react-native-paper';
+import ImagePicker from '../components/reports/ImagePicker';
+import PreviewReport from '../components/reports/PreviewReport';
+import ReportTopics from '../components/reports/ReportTopics';
+import useCamera from '../hooks/useCamera';
 
 const NewReport = ({ navigation }) => {
   const { image, video, getImage, launchCamera, setImage } = useCamera();
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState('');
   const [open, setDialog] = useState(false);
   const [isPreviewOpened, setPreview] = useState(false);
   const [isSnackbarLanuched, setSnackbar] = useState(false);
@@ -24,8 +24,8 @@ const NewReport = ({ navigation }) => {
   const handlePreviewClosing = () => setPreview(false);
   const openPreview = () => setPreview(true);
   const handleReportSubmission = () => {
-    setDescription("");
-    setCheckedTopic("");
+    setDescription('');
+    setCheckedTopic('');
     setImage(null);
     setPreview(false);
     setSnackbar(true);
@@ -45,7 +45,7 @@ const NewReport = ({ navigation }) => {
         checked={checkedTopic}
         setChecked={handleChecked}
       />
-     { checkedTopic && <Title>{checkedTopic} </Title>}
+      {checkedTopic ? <Text>{checkedTopic} </Text> : null}
       <View style={styles.description}>
         <TextInput
           placeholder="Description of the issue"
@@ -81,7 +81,7 @@ const NewReport = ({ navigation }) => {
       <Snackbar
         visible={isSnackbarLanuched}
         onDismiss={() => setSnackbar(false)}
-        >
+      >
         Report successfully submitted!
       </Snackbar>
     </View>
@@ -91,14 +91,15 @@ const NewReport = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   description: {
-    width: 300,
+    width: 240,
     maxHeight: 200,
-  },
+    marginTop: 8
+  }
 });
 
 export default NewReport;
