@@ -47,7 +47,7 @@ const useCamera = () => {
     setMedia(result);
   };
 
-  return { image, video, getImage, launchCamera };
+  return { image, video, getImage, launchCamera, setImage };
 };
 
 export default useCamera;

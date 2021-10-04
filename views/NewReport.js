@@ -1,18 +1,35 @@
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { TextInput, Button } from "react-native-paper";
+import { TextInput, Title, Button, Snackbar } from "react-native-paper";
 import ImagePicker from "../components/reports/ImagePicker";
+import PreviewReport from "../components/reports/PreviewReport";
 import ReportTopics from "../components/reports/ReportTopics";
+import useCamera from "../hooks/useCamera";
 
 const NewReport = ({ navigation }) => {
+  const { image, video, getImage, launchCamera, setImage } = useCamera();
   const [description, setDescription] = useState("");
   const [open, setDialog] = useState(false);
+  const [isPreviewOpened, setPreview] = useState(false);
+  const [isSnackbarLanuched, setSnackbar] = useState(false);
   const [checkedTopic, setCheckedTopic] = useState();
-  console.log("checked", checkedTopic);
 
   const openDialog = () => setDialog(true);
   const closeDialog = () => setDialog(false);
-  const handleChecked = (topic) => setCheckedTopic(topic);
+
+  const handleChecked = (topic) => {
+    setCheckedTopic(topic);
+    closeDialog();
+  };
+  const handlePreviewClosing = () => setPreview(false);
+  const openPreview = () => setPreview(true);
+  const handleReportSubmission = () => {
+    setDescription("");
+    setCheckedTopic("");
+    setImage(null);
+    setPreview(false);
+    setSnackbar(true);
+  };
   return (
     <View style={styles.container}>
       <Button
@@ -28,6 +45,7 @@ const NewReport = ({ navigation }) => {
         checked={checkedTopic}
         setChecked={handleChecked}
       />
+     { checkedTopic && <Title>{checkedTopic} </Title>}
       <View style={styles.description}>
         <TextInput
           placeholder="Description of the issue"
@@ -39,7 +57,33 @@ const NewReport = ({ navigation }) => {
           numberOfLines={3}
         ></TextInput>
       </View>
-      <ImagePicker />
+      <ImagePicker
+        image={image}
+        video={video}
+        getImage={getImage}
+        launchCamera={launchCamera}
+      />
+      <Button
+        mode="outlined"
+        onPress={openPreview}
+        accessibilityLabel="preview report and send"
+      >
+        submit
+      </Button>
+      <PreviewReport
+        open={isPreviewOpened}
+        closeDialog={handlePreviewClosing}
+        action={handleReportSubmission}
+        topic={checkedTopic}
+        description={description}
+        image={image}
+      />
+      <Snackbar
+        visible={isSnackbarLanuched}
+        onDismiss={() => setSnackbar(false)}
+        >
+        Report successfully submitted!
+      </Snackbar>
     </View>
   );
 };

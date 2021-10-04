@@ -7,7 +7,7 @@ import { reportTopics } from "./reportConstants";
 const ReportTopics = ({ open, closeDialog, checked, setChecked }) => {
   // renders the report topics for user to choose from
   return (
-    <ModalDialog open={open} closeDialog={closeDialog} label="ok">
+    <ModalDialog open={open} closeDialog={closeDialog} title="Choose Report Topic">
       {reportTopics.map((topic) => (
         <View style={styles.radio} key={topic}>
           <RadioButton

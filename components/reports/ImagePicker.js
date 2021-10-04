@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Image } from "react-native";
 import { Button, Menu, Divider } from "react-native-paper";
-import useCamera from "../../hooks/useCamera";
 
-const ImagePicker = ({}) => {
-  const { image, video, getImage, launchCamera } = useCamera();
+const ImagePicker = ({image, video, getImage, launchCamera }) => {
   const [open, setMenu] = useState(false);
 
   const closeMenu = () => setMenu(false);
@@ -47,6 +45,7 @@ const ImagePicker = ({}) => {
             onPress={handleImagPicer}
             title="Pick Image from Gallery"
           />
+          <Divider/>
           <Menu.Item onPress={handleCameraLaunch} title="camera" />
         </Menu>
       </View>
