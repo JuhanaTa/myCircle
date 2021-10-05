@@ -143,9 +143,8 @@ const styles = StyleSheet.create({
     color: "#727aa3",
   },
   containerButton: {
-    padding: "5%",
     display: "flex",
-    width: "100%%",
+    width: "100%",
     padding: "2%",
     alignItems: "flex-end",
     justifyContent: "flex-end",
