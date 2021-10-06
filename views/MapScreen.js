@@ -23,7 +23,7 @@ export default function MapScreen({navigation}) {
                 <MapView.Heatmap 
                     points={points}
                     opacity={1}
-                    radius={100}
+                    radius={50}
                     maxIntensity={100}
                     gradientSmoothing={10}
                     heatmapMode={"POINTS_DENSITY"} />
