@@ -44,7 +44,7 @@ export default function HomeScreen({ navigation }) {
             <Text style={styles.mainHeader}>Welcome!</Text>
             <Text style={styles.subHeader}>5 new events in your area</Text>
           </View>
-          <HeatMapButton></HeatMapButton>
+          <HeatMapButton navigation={navigation}></HeatMapButton>
           {/*Maybe 5 newest  notifications*/}
           <View style={styles.listContainer}>
             <Text style={styles.listHeader}>Recent events</Text>
