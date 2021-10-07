@@ -7,7 +7,7 @@ import ReportTopics from '../components/reports/ReportTopics';
 import useCamera from '../hooks/useCamera';
 
 const NewReport = ({ navigation }) => {
-  const { image, video, getImage, launchCamera, setImage } = useCamera();
+  const { image, video, getImage, launchCamera, setImage } = useCamera({});
   const [description, setDescription] = useState('');
   const [open, setDialog] = useState(false);
   const [isPreviewOpened, setPreview] = useState(false);
@@ -25,6 +25,7 @@ const NewReport = ({ navigation }) => {
   const openPreview = () => setPreview(true);
 
   const closeSnackbar = () => setSnackbar(false);
+
   const handleReportSubmission = () => {
     setDescription('');
     setCheckedTopic('');
