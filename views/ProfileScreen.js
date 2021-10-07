@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import UserAvatar from '../components/profile/UserAvatar';
 import useCamera from '../hooks/useCamera';
 import { Divider, IconButton, List, Menu } from 'react-native-paper';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import EditProfile from '../components/profile/EditProfile';
 
 const ProfileScreen = ({ navigation }) => {
   const { image, getImage, launchCamera } = useCamera({ aspect: [4, 3] });
@@ -13,8 +13,28 @@ const ProfileScreen = ({ navigation }) => {
     interests: false
   });
   const [isOpen, setMoreMenu] = useState(false);
+  const [isEditDialogOpen, setEditDialog] = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleNameChange = (text) => setName(text);
+  const handleEmailChange = (text) => setEmail(text);
+  const handlePasswordChange = (text) => setPassword(text);
+
   const openMoreMenu = () => setMoreMenu(true);
   const closeMoreMenu = () => setMoreMenu(false);
+
+  // opens a dialog for user to edit their profile info
+  const openEditDialog = () => setEditDialog(true);
+  const closeEditDialog = () => setEditDialog(false);
+
+  const handleProfileUpdate = () => {
+    setPassword('');
+    setEmail('');
+    setName('');
+    closeEditDialog();
+  };
 
   // controlls list expansion or colapse
   const openAccordion = (expanded) => () =>
@@ -27,7 +47,14 @@ const ProfileScreen = ({ navigation }) => {
     });
 
   const moreMenu = () => {
-    const anchorEl = <IconButton onPress={openMoreMenu} icon="dots-vertical" size={24}  color={'#4615b2'} />;
+    const anchorEl = (
+      <IconButton
+        onPress={openMoreMenu}
+        icon="dots-vertical"
+        size={24}
+        color={'#4615b2'}
+      />
+    );
 
     return (
       <Menu visible={isOpen} onDismiss={closeMoreMenu} anchor={anchorEl}>
@@ -42,9 +69,12 @@ const ProfileScreen = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.avatarContainer}>
         <View style={styles.avatar}>
-          <UserAvatar image={image} />
+          <TouchableOpacity onPress={openEditDialog}>
+            <UserAvatar image={image?.uri} />
+          </TouchableOpacity>
           <Text style={styles.username}>Your Name</Text>
         </View>
+
         {moreMenu()}
       </View>
 
@@ -83,6 +113,18 @@ const ProfileScreen = ({ navigation }) => {
           <List.Item title="Second item" />
         </List.Accordion>
       </List.Section>
+      <EditProfile
+        email={email}
+        name={name}
+        password={password}
+        image={image?.uri}
+        handleEmailChange={handleEmailChange}
+        handleNameChange={handleNameChange}
+        handlePasswordChange={handlePasswordChange}
+        open={isEditDialogOpen}
+        closeDialog={closeEditDialog}
+        action={handleProfileUpdate}
+      />
     </View>
   );
 };

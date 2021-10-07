@@ -2,13 +2,13 @@ import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { Avatar } from 'react-native-paper';
 
-const UserAvatar = ({ image }) => {
+const UserAvatar = ({ image, size }) => {
   return (
     <View >
       {image ? (
-        <Avatar.Image size={64} source={{ uri: image }} />
+        <Avatar.Image size={size ? size : 64} source={{ uri: image }} />
       ) : (
-        <Avatar.Icon size={64} icon="account" />
+        <Avatar.Icon size={size ? size : 64} icon="account" />
       )}
     </View>
   );
