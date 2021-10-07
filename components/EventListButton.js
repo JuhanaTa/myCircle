@@ -1,15 +1,11 @@
 import React from "react";
-import { AntDesign } from "@expo/vector-icons";
+import {AntDesign} from "@expo/vector-icons";
 import AppLoading from "expo-app-loading";
-import { LinearGradient } from "expo-linear-gradient";
 import {
   Text,
   StyleSheet,
   Pressable,
-  Button,
-  Alert,
   View,
-  ImageBackground,
   Image,
 } from "react-native";
 import {
@@ -25,8 +21,10 @@ import {
   OpenSans_800ExtraBold,
   OpenSans_800ExtraBold_Italic,
 } from "@expo-google-fonts/open-sans";
-const image = { uri: "https://reactjs.org/logo-og.png" };
-export default function FrontPageAlert(props) {
+
+const image = {uri: "https://reactjs.org/logo-og.png"};
+
+export default function EventListButton({navigation}) {
   let [fontsLoaded] = useFonts({
     OpenSans_300Light,
     OpenSans_400Regular,
@@ -39,7 +37,9 @@ export default function FrontPageAlert(props) {
   } else {
     return (
       <View style={styles.container}>
-        <Pressable style={styles.button}>
+        <Pressable style={styles.button} onPress={() => {
+          navigation.navigate('EventListScreen');
+        }}>
           <View style={styles.content}>
             <View style={styles.imageContainer}>
               <Image
@@ -50,12 +50,12 @@ export default function FrontPageAlert(props) {
             </View>
             <View style={styles.textcontent}>
               <Text style={styles.header}>
-                Lorem Ipsum is simply dummy text
+                Check Events/Reports Near you.
               </Text>
               <Text style={styles.text}>
                 Lorem Ipsum is simply dummy text of the printing and typesetting
                 industry. Lorem Ipsum is simply dummy text of the printing and
-                typesetting industry.
+                typesetting industry. 
               </Text>
               <View style={styles.containerButton}>
                 <View style={styles.buttonContent}>
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     elevation: 10,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
+    shadowOffset: {width: 0, height: 3},
     shadowOpacity: 0.15,
     shadowRadius: 5,
   },
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     padding: "3%",
     backgroundColor: "#fff",
     shadowColor: "#888",
-    shadowOffset: { width: 0, height: 0 },
+    shadowOffset: {width: 0, height: 0},
     shadowOpacity: 0.5,
     borderRadius: 25,
   },
