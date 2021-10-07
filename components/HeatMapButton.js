@@ -25,7 +25,8 @@ import {
   Inter_900Black,
 } from "@expo-google-fonts/inter";
 const image = { uri: "https://reactjs.org/logo-og.png" };
-export default function HeatMapButton(props) {
+
+export default function HeatMapButton({navigation}) {
   let [fontsLoaded] = useFonts({
     Inter_900Black,
     Inter_100Thin,
@@ -43,7 +44,7 @@ export default function HeatMapButton(props) {
   } else {
     return (
       <View style={styles.container}>
-        <Pressable style={styles.button}>
+        <Pressable style={styles.button} onPress={() => navigation.navigate('MapScreen')}>
           <ImageBackground
             imageStyle={{ borderRadius: 25 }}
             source={require("../assets/placeholderMap.jpg")}
