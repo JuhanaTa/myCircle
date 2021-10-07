@@ -1,7 +1,7 @@
-import React from "react";
-import { AntDesign } from "@expo/vector-icons";
-import AppLoading from "expo-app-loading";
-import { LinearGradient } from "expo-linear-gradient";
+import React from 'react';
+import { AntDesign } from '@expo/vector-icons';
+import AppLoading from 'expo-app-loading';
+import { LinearGradient } from 'expo-linear-gradient';
 import {
   Text,
   StyleSheet,
@@ -10,8 +10,8 @@ import {
   Alert,
   View,
   ImageBackground,
-  Image,
-} from "react-native";
+  Image
+} from 'react-native';
 import {
   useFonts,
   OpenSans_300Light,
@@ -23,15 +23,15 @@ import {
   OpenSans_700Bold,
   OpenSans_700Bold_Italic,
   OpenSans_800ExtraBold,
-  OpenSans_800ExtraBold_Italic,
-} from "@expo-google-fonts/open-sans";
-const image = { uri: "https://reactjs.org/logo-og.png" };
+  OpenSans_800ExtraBold_Italic
+} from '@expo-google-fonts/open-sans';
+const image = { uri: 'https://reactjs.org/logo-og.png' };
 export default function FrontPageAlert(props) {
   let [fontsLoaded] = useFonts({
     OpenSans_300Light,
     OpenSans_400Regular,
     OpenSans_600SemiBold,
-    OpenSans_700Bold,
+    OpenSans_700Bold
   });
 
   if (!fontsLoaded) {
@@ -43,7 +43,7 @@ export default function FrontPageAlert(props) {
           <View style={styles.content}>
             <View style={styles.imageContainer}>
               <Image
-                source={require("../assets/placeholderMap.jpg")}
+                source={require('../assets/placeholderMap.jpg')}
                 resizeMode="cover"
                 style={styles.image}
               />
@@ -76,86 +76,86 @@ export default function FrontPageAlert(props) {
 }
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-start",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-start'
   },
 
   button: {
     width: 380,
-    backgroundColor: "#FFF",
-    margin: "2%",
-    justifyContent: "center",
-    flexDirection: "column",
+    backgroundColor: '#FFF',
+    margin: '2%',
+    justifyContent: 'center',
+    flexDirection: 'column',
     borderRadius: 25,
     elevation: 10,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.15,
-    shadowRadius: 5,
+    shadowRadius: 5
   },
 
   content: {
     flex: 1,
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "flex-start",
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'flex-start'
   },
   imageContainer: {
-    width: "100%",
+    width: '100%',
     flex: 2,
-    height: "20%",
+    height: '20%',
     borderTopRightRadius: 25,
-    overflow: "hidden",
-    borderTopLeftRadius: 25,
+    overflow: 'hidden',
+    borderTopLeftRadius: 25
   },
   image: {
     height: 150,
     borderTopRightRadius: 25,
-    overflow: "hidden",
-    borderTopLeftRadius: 25,
+    overflow: 'hidden',
+    borderTopLeftRadius: 25
   },
   textcontent: {
-    width: "100%",
+    width: '100%',
     flex: 1,
-    display: "flex",
-    flexDirection: "column",
+    display: 'flex',
+    flexDirection: 'column'
   },
   header: {
-    color: "#112454",
-    paddingLeft: "5%",
-    paddingRight: "5%",
-    paddingTop: "5%",
+    color: '#112454',
+    paddingLeft: '5%',
+    paddingRight: '5%',
+    paddingTop: '5%',
     fontSize: 16,
-    fontFamily: "OpenSans_600SemiBold",
+    fontFamily: 'OpenSans_600SemiBold'
   },
   text: {
-    display: "flex",
-    paddingLeft: "5%",
-    paddingRight: "5%",
-    paddingTop: "2%",
-    paddingBottom: "2%",
-    fontFamily: "OpenSans_400Regular",
+    display: 'flex',
+    paddingLeft: '5%',
+    paddingRight: '5%',
+    paddingTop: '2%',
+    paddingBottom: '2%',
+    fontFamily: 'OpenSans_400Regular',
     fontSize: 14,
-    color: "#727aa3",
+    color: '#727aa3'
   },
   containerButton: {
-    display: "flex",
-    width: "100%",
-    padding: "2%",
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
-    borderRadius: 25,
+    display: 'flex',
+    width: '100%',
+    padding: '2%',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
+    borderRadius: 25
   },
   buttonContent: {
-    padding: "3%",
-    backgroundColor: "#fff",
-    shadowColor: "#888",
+    padding: '3%',
+    backgroundColor: '#fff',
+    shadowColor: '#888',
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.5,
-    borderRadius: 25,
-  },
+    borderRadius: 25
+  }
 });
