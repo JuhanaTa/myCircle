@@ -25,6 +25,7 @@ const NewReport = ({ navigation }) => {
   const openPreview = () => setPreview(true);
 
   const closeSnackbar = () => setSnackbar(false);
+  
   const handleReportSubmission = () => {
     setDescription('');
     setCheckedTopic('');
