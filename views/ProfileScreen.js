@@ -2,13 +2,8 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import UserAvatar from '../components/profile/UserAvatar';
 import useCamera from '../hooks/useCamera';
-import {
-  Divider,
-  IconButton,
-  List,
-  Subheading,
-  Title
-} from 'react-native-paper';
+import { Divider, IconButton, List, Menu } from 'react-native-paper';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 const ProfileScreen = ({ navigation }) => {
   const { image, getImage, launchCamera } = useCamera({ aspect: [4, 3] });
@@ -17,6 +12,10 @@ const ProfileScreen = ({ navigation }) => {
     events: false,
     interests: false
   });
+  const [isOpen, setMoreMenu] = useState(false);
+  const openMoreMenu = () => setMoreMenu(true);
+  const closeMoreMenu = () => setMoreMenu(false);
+
   // controlls list expansion or colapse
   const openAccordion = (expanded) => () =>
     setAccordion({
@@ -27,6 +26,18 @@ const ProfileScreen = ({ navigation }) => {
       events: expanded !== 'events' ? false : !isExpanded.events
     });
 
+  const moreMenu = () => {
+    const anchorEl = <IconButton onPress={openMoreMenu} icon="dots-vertical" size={24}  color={'#4615b2'} />;
+
+    return (
+      <Menu visible={isOpen} onDismiss={closeMoreMenu} anchor={anchorEl}>
+        <Menu.Item onPress={closeMoreMenu} title="Settings/Preferences" />
+        <Divider />
+        <Menu.Item onPress={closeMoreMenu} title="Edit Profile" />
+      </Menu>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.avatarContainer}>
@@ -34,8 +45,7 @@ const ProfileScreen = ({ navigation }) => {
           <UserAvatar image={image} />
           <Text style={styles.username}>Your Name</Text>
         </View>
-
-        <IconButton icon="dots-vertical" size={24} />
+        {moreMenu()}
       </View>
 
       <List.Section>
@@ -107,6 +117,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
     marginTop: '11%'
+  },
+  moreIcon: {
+    backgroundColor: '#9042f5',
+    color: '#fff'
   }
 });
 
