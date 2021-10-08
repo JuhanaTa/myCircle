@@ -1,7 +1,7 @@
 import React from 'react';
-import {StyleSheet, Text, View, ScrollView} from 'react-native';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import AppLoading from 'expo-app-loading';
-import {LinearGradient} from 'expo-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import {
   useFonts,
@@ -18,7 +18,7 @@ import {
 import HeatMapButton from '../components/HeatMapButton';
 import EventListButton from '../components/EventListButton';
 
-export default function HomeScreen({navigation}) {
+export default function HomeScreen({ navigation }) {
   let [fontsLoaded] = useFonts({
     Inter_900Black,
     Inter_100Thin,
@@ -35,11 +35,8 @@ export default function HomeScreen({navigation}) {
     return <AppLoading />;
   } else {
     return (
-
-      <LinearGradient colors={['#eef4fb', '#dbe9f7']}
-        style={styles.background}>
+      <LinearGradient colors={['#eef4fb', '#dbe9f7']} style={styles.background}>
         <ScrollView style={styles.list}>
-
           <View style={styles.container}>
             <View style={styles.header}>
               <Text style={styles.mainHeader}>Welcome!</Text>
@@ -68,7 +65,7 @@ const styles = StyleSheet.create({
   header: {
     width: '100%',
     paddingLeft: '3%',
-    paddingTop: '5%'
+    paddingTop: '18%'
   },
   mainHeader: {
     color: '#112454',

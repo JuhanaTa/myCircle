@@ -1,37 +1,43 @@
-import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, Text, SafeAreaView } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 import ModalDialog from '../globalReUseAbles/ModalDialog';
 import { reportTopics } from './reportConstants';
+import Radiobutton from '../RadioButton/RadioButton';
 
-const ReportTopics = ({ open, closeDialog, checked, setChecked }) => {
+const ReportTopics = ({ checked, setChecked }) => {
   // renders the report topics for user to choose from
+
+  const onRadioButtonPress = (itemIdx) => {
+    setChecked(itemIdx);
+  };
+
   return (
-    <ModalDialog
-      open={open}
-      closeDialog={closeDialog}
-      title="Choose Report Topic"
-    >
-      {reportTopics.map((topic) => (
-        <View style={styles.radio} key={topic}>
-          <RadioButton
-            value={topic}
-            status={checked === topic ? 'checked' : 'unchecked'}
-            onPress={() => setChecked(topic)}
-          />
-          <Text style={styles.text}> {topic} </Text>
-        </View>
-      ))}
-    </ModalDialog>
+    <>
+      {reportTopics.map((text, itemIdx) => {
+        let isChecked = checked === itemIdx ? true : false;
+        return (
+          <View style={styles.buttonGroup} key={itemIdx}>
+            <Radiobutton
+              onRadioButtonPress={() => onRadioButtonPress(itemIdx)}
+              isChecked={isChecked}
+              text={text}
+            />
+          </View>
+        );
+      })}
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  radio: {
+  radioGroup: {
+    width: 100,
+    flex: 1,
+    display: 'flex',
+    alignContent: 'center',
+    justifyContent: 'center',
     flexDirection: 'row'
-  },
-  text: {
-    alignSelf: 'center'
   }
 });
 

@@ -1,10 +1,24 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import { TextInput, Button, Snackbar } from 'react-native-paper';
 import ImagePicker from '../components/reports/ImagePicker';
 import PreviewReport from '../components/reports/PreviewReport';
 import ReportTopics from '../components/reports/ReportTopics';
+import AppLoading from 'expo-app-loading';
 import useCamera from '../hooks/useCamera';
+import { LinearGradient } from 'expo-linear-gradient';
+import {
+  useFonts,
+  Inter_100Thin,
+  Inter_200ExtraLight,
+  Inter_300Light,
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_600SemiBold,
+  Inter_700Bold,
+  Inter_800ExtraBold,
+  Inter_900Black
+} from '@expo-google-fonts/inter';
 
 const NewReport = ({ navigation }) => {
   const { image, video, getImage, launchCamera, setImage } = useCamera({});
@@ -33,72 +47,184 @@ const NewReport = ({ navigation }) => {
     setPreview(false);
     setSnackbar(true);
   };
-  return (
-    <View style={styles.container}>
-      <Button
-        mode="outlined"
-        onPress={openDialog}
-        accessibilityLabel="select a topic to report"
-      >
-        choose report topic
-      </Button>
-      <ReportTopics
-        open={open}
-        closeDialog={closeDialog}
-        checked={checkedTopic}
-        setChecked={handleChecked}
-      />
-      {checkedTopic ? <Text>{checkedTopic} </Text> : null}
-      <View style={styles.description}>
-        <TextInput
-          placeholder="Description of the issue"
-          value={description}
-          onChangeText={(text) => setDescription(text)}
-          multiline={true}
-          mode="outlined"
-          label="description"
-          numberOfLines={3}
-        ></TextInput>
-      </View>
-      <ImagePicker
-        image={image}
-        video={video}
-        getImage={getImage}
-        launchCamera={launchCamera}
-      />
-      <Button
-        mode="outlined"
-        onPress={openPreview}
-        accessibilityLabel="preview report and send"
-      >
-        submit
-      </Button>
-      <PreviewReport
-        open={isPreviewOpened}
-        closeDialog={handlePreviewClosing}
-        action={handleReportSubmission}
-        topic={checkedTopic}
-        description={description}
-        image={image}
-      />
-      <Snackbar visible={isSnackbarLanuched} onDismiss={closeSnackbar}>
-        Report successfully submitted!
-      </Snackbar>
-    </View>
-  );
+  let [fontsLoaded] = useFonts({
+    Inter_900Black,
+    Inter_100Thin,
+    Inter_200ExtraLight,
+    Inter_300Light,
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
+    Inter_800ExtraBold
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <LinearGradient colors={['#eef4fb', '#dbe9f7']} style={styles.background}>
+        <ScrollView>
+          <View style={styles.container}>
+            <View style={styles.header}>
+              <Text style={styles.mainHeader}>Add a new report</Text>
+              <Text style={styles.subHeader}> Choose report topic</Text>
+            </View>
+            <View style={styles.radioButtonGroup}>
+              <ReportTopics checked={checkedTopic} setChecked={handleChecked} />
+            </View>
+            <View style={styles.description}>
+              <Text style={styles.subHeader}> Add description to issue</Text>
+              <TextInput
+                placeholder="Description"
+                style={styles.textInput}
+                value={description}
+                onChangeText={(text) => setDescription(text)}
+                multiline={true}
+                theme={{ colors: { primary: '#112454' } }}
+                numberOfLines={3}
+              ></TextInput>
+            </View>
+            <ImagePicker
+              image={image}
+              video={video}
+              getImage={getImage}
+              launchCamera={launchCamera}
+            />
+            <View style={styles.submitbuttonContainer}>
+              <Button
+                style={styles.submitbutton}
+                theme={{ colors: { primary: '#007bff' } }}
+                onPress={openPreview}
+                accessibilityLabel="preview report and send"
+              >
+                Submit
+              </Button>
+            </View>
+            <PreviewReport
+              open={isPreviewOpened}
+              closeDialog={handlePreviewClosing}
+              action={handleReportSubmission}
+              topic={checkedTopic}
+              description={description}
+              image={image}
+            />
+            <Snackbar
+              visible={isSnackbarLanuched}
+              onDismiss={closeSnackbar}
+              style={styles.snackbar}
+            >
+              Report successfully submitted!
+            </Snackbar>
+          </View>
+        </ScrollView>
+      </LinearGradient>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
+    width: '100%',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start'
+  },
+  background: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height: '100%'
+  },
+  radioButtonGroup: {
+    width: '100%',
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
+    paddingLeft: '3%',
+    flexDirection: 'row'
+  },
+  header: {
+    width: '100%',
+    paddingLeft: '3%',
+    paddingTop: '5%'
+  },
+  mainHeader: {
+    color: '#112454',
+    paddingLeft: '3%',
+    paddingTop: '5%',
+    paddingBottom: '4%',
+    fontSize: 39,
+    width: '100%',
+    textAlign: 'left',
+    display: 'flex',
+    fontFamily: 'Inter_700Bold'
+  },
+  subHeader: {
+    paddingLeft: '4%',
+    paddingBottom: '2%',
+    fontSize: 16,
+    fontFamily: 'Inter_400Regular',
+    color: '#566787'
   },
   description: {
-    width: 240,
+    fontFamily: 'Inter_400Regular',
+    paddingLeft: '4%',
+    paddingRight: '4%',
     maxHeight: 200,
+    width: '90%',
     marginTop: 8
+  },
+  textInput: {
+    marginLeft: '4%',
+    width: '100%',
+    backgroundColor: '#fff',
+    borderBottomWidth: 0,
+    fontFamily: 'Inter_400Regular'
+  },
+  button: {
+    fontFamily: 'Inter_400Regular',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    padding: 4,
+    backgroundColor: '#fff',
+
+    elevation: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.15,
+    shadowRadius: 5,
+    borderRadius: 25
+  },
+  submitbuttonContainer: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  submitbutton: {
+    marginTop: 10,
+    marginBottom: 10,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    padding: 4,
+    backgroundColor: '#fff',
+    fontFamily: 'Inter_400Regular',
+    elevation: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.15,
+    shadowRadius: 5,
+    borderRadius: 25
+  },
+  snackbar: {
+    fontFamily: 'Inter_400Regular',
+    backgroundColor: 'green'
   }
 });
 
