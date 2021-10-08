@@ -1,54 +1,43 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, SafeAreaView } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 import ModalDialog from '../globalReUseAbles/ModalDialog';
 import { reportTopics } from './reportConstants';
+import Radiobutton from '../RadioButton/RadioButton';
 
 const ReportTopics = ({ checked, setChecked }) => {
   // renders the report topics for user to choose from
+
+  const onRadioButtonPress = (itemIdx) => {
+    setChecked(itemIdx);
+  };
+
   return (
-    <RadioButton.Group
-      onValueChange={(newValue) => {
-        setChecked(newValue);
-        console.log(newValue);
-      }}
-      value={checked}
-    >
-      <View style={styles.radioGroup}>
-        {reportTopics.map((topic) => (
-          <View style={styles.radio} key={topic}>
-            <Text>{topic}</Text>
-            <RadioButton
-              style={styles.button}
-              value={topic}
-              status={checked === topic ? 'checked' : 'unchecked'}
-              onPress={() => {
-                setChecked(topic);
-              }}
+    <>
+      {reportTopics.map((text, itemIdx) => {
+        let isChecked = checked === itemIdx ? true : false;
+        return (
+          <View style={styles.buttonGroup} key={itemIdx}>
+            <Radiobutton
+              onRadioButtonPress={() => onRadioButtonPress(itemIdx)}
+              isChecked={isChecked}
+              text={text}
             />
           </View>
-        ))}
-      </View>
-    </RadioButton.Group>
+        );
+      })}
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   radioGroup: {
+    width: 100,
+    flex: 1,
     display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap'
-  },
-  radio: {
-    display: 'flex',
-    flexDirection: 'row',
+    alignContent: 'center',
     justifyContent: 'center',
-    alignItems: 'center',
-    width: '50%'
-  },
-  button: { borderWidth: 1 },
-  text: {
-    alignSelf: 'center'
+    flexDirection: 'row'
   }
 });
 
