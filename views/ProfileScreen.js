@@ -28,11 +28,12 @@ const ProfileScreen = ({ navigation }) => {
   // opens a dialog for user to edit their profile info
   const openEditDialog = () => setEditDialog(true);
   const closeEditDialog = () => setEditDialog(false);
+  const handleMenuItemEditProfilePress = () => {
+    closeMoreMenu();
+    openEditDialog();
+  };
 
   const handleProfileUpdate = () => {
-    setPassword('');
-    setEmail('');
-    setName('');
     closeEditDialog();
   };
 
@@ -60,7 +61,7 @@ const ProfileScreen = ({ navigation }) => {
       <Menu visible={isOpen} onDismiss={closeMoreMenu} anchor={anchorEl}>
         <Menu.Item onPress={closeMoreMenu} title="Settings/Preferences" />
         <Divider />
-        <Menu.Item onPress={closeMoreMenu} title="Edit Profile" />
+        <Menu.Item onPress={handleMenuItemEditProfilePress} title="Edit Profile" />
       </Menu>
     );
   };
@@ -72,7 +73,7 @@ const ProfileScreen = ({ navigation }) => {
           <TouchableOpacity onPress={openEditDialog}>
             <UserAvatar image={image?.uri} />
           </TouchableOpacity>
-          <Text style={styles.username}>Your Name</Text>
+          <Text style={styles.username}>{name ? name : 'MyCircle App '}</Text>
         </View>
 
         {moreMenu()}
@@ -87,7 +88,7 @@ const ProfileScreen = ({ navigation }) => {
           style={styles.accordion}
         >
           <List.Item title="@username" />
-          <List.Item title="first.last@me.fi" />
+          <List.Item title={email ? email : 'first.last@me.fi'} />
         </List.Accordion>
         <Divider style={styles.divier} />
         <List.Accordion
@@ -124,6 +125,8 @@ const ProfileScreen = ({ navigation }) => {
         open={isEditDialogOpen}
         closeDialog={closeEditDialog}
         action={handleProfileUpdate}
+        launchCamera={launchCamera}
+        getImage={getImage}
       />
     </View>
   );
@@ -144,9 +147,9 @@ const styles = StyleSheet.create({
     height: '1%'
   },
   avatar: {
-    flex: 0.6,
+    flex: 0.9,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'center'
   },
   avatarContainer: {
     flex: 0.9,
@@ -158,7 +161,8 @@ const styles = StyleSheet.create({
   username: {
     fontWeight: 'bold',
     fontSize: 16,
-    marginTop: '11%'
+    marginTop: '11%',
+    marginLeft: '4%'
   },
   moreIcon: {
     backgroundColor: '#9042f5',

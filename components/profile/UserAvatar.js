@@ -10,6 +10,7 @@ const UserAvatar = ({ image, size }) => {
       ) : (
         <Avatar.Icon size={size ? size : 64} icon="account" />
       )}
+      
     </View>
   );
 };
