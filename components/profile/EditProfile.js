@@ -39,8 +39,9 @@ const EditProfile = ({
       <IconButton
         onPress={openCameraMenu}
         icon="camera"
-        size={24}
-        color={'#4615b2'}
+        labelStyle={{ fontSize: 30 }}
+        style={styles.editprofilebutton}
+        color={'#007bff'}
       />
     );
 
@@ -62,6 +63,7 @@ const EditProfile = ({
       open={open}
       closeDialog={closeDialog}
       action={action}
+      theme={{ colors: { primary: '#112454' } }}
       label="Save"
       title="Edit Your Profile"
     >
@@ -76,16 +78,22 @@ const EditProfile = ({
             value={name}
             onChangeText={handleNameChange}
             label="name"
+            style={styles.textInput}
+            theme={{ colors: { primary: '#112454' } }}
             right={<TextInput.Icon name="pencil" />}
           />
           <TextInput
             value={email}
+            style={styles.textInput}
+            theme={{ colors: { primary: '#112454' } }}
             onChangeText={handleEmailChange}
             label="email"
             right={<TextInput.Icon name="email-edit" />}
           />
           <TextInput
             value={password}
+            style={styles.textInput}
+            theme={{ colors: { primary: '#112454' } }}
             onChangeText={handlePasswordChange}
             label="password"
             right={<TextInput.Icon name="eye" />}
@@ -103,9 +111,37 @@ const styles = StyleSheet.create({
     padding: 10
   },
   avatar: {
-    flexDirection: 'row',
+    flex: 0.8,
+    flexDirection: 'column',
     justifyContent: 'center',
-    padding: '4%'
+    alignItems: 'center',
+    width: 300,
+    position: 'relative',
+    marginBottom: 20
+  },
+  editprofilebutton: {
+    position: 'absolute',
+    padding: 5,
+    backgroundColor: '#D3D3D3',
+    left: 20,
+    bottom: 0,
+    width: 40,
+    height: 40,
+    borderTopEndRadius: 500,
+    borderTopStartRadius: 500,
+    borderBottomRightRadius: 500,
+    borderBottomLeftRadius: 500,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.15,
+    shadowRadius: 5
+  },
+  textInput: {
+    marginLeft: '4%',
+    width: '100%',
+    backgroundColor: '#fff',
+    borderBottomWidth: 0,
+    fontFamily: 'Inter_400Regular'
   }
 });
 
