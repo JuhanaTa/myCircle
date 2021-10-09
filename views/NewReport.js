@@ -77,10 +77,10 @@ const NewReport = ({ navigation }) => {
               <Text style={styles.subHeader}> Add description to issue</Text>
               <TextInput
                 placeholder="Description"
-                style={styles.textInput}
                 value={description}
                 onChangeText={(text) => setDescription(text)}
                 multiline={true}
+                style={styles.textInput}
                 theme={{ colors: { primary: '#112454' } }}
                 numberOfLines={3}
               ></TextInput>
