@@ -128,7 +128,8 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     alignItems: 'flex-start',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+    paddingTop: '25%'
   },
   background: {
     position: 'absolute',
@@ -147,8 +148,7 @@ const styles = StyleSheet.create({
   },
   header: {
     width: '100%',
-    paddingLeft: '3%',
-    paddingTop: '5%'
+    paddingLeft: '3%'
   },
   mainHeader: {
     color: '#112454',

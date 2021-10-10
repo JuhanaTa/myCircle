@@ -1,15 +1,16 @@
 import React from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {NavigationContainer} from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from '../views/HomeScreen';
 import ProfileScreen from '../views/ProfileScreen';
 import NewReport from '../views/NewReport';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Provider as PaperProvider} from 'react-native-paper';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Provider as PaperProvider } from 'react-native-paper';
 import MapScreen from '../views/MapScreen';
 import EventListScreen from '../views/EventListScreen';
 import EventScreen from '../views/EventScreen';
+import { StyleSheet } from 'react-native';
 
 //tab
 const Tab = createBottomTabNavigator();
@@ -29,23 +30,14 @@ const HomeStackScreen = () => {
       <HomeStack.Screen
         name="HomeStack"
         component={HomeScreen}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
 
-      <HomeStack.Screen
-        name="MapScreen"
-        component={MapScreen}
-      />
+      <HomeStack.Screen name="MapScreen" component={MapScreen} />
 
-      <HomeStack.Screen
-        name="EventListScreen"
-        component={EventListScreen}
-      />
+      <HomeStack.Screen name="EventListScreen" component={EventListScreen} />
 
-      <HomeStack.Screen
-        name="EventScreen"
-        component={EventScreen}
-      />
+      <HomeStack.Screen name="EventScreen" component={EventScreen} />
     </HomeStack.Navigator>
   );
 };
@@ -56,7 +48,7 @@ const NewStackScreen = () => {
       <NewStack.Screen
         name="NewStack"
         component={NewReport}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
     </NewStack.Navigator>
   );
@@ -68,7 +60,7 @@ const ProfileStackScreen = () => {
       <ProfileStack.Screen
         name="ProfileStack"
         component={ProfileScreen}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
     </ProfileStack.Navigator>
   );
@@ -78,13 +70,17 @@ const MainNavigator = () => {
   return (
     <NavigationContainer>
       <PaperProvider>
-        <Tab.Navigator>
+        <Tab.Navigator
+          screenOptions={{
+            tabBarActiveTintColor: '#007bff'
+          }}
+        >
           <Tab.Screen
             name="Home"
             component={HomeStackScreen}
             options={{
               tabBarLabel: 'Home',
-              tabBarIcon: ({color}) => (
+              tabBarIcon: ({ color }) => (
                 <MaterialCommunityIcons name="home" color={color} size={26} />
               ),
               headerShown: false
@@ -95,14 +91,14 @@ const MainNavigator = () => {
             component={NewStackScreen}
             options={{
               tabBarLabel: 'New',
-              tabBarIcon: ({color}) => (
+              tabBarIcon: ({ color }) => (
                 <MaterialCommunityIcons
                   name="plus-circle"
                   color={color}
                   size={26}
                 />
-              )
-              //headerShown: false
+              ),
+              headerShown: false
             }}
           />
           <Tab.Screen
@@ -110,14 +106,14 @@ const MainNavigator = () => {
             component={ProfileStackScreen}
             options={{
               tabBarLabel: 'Profile',
-              tabBarIcon: ({color}) => (
+              tabBarIcon: ({ color }) => (
                 <MaterialCommunityIcons
                   name="account"
                   color={color}
                   size={26}
                 />
-              )
-              //headerShown: false
+              ),
+              headerShown: false
             }}
           />
         </Tab.Navigator>
@@ -125,5 +121,11 @@ const MainNavigator = () => {
     </NavigationContainer>
   );
 };
+
+const styles = StyleSheet.create({
+  navibar: {
+    backgroundColor: 'red'
+  }
+});
 
 export default MainNavigator;
