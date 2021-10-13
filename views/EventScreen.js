@@ -3,8 +3,8 @@ import AppLoading from "expo-app-loading";
 import {
     Text,
     StyleSheet,
-    Pressable,
     View,
+    Image,
 } from "react-native";
 import {
     useFonts,
@@ -23,6 +23,8 @@ export default function EventScreen({navigation, route}) {
         OpenSans_700Bold,
     });
 
+    const uri = {uri: 'http://placekitten.com/200/300'};
+
     const {data} = route.params;
 
     if (!fontsLoaded) {
@@ -31,9 +33,7 @@ export default function EventScreen({navigation, route}) {
         return (
             
             <View style={styles.container}>
-                <Pressable style={styles.button} onPress={() => {
-                    navigation.navigate('EventScreen');
-                }}>
+
                     <View style={styles.content}>
                         <View style={styles.textcontent}>
                             <Text style={styles.header}>
@@ -44,9 +44,11 @@ export default function EventScreen({navigation, route}) {
                                 industry. Lorem Ipsum is simply dummy text of the printing and
                                 typesetting industry.
                             </Text>
+                            <Image source={require("../assets/placeholderMap.jpg")} style={{width: '90%', height: 200 , alignSelf: 'center'}} resizeMode="center"></Image>
                         </View>
+                        
                     </View>
-                </Pressable>
+                    
             </View>
         );
     }

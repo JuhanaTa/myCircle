@@ -17,6 +17,8 @@ import {
 } from '@expo-google-fonts/inter';
 import HeatMapButton from '../components/HeatMapButton';
 import EventListButton from '../components/EventListButton';
+import {useEffect} from 'react';
+import {createUser} from '../controllers/firebaseController';
 
 export default function HomeScreen({ navigation }) {
   let [fontsLoaded] = useFonts({
@@ -30,6 +32,10 @@ export default function HomeScreen({ navigation }) {
     Inter_700Bold,
     Inter_800ExtraBold
   });
+
+  useEffect(() => {
+    //createUser('Test', 'Test@Test.com', 123456789);
+  },[]);
 
   if (!fontsLoaded) {
     return <AppLoading />;
