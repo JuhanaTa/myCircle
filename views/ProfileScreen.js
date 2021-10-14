@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,11 +9,11 @@ import {
 } from 'react-native';
 import UserAvatar from '../components/profile/UserAvatar';
 import useCamera from '../hooks/useCamera';
-import { Divider, IconButton, List, Menu, Button } from 'react-native-paper';
+import {Divider, IconButton, List, Menu, Button} from 'react-native-paper';
 import EditProfile from '../components/profile/EditProfile';
 import AppLoading from 'expo-app-loading';
 
-import { LinearGradient } from 'expo-linear-gradient';
+import {LinearGradient} from 'expo-linear-gradient';
 import {
   useFonts,
   Inter_100Thin,
@@ -27,7 +27,7 @@ import {
   Inter_900Black
 } from '@expo-google-fonts/inter';
 
-const ProfileScreen = ({ navigation }) => {
+const ProfileScreen = ({navigation}) => {
   let [fontsLoaded] = useFonts({
     Inter_900Black,
     Inter_100Thin,
@@ -39,7 +39,7 @@ const ProfileScreen = ({ navigation }) => {
     Inter_700Bold,
     Inter_800ExtraBold
   });
-  const { image, getImage, launchCamera } = useCamera({ aspect: [4, 3] });
+  const {image, getImage, launchCamera} = useCamera({aspect: [4, 3]});
   const [isExpanded, setAccordion] = useState({
     personalData: false,
     events: false,
@@ -84,13 +84,14 @@ const ProfileScreen = ({ navigation }) => {
 
   const moreMenu = () => {
     const anchorEl = (
-      <IconButton
-        labelStyle={{ fontSize: 30 }}
-        style={styles.editprofilebutton}
-        color={'#007bff'}
-        onPress={openEditDialog}
-        icon="pencil"
-      />
+      <TouchableOpacity onPress={() => openEditDialog()}>
+        <IconButton
+          labelStyle={{fontSize: 30}}
+          style={styles.editprofilebutton}
+          color={'#007bff'}
+          icon="pencil"
+        />
+      </TouchableOpacity>
     );
 
     return (
@@ -130,7 +131,7 @@ const ProfileScreen = ({ navigation }) => {
             </View>
             <List.Section style={styles.listsection}>
               <List.Accordion
-                theme={{ colors: { primary: '#007bff' } }}
+                theme={{colors: {primary: '#007bff'}}}
                 title="Personal Data"
                 left={(props) => (
                   <List.Icon {...props} icon="account" color={'#007bff'} />
@@ -147,7 +148,7 @@ const ProfileScreen = ({ navigation }) => {
               </List.Accordion>
               <Divider style={styles.divier} />
               <List.Accordion
-                theme={{ colors: { primary: '#007bff' } }}
+                theme={{colors: {primary: '#007bff'}}}
                 title="Saved Events"
                 left={(props) => (
                   <List.Icon
@@ -165,7 +166,7 @@ const ProfileScreen = ({ navigation }) => {
               </List.Accordion>
               <Divider style={styles.divier} />
               <List.Accordion
-                theme={{ colors: { primary: '#007bff' } }}
+                theme={{colors: {primary: '#007bff'}}}
                 title="Interests &amp; Preferences"
                 description="set your interests to receive personalised contextual content"
                 left={(props) => (
@@ -249,11 +250,8 @@ const styles = StyleSheet.create({
   },
 
   editprofilebutton: {
-    position: 'absolute',
     padding: 5,
     backgroundColor: '#FFF',
-    left: 50,
-    bottom: 0,
     width: 52,
     height: 52,
     borderTopEndRadius: 500,
@@ -261,9 +259,9 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 500,
     borderBottomLeftRadius: 500,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
+    shadowOffset: {width: 0, height: 3},
     shadowOpacity: 0.15,
-    shadowRadius: 5
+    shadowRadius: 5,
   },
 
   infoContainer: {

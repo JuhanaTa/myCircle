@@ -120,11 +120,8 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   editprofilebutton: {
-    position: 'absolute',
     padding: 5,
     backgroundColor: '#D3D3D3',
-    left: 20,
-    bottom: 0,
     width: 40,
     height: 40,
     borderTopEndRadius: 500,
