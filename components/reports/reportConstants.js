@@ -1,6 +1,6 @@
 const reportTopics = [
-  'Topic 1',
-  'Topic 2',
+  'Maintenance',
+  'Event',
   'Topic 3',
   'Topic 4',
   'Topic 5',

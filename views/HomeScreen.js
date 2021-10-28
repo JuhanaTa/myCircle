@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Button } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -18,7 +18,7 @@ import {
 import HeatMapButton from '../components/HeatMapButton';
 import EventListButton from '../components/EventListButton';
 import {useEffect} from 'react';
-import {createUser} from '../controllers/firebaseController';
+import {createUser, logOut} from '../controllers/firebaseController';
 
 export default function HomeScreen({ navigation }) {
   let [fontsLoaded] = useFonts({
@@ -46,6 +46,11 @@ export default function HomeScreen({ navigation }) {
           <View style={styles.container}>
             <View style={styles.header}>
               <Text style={styles.mainHeader}>Welcome!</Text>
+              <Button onPress={async() => {
+                    await logOut();
+
+                }} title="Logoff" />
+
               <Text style={styles.subHeader}>5 new events in your area</Text>
             </View>
             <HeatMapButton navigation={navigation}></HeatMapButton>

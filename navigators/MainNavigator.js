@@ -70,6 +70,7 @@ const MainNavigator = () => {
   return (
     <NavigationContainer>
       <PaperProvider>
+
         <Tab.Navigator
           screenOptions={{
             tabBarActiveTintColor: '#007bff'
