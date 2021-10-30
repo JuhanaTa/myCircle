@@ -19,13 +19,14 @@ export default function App() {
   };
   console.log(showLogin);
   const Navigation = () => {
+    return <MainNavigator></MainNavigator>; /*
     if (!showLogin) {
       console.log('showing main');
       return <MainNavigator></MainNavigator>;
     } else {
       console.log('showing auth');
       return <AuthNavigator></AuthNavigator>;
-    }
+    }*/
   };
 
   useEffect(() => {
@@ -34,3 +35,12 @@ export default function App() {
 
   return <Navigation></Navigation>;
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+});
