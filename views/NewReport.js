@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, ScrollView } from 'react-native';
-import { TextInput, Button, Snackbar } from 'react-native-paper';
+import { StyleSheet, View, Text, ScrollView, TextInput } from 'react-native';
+import { Button, Snackbar } from 'react-native-paper';
 import ImagePicker from '../components/reports/ImagePicker';
 import PreviewReport from '../components/reports/PreviewReport';
 import ReportTopics from '../components/reports/ReportTopics';
@@ -76,14 +76,12 @@ const NewReport = ({ navigation }) => {
             <View style={styles.description}>
               <Text style={styles.subHeader}> Add description to issue</Text>
               <TextInput
-                placeholder="Description"
-                value={description}
-                onChangeText={(text) => setDescription(text)}
-                multiline={true}
                 style={styles.textInput}
-                theme={{ colors: { primary: '#112454' } }}
-                numberOfLines={3}
-              ></TextInput>
+                onChangeText={(text) => setDescription(text)}
+                placeholder="Description"
+                secureTextEntry={true}
+                value={description}
+              />
             </View>
             <ImagePicker
               image={image}
@@ -177,11 +175,23 @@ const styles = StyleSheet.create({
     marginTop: 8
   },
   textInput: {
-    marginLeft: '4%',
+    fontFamily: 'Inter_400Regular',
     width: '100%',
-    backgroundColor: '#fff',
-    borderBottomWidth: 0,
-    fontFamily: 'Inter_400Regular'
+    borderRadius: 44 / 2,
+    height: 50,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 2,
+    margin: 12,
+
+    padding: 10,
+
+    backgroundColor: '#fff'
   },
   button: {
     fontFamily: 'Inter_400Regular',

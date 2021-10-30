@@ -1,17 +1,14 @@
-import React, {useEffect, useState} from "react";
-import { StyleSheet} from "react-native";
-import MainNavigator from "./navigators/MainNavigator";
+import React, { useEffect, useState } from 'react';
+import { StyleSheet } from 'react-native';
+import MainNavigator from './navigators/MainNavigator';
 import firebase from 'firebase';
 import AuthNavigator from './navigators/AuthNavigator';
-import {logOut} from './controllers/firebaseController';
 export default function App() {
-
   const [showLogin, setShowLogin] = useState(false);
 
-  const checkLogin = async() => {
-    
-    firebase.auth().onAuthStateChanged(user => {
-      if(user != null) {
+  const checkLogin = async () => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user != null) {
         console.log('current user', user.uid);
         setShowLogin(false);
       } else {
@@ -22,33 +19,27 @@ export default function App() {
   };
   console.log(showLogin);
   const Navigation = () => {
-
-    if(!showLogin) {
+    if (!showLogin) {
       console.log('showing main');
-      return (<MainNavigator></MainNavigator>);
-    }else{
+      return <MainNavigator></MainNavigator>;
+    } else {
       console.log('showing auth');
-      return (<AuthNavigator></AuthNavigator>);
+      return <AuthNavigator></AuthNavigator>;
     }
-    
   };
 
   useEffect(() => {
     checkLogin();
   }, []);
 
-
-  return( 
-  <Navigation></Navigation>
-  );
+  return <Navigation></Navigation>;
 }
-
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
 });

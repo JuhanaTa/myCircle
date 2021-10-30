@@ -10,7 +10,10 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import MapScreen from '../views/MapScreen';
 import EventListScreen from '../views/EventListScreen';
 import EventScreen from '../views/EventScreen';
-import { StyleSheet } from 'react-native';
+
+import { createUser, logOut } from '../controllers/firebaseController';
+import { StyleSheet, Image } from 'react-native';
+import { Button } from 'react-native-paper';
 
 //tab
 const Tab = createBottomTabNavigator();
@@ -24,6 +27,15 @@ const ProfileStack = createNativeStackNavigator();
     To add navigation to new different screens add them to these stack screens
     for example if you want to access new page from Home tab add that screen to HomeStackScreen
 */
+function LogoTitle() {
+  return (
+    <Image
+      resizeMode="contain"
+      style={{ width: 100, height: 30 }}
+      source={require('../assets/Logo.png')}
+    />
+  );
+}
 const HomeStackScreen = () => {
   return (
     <HomeStack.Navigator>
@@ -70,7 +82,6 @@ const MainNavigator = () => {
   return (
     <NavigationContainer>
       <PaperProvider>
-
         <Tab.Navigator
           screenOptions={{
             tabBarActiveTintColor: '#007bff'
@@ -124,8 +135,21 @@ const MainNavigator = () => {
 };
 
 const styles = StyleSheet.create({
-  navibar: {
-    backgroundColor: 'red'
+  button: {
+    fontFamily: 'Inter_400Regular',
+
+    marginLeft: 'auto',
+
+    backgroundColor: '#007bff',
+    borderRadius: 44 / 2,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 2
   }
 });
 

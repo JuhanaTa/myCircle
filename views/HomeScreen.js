@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, Button } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
+import { Button } from 'react-native-paper';
 import AppLoading from 'expo-app-loading';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -17,8 +18,8 @@ import {
 } from '@expo-google-fonts/inter';
 import HeatMapButton from '../components/HeatMapButton';
 import EventListButton from '../components/EventListButton';
-import {useEffect} from 'react';
-import {createUser, logOut} from '../controllers/firebaseController';
+import { useEffect } from 'react';
+import { createUser, logOut } from '../controllers/firebaseController';
 
 export default function HomeScreen({ navigation }) {
   let [fontsLoaded] = useFonts({
@@ -35,7 +36,7 @@ export default function HomeScreen({ navigation }) {
 
   useEffect(() => {
     //createUser('Test', 'Test@Test.com', 123456789);
-  },[]);
+  }, []);
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -44,13 +45,24 @@ export default function HomeScreen({ navigation }) {
       <LinearGradient colors={['#eef4fb', '#dbe9f7']} style={styles.background}>
         <ScrollView style={styles.list}>
           <View style={styles.container}>
+            <View style={styles.logoContainer}>
+              <Image
+                style={styles.image}
+                source={require('../assets/Logo.png')}
+                resizeMode="contain"
+              />
+              <Button
+                style={styles.button}
+                theme={{ colors: { primary: '#007bff' } }}
+                onPress={async () => {
+                  await logOut();
+                }}
+              >
+                Log out
+              </Button>
+            </View>
             <View style={styles.header}>
               <Text style={styles.mainHeader}>Welcome!</Text>
-              <Button onPress={async() => {
-                    await logOut();
-
-                }} title="Logoff" />
-
               <Text style={styles.subHeader}>5 new events in your area</Text>
             </View>
             <HeatMapButton navigation={navigation}></HeatMapButton>
@@ -73,10 +85,42 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start'
   },
+
+  logoContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'space-between',
+    width: '100%',
+    marginTop: '15%',
+    paddingLeft: '3%',
+    paddingRight: '3%'
+  },
+  image: {
+    height: 50,
+    width: 100
+  },
+
+  button: {
+    fontFamily: 'Inter_400Regular',
+    marginTop: 5,
+    marginLeft: 'auto',
+    padding: 4,
+    backgroundColor: '#fff',
+    borderRadius: 44 / 2,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 2
+  },
   header: {
     width: '100%',
-    paddingLeft: '3%',
-    paddingTop: '18%'
+    paddingLeft: '3%'
   },
   mainHeader: {
     color: '#112454',

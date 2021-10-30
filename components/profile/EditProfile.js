@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, ScrollView, View } from 'react-native';
-import { TextInput, Menu, Divider, IconButton } from 'react-native-paper';
+import { StyleSheet, ScrollView, View, TextInput } from 'react-native';
+import { Menu, Divider, IconButton } from 'react-native-paper';
 import ModalDialog from '../globalReUseAbles/ModalDialog';
 import UserAvatar from './UserAvatar';
 
@@ -73,31 +73,26 @@ const EditProfile = ({
             <UserAvatar image={image} size={110} />
             {cameramenu()}
           </View>
-
           <TextInput
-            value={name}
             onChangeText={handleNameChange}
-            label="name"
             style={styles.textInput}
-            theme={{ colors: { primary: '#112454' } }}
-            right={<TextInput.Icon name="pencil" />}
+            placeholder="Fullname"
+            value={name}
           />
           <TextInput
+            placeholder="Email"
             value={email}
             style={styles.textInput}
             theme={{ colors: { primary: '#112454' } }}
             onChangeText={handleEmailChange}
             label="email"
-            right={<TextInput.Icon name="email-edit" />}
           />
           <TextInput
+            placeholder="Password"
             value={password}
             style={styles.textInput}
-            theme={{ colors: { primary: '#112454' } }}
-            onChangeText={handlePasswordChange}
+            onChangeText={handleEmailChange}
             label="password"
-            right={<TextInput.Icon name="eye" />}
-            secureTextEntry
           />
         </View>
       </ScrollView>
@@ -134,11 +129,21 @@ const styles = StyleSheet.create({
     shadowRadius: 5
   },
   textInput: {
-    marginLeft: '4%',
-    width: '100%',
-    backgroundColor: '#fff',
-    borderBottomWidth: 0,
-    fontFamily: 'Inter_400Regular'
+    fontFamily: 'Inter_400Regular',
+
+    borderRadius: 44 / 2,
+    height: 50,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 2,
+    margin: 12,
+    padding: 10,
+    backgroundColor: '#fff'
   }
 });
 
