@@ -6,11 +6,9 @@ import { StyleSheet } from 'react-native';
 import LoginPage from '../views/LoginPage';
 import RegisterPage from '../views/RegisterPage';
 
-
 //stacks
 
 const LoginStack = createNativeStackNavigator();
-
 
 const AuthStackScreen = () => {
   return (
@@ -20,16 +18,14 @@ const AuthStackScreen = () => {
         component={LoginPage}
         options={{ headerShown: false }}
       />
-    <LoginStack.Screen
+      <LoginStack.Screen
         name="RegisterPage"
         component={RegisterPage}
         options={{ headerShown: false }}
       />
-
     </LoginStack.Navigator>
   );
 };
-
 
 const AuthNavigator = () => {
   return (
@@ -42,9 +38,7 @@ const AuthNavigator = () => {
 };
 
 const styles = StyleSheet.create({
-  navibar: {
-    backgroundColor: 'red'
-  }
+  navibar: {}
 });
 
 export default AuthNavigator;
