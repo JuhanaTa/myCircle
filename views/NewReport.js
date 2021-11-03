@@ -19,6 +19,8 @@ import {
   Inter_800ExtraBold,
   Inter_900Black
 } from '@expo-google-fonts/inter';
+import {createReport} from '../controllers/firebaseController';
+import firebase from 'firebase';
 
 const NewReport = ({ navigation }) => {
   const { image, video, getImage, launchCamera, setImage } = useCamera({});
@@ -40,12 +42,17 @@ const NewReport = ({ navigation }) => {
 
   const closeSnackbar = () => setSnackbar(false);
 
-  const handleReportSubmission = () => {
+  const handleReportSubmission = async() => {
+
+    const response = await createReport(description, '', '', checkedTopic, firebase.auth().currentUser.uid);
+
     setDescription('');
     setCheckedTopic('');
     setImage(null);
     setPreview(false);
     setSnackbar(true);
+
+    navigation.navigate('HomeStack', { screen: 'HomeStack' });
   };
   let [fontsLoaded] = useFonts({
     Inter_900Black,

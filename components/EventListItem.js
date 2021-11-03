@@ -48,11 +48,9 @@ export default function EventListItem({ navigation, item }) {
               />
             </View>
             <View style={styles.textcontent}>
-              <Text style={styles.header}>{item.title}</Text>
+              <Text style={styles.header}>Topic: {item.topic}</Text>
               <Text style={styles.text}>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum is simply dummy text of the printing and
-                typesetting industry.
+                {item.description}
               </Text>
               <View style={styles.containerButton}>
                 <View style={styles.buttonContent}>

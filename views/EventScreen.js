@@ -26,7 +26,7 @@ export default function EventScreen({navigation, route}) {
     const uri = {uri: 'http://placekitten.com/200/300'};
 
     const {data} = route.params;
-
+    console.log('one item',data);
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
@@ -37,12 +37,10 @@ export default function EventScreen({navigation, route}) {
                     <View style={styles.content}>
                         <View style={styles.textcontent}>
                             <Text style={styles.header}>
-                                {data.title}
+                                Topic: {data.topic}
                             </Text>
                             <Text style={styles.text}>
-                                Lorem Ipsum is simply dummy text of the printing and typesetting
-                                industry. Lorem Ipsum is simply dummy text of the printing and
-                                typesetting industry.
+                                {data.description}
                             </Text>
                             <Image source={require("../assets/placeholderMap.jpg")} style={{width: '90%', height: 200 , alignSelf: 'center'}} resizeMode="center"></Image>
                         </View>

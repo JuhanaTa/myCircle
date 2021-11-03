@@ -12,7 +12,7 @@ import {
 import { Button } from 'react-native-paper';
 import { useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
-import { registerWithEmailAndPassword } from '../controllers/firebaseController';
+import { registerWithEmailAndPassword, createUser } from '../controllers/firebaseController';
 import {
   useFonts,
   Inter_100Thin,
@@ -55,8 +55,12 @@ export default function RegisterPage({ navigation }) {
     try {
       if (password.length >= 6) {
         const result = await registerWithEmailAndPassword(email, password);
-
         console.log('result', result);
+
+        //creating User in Firebase
+
+        await createUser(email, password, result.user.uid);
+        console.log('user created');
       } else {
         Alert.alert('Check Password', 'Password too short', [
           { text: 'OK', onPress: () => console.log('OK Pressed') }

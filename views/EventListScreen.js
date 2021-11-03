@@ -1,9 +1,18 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, FlatList} from 'react-native';
 import EventListItem from '../components/EventListItem';
-import { LinearGradient } from 'expo-linear-gradient';
+import {LinearGradient} from 'expo-linear-gradient';
+import {getReports} from '../controllers/firebaseController';
+import EventList from '../components/EventList';
 
 export default function EventListScreen({navigation}) {
+
+    const [reportsData, setReportsData] = useState();
+
+    const fetchReports = async () => {
+        const reports = await getReports();
+        setReportsData(reports);
+    };
 
     //Fetch ListData here. Now uses Data array
     const DATA = [
@@ -20,11 +29,11 @@ export default function EventListScreen({navigation}) {
             title: 'Third Item',
         },
     ];
-    
-    //item that is rendered
-    const renderItem = ({item}) => (
-        <EventListItem item={item} navigation={navigation} />
-    );
+
+    useEffect(() => {
+        fetchReports();
+    }, []);
+
 
     return (
         <View style={styles.container}>
@@ -32,11 +41,9 @@ export default function EventListScreen({navigation}) {
                 colors={['#eef4fb', '#dbe9f7']}
                 style={styles.background}
             />
-            <FlatList
-                data={DATA}
-                renderItem={renderItem}
-                keyExtractor={item => item.id}
-            />
+            {reportsData &&
+                <EventList navigation={navigation} reportsData={reportsData}></EventList>
+            }
         </View>
     );
 }
