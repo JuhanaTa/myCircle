@@ -43,6 +43,7 @@ export default function EventScreen({navigation, route}) {
                                 {data.description}
                             </Text>
                             <Image source={require("../assets/placeholderMap.jpg")} style={{width: '90%', height: 200 , alignSelf: 'center'}} resizeMode="center"></Image>
+                            <Image source={{uri: data.image}} style={{width: '90%', height: 200 , alignSelf: 'center'}} resizeMode="center"></Image>
                         </View>
                         
                     </View>

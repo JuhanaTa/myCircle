@@ -4,7 +4,6 @@ import { Button, Menu, Divider } from 'react-native-paper';
 
 const ImagePicker = ({ image, getImage, launchCamera }) => {
   const [open, setMenu] = useState(false);
-
   const closeMenu = () => setMenu(false);
   const openMenu = () => {
     setMenu(true);

@@ -19,7 +19,10 @@ import {
   Inter_800ExtraBold,
   Inter_900Black
 } from '@expo-google-fonts/inter';
-import {createReport} from '../controllers/firebaseController';
+import {
+  createReport,
+  uploadImageToFirebaseStorage
+} from '../controllers/firebaseController';
 import firebase from 'firebase';
 
 const NewReport = ({ navigation }) => {
@@ -42,9 +45,15 @@ const NewReport = ({ navigation }) => {
 
   const closeSnackbar = () => setSnackbar(false);
 
-  const handleReportSubmission = async() => {
-
-    const response = await createReport(description, '', '', checkedTopic, firebase.auth().currentUser.uid);
+  const handleReportSubmission = async () => {
+    const imageUrl = await uploadImageToFirebaseStorage(image.uri);
+    const response = await createReport(
+      description,
+      imageUrl,
+      '',
+      checkedTopic,
+      firebase.auth().currentUser.uid
+    );
 
     setDescription('');
     setCheckedTopic('');
@@ -86,7 +95,6 @@ const NewReport = ({ navigation }) => {
                 style={styles.textInput}
                 onChangeText={(text) => setDescription(text)}
                 placeholder="Description"
-                secureTextEntry={true}
                 value={description}
               />
             </View>
