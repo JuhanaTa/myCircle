@@ -1,8 +1,15 @@
-import React from 'react';
-import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
+import React, {useEffect} from 'react';
+import {Button, Dimensions, Image, StyleSheet, Text, View} from 'react-native';
 import MapView, {Callout} from 'react-native-maps';
+import {helloFunction} from '../controllers/firebaseFunctions';
 
 export default function MapScreen({navigation}) {
+
+
+
+    useEffect(() => {
+        helloFunction();
+    }, []);
 
     let Image_Http_URL = {uri: 'http://placekitten.com/200/300'};
     let points = [
@@ -131,6 +138,6 @@ const styles = StyleSheet.create({
     },
     map: {
         width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
+        height: Dimensions.get('window').height
     },
 });
