@@ -95,7 +95,6 @@ const NewReport = ({ navigation }) => {
                 style={styles.textInput}
                 onChangeText={(text) => setDescription(text)}
                 placeholder="Description"
-                secureTextEntry={true}
                 value={description}
               />
             </View>
