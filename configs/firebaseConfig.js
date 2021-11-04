@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import { LogBox } from 'react-native';
 
 // Optionally import the services that you want to use
 //import {...} from "firebase/auth";
@@ -25,6 +26,9 @@ if (!firebase.apps.length){
     //if already initialized
     firebase.app();
 }
+
+// disable warings resulting from Firebase long period timers settings in Android
+LogBox.ignoreLogs([`Setting a timer for a long period`]);
 
 export const db = firebase.firestore();
 console.log('config done');
