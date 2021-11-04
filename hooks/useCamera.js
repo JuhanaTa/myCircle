@@ -36,7 +36,6 @@ const useCamera = ({ aspect }) => {
       ...editOptions,
     });
     console.log(result);
-
     setMedia(result);
   };
 
@@ -44,7 +43,6 @@ const useCamera = ({ aspect }) => {
     let result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       ...editOptions,
-      base64: true,
     
     });
     console.log(result);
