@@ -1,8 +1,26 @@
-import React from 'react';
-import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
+import React, {useEffect} from 'react';
+import {Button, Dimensions, Image, StyleSheet, Text, View} from 'react-native';
 import MapView, {Callout} from 'react-native-maps';
+import {helloFunction} from '../controllers/firebaseFunctions';
+import * as Location from 'expo-location';
 
 export default function MapScreen({navigation}) {
+
+
+
+    useEffect(() => {
+        (async () => {
+          let { status } = await Location.requestForegroundPermissionsAsync();
+          if (status !== 'granted') {
+            console.log('Permission to access location was denied');
+            navigation.popToTop();
+            return;
+          }
+    
+          let location = await Location.getCurrentPositionAsync({});
+          console.log(location);
+        })();
+      }, []);
 
     let Image_Http_URL = {uri: 'http://placekitten.com/200/300'};
     let points = [
@@ -18,12 +36,14 @@ export default function MapScreen({navigation}) {
     return (
         <View style={styles.container}>
             <MapView style={styles.map}
+                showsUserLocation={true}
                 initialRegion={{
                     latitude: 65.012615,
                     longitude: 25.471453,
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
-                }} >
+                }}
+            >
 
                 <MapView.Heatmap
                     points={points}
@@ -85,7 +105,7 @@ export default function MapScreen({navigation}) {
                         <View>
                             <View style={{width: 200, height: 200, padding: 10}}>
                                 <Text>Test marker text. Kuva Lorem ipsum...</Text>
-                                <Image source={require("../assets/placeholderMap.jpg")} style={{width: '90%', height: 200 , alignSelf: 'center'}}></Image>
+                                <Image source={require("../assets/placeholderMap.jpg")} style={{width: '90%', height: 200, alignSelf: 'center'}}></Image>
                             </View>
                         </View>
                     </Callout>
@@ -131,6 +151,6 @@ const styles = StyleSheet.create({
     },
     map: {
         width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
+        height: Dimensions.get('window').height
     },
 });
