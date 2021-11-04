@@ -134,8 +134,8 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    width: '60%',
-    height: '30%'
+    marginTop: 80,
+    width: '60%'
   },
   form: {
     display: 'flex',
