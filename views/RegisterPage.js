@@ -12,7 +12,10 @@ import {
 import { Button } from 'react-native-paper';
 import { useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
-import { registerWithEmailAndPassword, createUser } from '../controllers/firebaseController';
+import {
+  registerWithEmailAndPassword,
+  createUser
+} from '../controllers/firebaseController';
 import {
   useFonts,
   Inter_100Thin,
@@ -152,7 +155,7 @@ const styles = StyleSheet.create({
 
   image: {
     width: '60%',
-    height: '40%'
+    height: '30%'
   },
   form: {
     display: 'flex',
