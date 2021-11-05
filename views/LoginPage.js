@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    marginTop: 80,
+    marginTop: 50,
     width: '60%'
   },
   form: {
