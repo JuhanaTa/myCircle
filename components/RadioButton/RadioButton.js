@@ -86,6 +86,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10
   },
   radioButtonText: {
+    width: 150,
     fontFamily: 'Inter_400Regular',
     fontSize: 18,
     color: '#000'
