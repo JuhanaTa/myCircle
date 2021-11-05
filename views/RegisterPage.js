@@ -126,7 +126,7 @@ export default function RegisterPage({ navigation }) {
             </Button>
           </View>
           <TouchableOpacity
-            style={{ margin: 30 }}
+            style={{ margin: 30, flex: 1, justifyContent: 'flex-end' }}
             onPress={() => {
               navigation.popToTop();
             }}
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    marginTop: 80,
+    marginTop: 50,
     width: '60%'
   },
   form: {
