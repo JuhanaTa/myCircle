@@ -49,9 +49,7 @@ export default function EventListItem({ navigation, item }) {
             </View>
             <View style={styles.textcontent}>
               <Text style={styles.header}>Topic: {item.topic}</Text>
-              <Text style={styles.text}>
-                {item.description}
-              </Text>
+              <Text style={styles.text}>{item.description}</Text>
               <View style={styles.containerButton}>
                 <View style={styles.buttonContent}>
                   <AntDesign
