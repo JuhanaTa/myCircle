@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, ScrollView, TextInput } from 'react-native';
-import { Button, Snackbar } from 'react-native-paper';
+import React, {useState, useEffect} from 'react';
+import {StyleSheet, View, Text, ScrollView, TextInput} from 'react-native';
+import {Button, Snackbar} from 'react-native-paper';
 import ImagePicker from '../components/reports/ImagePicker';
 import PreviewReport from '../components/reports/PreviewReport';
 import ReportTopics from '../components/reports/ReportTopics';
 import AppLoading from 'expo-app-loading';
 import useCamera from '../hooks/useCamera';
-import { LinearGradient } from 'expo-linear-gradient';
+import {LinearGradient} from 'expo-linear-gradient';
 import {
   useFonts,
   Inter_100Thin,
@@ -24,14 +24,16 @@ import {
   uploadImageToFirebaseStorage
 } from '../controllers/firebaseController';
 import firebase from 'firebase';
+import * as Location from 'expo-location';
 
-const NewReport = ({ navigation }) => {
-  const { image, video, getImage, launchCamera, setImage } = useCamera({});
+const NewReport = ({navigation}) => {
+  const {image, video, getImage, launchCamera, setImage} = useCamera({});
   const [description, setDescription] = useState('');
   const [open, setDialog] = useState(false);
   const [isPreviewOpened, setPreview] = useState(false);
   const [isSnackbarLanuched, setSnackbar] = useState(false);
   const [checkedTopic, setCheckedTopic] = useState();
+  const [location, setLocatiom] = useState('');
 
   const openDialog = () => setDialog(true);
   const closeDialog = () => setDialog(false);
@@ -46,11 +48,21 @@ const NewReport = ({ navigation }) => {
   const closeSnackbar = () => setSnackbar(false);
 
   const handleReportSubmission = async () => {
+    let location;
+    let {status} = await Location.requestForegroundPermissionsAsync();
+
+    if (status !== 'granted') {
+      console.log('Permission to access location was denied');
+    } else {
+      location = await Location.getCurrentPositionAsync({});
+      console.log(location);
+    }
+
     const imageUrl = await uploadImageToFirebaseStorage(image.uri);
     const response = await createReport(
       description,
       imageUrl,
-      '',
+      {latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0, longitudeDelta: 0,},
       checkedTopic,
       firebase.auth().currentUser.uid
     );
@@ -61,7 +73,7 @@ const NewReport = ({ navigation }) => {
     setPreview(false);
     setSnackbar(true);
 
-    navigation.navigate('HomeStack', { screen: 'HomeStack' });
+    navigation.navigate('HomeStack', {screen: 'HomeStack'});
   };
   let [fontsLoaded] = useFonts({
     Inter_900Black,
@@ -107,7 +119,7 @@ const NewReport = ({ navigation }) => {
             <View style={styles.submitbuttonContainer}>
               <Button
                 style={styles.submitbutton}
-                theme={{ colors: { primary: '#007bff' } }}
+                theme={{colors: {primary: '#007bff'}}}
                 onPress={openPreview}
                 accessibilityLabel="preview report and send"
               >
@@ -219,7 +231,7 @@ const styles = StyleSheet.create({
 
     elevation: 10,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
+    shadowOffset: {width: 0, height: 3},
     shadowOpacity: 0.15,
     shadowRadius: 5,
     borderRadius: 25
@@ -242,7 +254,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_400Regular',
     elevation: 10,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
+    shadowOffset: {width: 0, height: 3},
     shadowOpacity: 0.15,
     shadowRadius: 5,
     borderRadius: 25
