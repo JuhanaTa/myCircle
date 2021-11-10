@@ -66,7 +66,7 @@ const NewReport = ({navigation}) => {
       checkedTopic,
       firebase.auth().currentUser.uid
     );
-
+    
     setDescription('');
     setCheckedTopic('');
     setImage(null);

@@ -193,4 +193,3 @@ export const uploadImageToFirebaseStorage = async (uri) => {
 
   return imgUrl;
 };
-
