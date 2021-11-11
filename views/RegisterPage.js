@@ -6,7 +6,6 @@ import {
   View,
   LogBox,
   Text,
-  TouchableOpacity,
   Alert
 } from 'react-native';
 import { Button } from 'react-native-paper';
@@ -125,14 +124,18 @@ export default function RegisterPage({ navigation }) {
               Register
             </Button>
           </View>
-          <TouchableOpacity
+          <View
             style={{ margin: 30, flex: 1, justifyContent: 'flex-end' }}
-            onPress={() => {
-              navigation.popToTop();
-            }}
           >
-            <Text style={styles.link}>Already have account?</Text>
-          </TouchableOpacity>
+            <Text
+              style={styles.link}
+              onPress={() => {
+                navigation.popToTop();
+              }}
+            >
+              Already have account?
+            </Text>
+          </View>
         </View>
       </LinearGradient>
     );
