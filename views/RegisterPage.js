@@ -62,7 +62,7 @@ export default function RegisterPage({ navigation }) {
 
         //creating User in Firebase
 
-        await createUser(email, password, result.user.uid);
+        await createUser(username, email, result.user.uid);
         console.log('user created');
       } else {
         Alert.alert('Check Password', 'Password too short', [

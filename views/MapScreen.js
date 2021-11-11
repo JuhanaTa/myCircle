@@ -68,36 +68,6 @@ export default function MapScreen({navigation}) {
     };
 
 
-    /*const displayMarkers = async () => {
-
-        const [markers, setMarkers] = useState({});
-
-        coordinates.forEach(element => {
-            
-        });
-
-        return (
-            <MapView.Marker
-                coordinate={{
-                    latitude: 65.012615,
-                    longitude: 25.471453,
-                }}
-                title={'Default marker'}
-            >
-                <Callout onPress={() => {
-                    console.log('clicked marker view');
-                }}>
-                    <View>
-                        <View style={{width: 200, height: 200, padding: 10}}>
-                            <Text>Test marker text. Lorem ipsum...</Text>
-                        </View>
-                    </View>
-                </Callout>
-            </MapView.Marker>
-        );
-
-    };*/
-
     useEffect(() => {
         (async () => {
             let {status} = await Location.requestForegroundPermissionsAsync();
@@ -114,12 +84,7 @@ export default function MapScreen({navigation}) {
         })();
     }, []);
 
-    let Image_Http_URL = {uri: 'http://placekitten.com/200/300'};
-    let points = [
-        {latitude: 65.012615, longitude: 25.461453, weight: 1},
-        {latitude: 65.002615, longitude: 25.451453, weight: 1},
-        {latitude: 65.022615, longitude: 25.441453, weight: 1}
-    ];
+
 
     const item = {
         title: 'Test'
@@ -161,12 +126,15 @@ export default function MapScreen({navigation}) {
                         />
                         {coordinates.map(marker => (
                             <MapView.Marker
-                                key={marker.location.longitude}
+                                key={marker.location.description}
                                 coordinate={marker.location}
                                 title={marker.description}
                             >
                                 <Callout onPress={() => {
-                                    console.log('clicked marker view');
+                                    console.log('clicked marker view', marker);
+                                    navigation.navigate('EventScreen', {
+                                        data: marker
+                                    });
                                 }}>
                                     <View>
                                         <View style={{width: 200, height: 200, padding: 10}}>
