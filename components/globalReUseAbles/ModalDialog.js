@@ -8,7 +8,6 @@ const ModalDialog = ({
   action,
   label,
   title,
-  cancel,
   children
 }) => {
   // Reuseable dialog for rendering other compenents as children recieved as prop.children
