@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {updateUserInterests} from '../../controllers/firebaseController';
 import ModalDialog from '../globalReUseAbles/ModalDialog';
 import Radiobutton from '../RadioButton/RadioButton';
 import { HOBBIES, INTERESTS, PREFERENCES } from './questionnaireConstants';
@@ -26,8 +27,11 @@ const UserInterestsQuestionnaire = ({
     setPreferences(true);
   };
 
-  const handleQuestionnaireSubmission = () => {
+  const handleQuestionnaireSubmission = async () => {
     setPreferences(false);
+    const userInterests = await updateUserInterests({userInterests:{interests, hobbies, preferences}});
+    console.log('userInterests', userInterests);
+    
   };
 
   const onCheckBoxPress = (checkedItem, checkedState, setState) => {
