@@ -1,19 +1,19 @@
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  Pressable,
   ScrollView
 } from 'react-native';
 import UserAvatar from '../components/profile/UserAvatar';
 import useCamera from '../hooks/useCamera';
-import {Divider, IconButton, List, Menu, Button} from 'react-native-paper';
+import { Divider, IconButton, List, Menu } from 'react-native-paper';
 import EditProfile from '../components/profile/EditProfile';
 import AppLoading from 'expo-app-loading';
+import firebase from 'firebase';
 
-import {LinearGradient} from 'expo-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 import {
   useFonts,
   Inter_100Thin,
@@ -26,8 +26,10 @@ import {
   Inter_800ExtraBold,
   Inter_900Black
 } from '@expo-google-fonts/inter';
+import UserInterestsQuestionnaire from '../components/profile/UserInterestsQuestionnaire';
+import { getUser } from '../controllers/firebaseController';
 
-const ProfileScreen = ({navigation}) => {
+const ProfileScreen = ({ navigation }) => {
   let [fontsLoaded] = useFonts({
     Inter_900Black,
     Inter_100Thin,
@@ -39,25 +41,40 @@ const ProfileScreen = ({navigation}) => {
     Inter_700Bold,
     Inter_800ExtraBold
   });
-  const {image, getImage, launchCamera} = useCamera({aspect: [4, 3]});
+  const [user, setUser] = useState();
+  const { image, getImage, launchCamera } = useCamera({ aspect: [4, 3] });
   const [isExpanded, setAccordion] = useState({
     personalData: false,
     events: false,
     interests: false
   });
+  const [isInterestListExpanded, setNestedAccordion] = useState({
+    Hobbies: false,
+    Interests: false,
+    Preferences: false
+  });
   const [isOpen, setMoreMenu] = useState(false);
   const [isEditDialogOpen, setEditDialog] = useState(false);
+  const [isQuestionnaireOpened, setQuestionnaire] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [refetchUser, setRefetch] = useState(false);
+
+  // fetch current user data: temporal solution, redux will be used later
+  useEffect(() => {
+    (async () => {
+      const id = await firebase.auth().currentUser.uid;
+      const user = await getUser(id);
+
+      setUser(user);
+    })();
+  }, [refetchUser]);
 
   const handleNameChange = (text) => setName(text);
   const handleEmailChange = (text) => setEmail(text);
   const handlePasswordChange = (text) => setPassword(text);
 
-  const openMoreMenu = () => {
-    setMoreMenu(true);
-  };
   const closeMoreMenu = () => setMoreMenu(false);
 
   // opens a dialog for user to edit their profile info
@@ -67,6 +84,10 @@ const ProfileScreen = ({navigation}) => {
     closeMoreMenu();
     openEditDialog();
   };
+
+  // launches questionnaire for user's interests and preferences
+  const openQuestionnaire = () => setQuestionnaire(true);
+  const closeQuestionnaire = () => setQuestionnaire(false);
 
   const handleProfileUpdate = () => {
     closeEditDialog();
@@ -81,12 +102,23 @@ const ProfileScreen = ({navigation}) => {
       interests: expanded !== 'interests' ? false : !isExpanded.interests,
       events: expanded !== 'events' ? false : !isExpanded.events
     });
+    // controlls lists nested in the interests and preferences Accordion
+    const openNestedAccordion = (expanded) => () =>
+    setNestedAccordion({
+      ...isInterestListExpanded,
+      Hobbies:
+        expanded !== 'Hobbies' ? false : !isInterestListExpanded.Hobbies,
+      Interests: expanded !== 'Interests' ? false : !isInterestListExpanded.Interests,
+      Preferences: expanded !== 'Preferences' ? false : !isInterestListExpanded.Preferences
+    });
+
+  const refetch = () => setRefetch(!refetchUser);
 
   const moreMenu = () => {
     const anchorEl = (
       <TouchableOpacity onPress={() => openEditDialog()}>
         <IconButton
-          labelStyle={{fontSize: 30}}
+          labelStyle={{ fontSize: 30 }}
           style={styles.editprofilebutton}
           color={'#007bff'}
           icon="pencil"
@@ -110,6 +142,26 @@ const ProfileScreen = ({navigation}) => {
       </Menu>
     );
   };
+
+  const userPreferences = (data, title) => {
+    return (
+        <List.Accordion
+          theme={{ colors: { primary: '#007bff' } }}
+          title={title}
+          expanded={isInterestListExpanded[title]}
+          onPress={openNestedAccordion(title)}
+          style={styles.accordion}
+        >
+          <View>
+            {data?.map((item) => (
+            <List.Item key={item} title={item} style={styles.accordionItme} />
+          ))}
+             </View>
+          
+        </List.Accordion>
+    );
+  };
+
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
@@ -131,7 +183,7 @@ const ProfileScreen = ({navigation}) => {
             </View>
             <List.Section style={styles.listsection}>
               <List.Accordion
-                theme={{colors: {primary: '#007bff'}}}
+                theme={{ colors: { primary: '#007bff' } }}
                 title="Personal Data"
                 left={(props) => (
                   <List.Icon {...props} icon="account" color={'#007bff'} />
@@ -140,15 +192,12 @@ const ProfileScreen = ({navigation}) => {
                 onPress={openAccordion('personalData')}
                 style={styles.accordion}
               >
-                <List.Item title="@username" style={styles.accordionItme} />
-                <List.Item
-                  title={email ? email : 'first.last@me.fi'}
-                  style={styles.accordionItme}
-                />
+                <List.Item title={user?.name} style={styles.accordionItme} />
+                <List.Item title={user?.email} style={styles.accordionItme} />
               </List.Accordion>
               <Divider style={styles.divier} />
               <List.Accordion
-                theme={{colors: {primary: '#007bff'}}}
+                theme={{ colors: { primary: '#007bff' } }}
                 title="Saved Events"
                 left={(props) => (
                   <List.Icon
@@ -166,7 +215,7 @@ const ProfileScreen = ({navigation}) => {
               </List.Accordion>
               <Divider style={styles.divier} />
               <List.Accordion
-                theme={{colors: {primary: '#007bff'}}}
+                theme={{ colors: { primary: '#007bff' } }}
                 title="Interests &amp; Preferences"
                 description="set your interests to receive personalised contextual content"
                 left={(props) => (
@@ -180,8 +229,14 @@ const ProfileScreen = ({navigation}) => {
                 onPress={openAccordion('interests')}
                 style={styles.accordion}
               >
-                <List.Item title="First item" style={styles.accordionItme} />
-                <List.Item title="Second item" style={styles.accordionItme} />
+                <List.Item
+                  title="Set Your Interests"
+                  style={styles.accordionItme}
+                  onPress={() => openQuestionnaire()}
+                />
+               {userPreferences(user?.userInterests?.hobbies, 'Hobbies')}
+               {userPreferences(user?.userInterests?.interests, 'Interests')}
+               {userPreferences(user?.userInterests?.preferences, 'Preferences')}
               </List.Accordion>
             </List.Section>
             <EditProfile
@@ -197,6 +252,11 @@ const ProfileScreen = ({navigation}) => {
               action={handleProfileUpdate}
               launchCamera={launchCamera}
               getImage={getImage}
+            />
+            <UserInterestsQuestionnaire
+              isQuestionnaireOpened={isQuestionnaireOpened}
+              closeFirstQuestionnaireDialog={closeQuestionnaire}
+              refetch={refetch}
             />
           </View>
         </ScrollView>
@@ -259,9 +319,9 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 500,
     borderBottomLeftRadius: 500,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 3},
+    shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.15,
-    shadowRadius: 5,
+    shadowRadius: 5
   },
 
   infoContainer: {

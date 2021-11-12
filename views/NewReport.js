@@ -58,6 +58,9 @@ const NewReport = ({navigation}) => {
       console.log(location);
     }
 
+    setPreview(false);
+    setSnackbar(true);
+
     const imageUrl = await uploadImageToFirebaseStorage(image.uri);
     const response = await createReport(
       description,
@@ -70,8 +73,6 @@ const NewReport = ({navigation}) => {
     setDescription('');
     setCheckedTopic('');
     setImage(null);
-    setPreview(false);
-    setSnackbar(true);
 
     navigation.navigate('HomeStack', {screen: 'HomeStack'});
   };

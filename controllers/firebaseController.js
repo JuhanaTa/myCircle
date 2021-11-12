@@ -7,12 +7,20 @@ import { v4 as uuidv4 } from 'uuid';
 //create user to database
 export const createUser = async (name, email, id) => {
   try {
-    await db.collection('Users').doc(id).set({
-      name: name,
-      email: email,
-      userId: id,
-      reportObject: []
-    });
+    await db
+      .collection('Users')
+      .doc(id)
+      .set({
+        name: name,
+        email: email,
+        userId: id,
+        reportObject: [],
+        userInterests: {
+          interests: [],
+          hobbies: [],
+          preferences: []
+        }
+      });
 
     console.log('user added');
   } catch (e) {
@@ -54,6 +62,19 @@ export const updateUser = async (name, email, id) => {
     });
 
     console.log('user modified');
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const updateUserInterests = async (userObject) => {
+  try {
+    const id = await firebase.auth().currentUser.uid;
+
+    const updatedData = await db.collection('Users').doc(id).update(userObject);
+
+    console.log('userInterest updated', updatedData);
+    return updatedData;
   } catch (e) {
     console.log(e);
   }
@@ -119,41 +140,7 @@ export const createReport = async (description, image, location, topic, id) => {
       reportObject: reportArray
     });
 
-    /*
-        switch (topic) {
-            case 1:
-                response = await db.collection('Maintenance').add(reportObject);
-                reportObject.topic = 'Maintenance';
-                break;
-            case 2:
-                response = await db.collection('Event').add(reportObject);
-                reportObject.topic = 'Event';
-                break;
-            case 3:
-                response = await db.collection('Reports').add(reportObject);
-                reportObject.topic = 'Reports';
-                break;
-            case 4:
-                response = await db.collection('Topic4').add(reportObject);
-                reportObject.topic = 'Topic4';
-                break;
-            case 5:
-                response = await db.collection('Topic5').add(reportObject);
-                reportObject.topic = 'Topic5';
-                break;
-            case 6:
-                response = await db.collection('Topic6').add(reportObject);
-                reportObject.topic = 'Topic6';
-                break;
-            case 7:
-                response = await db.collection('Topic7').add(reportObject);
-                reportObject.topic = 'Topic7';
-                break;
-            default:
-            // code block
-        }*/
-
-    console.log('created Report');
+    console.log('created Report', response);
 
     return response;
   } catch (e) {
@@ -193,4 +180,3 @@ export const uploadImageToFirebaseStorage = async (uri) => {
 
   return imgUrl;
 };
-
