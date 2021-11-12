@@ -6,7 +6,8 @@ import { HOBBIES, INTERESTS, PREFERENCES } from './questionnaireConstants';
 
 const UserInterestsQuestionnaire = ({
   isQuestionnaireOpened,
-  closeFirstQuestionnaireDialog
+  closeFirstQuestionnaireDialog,
+  refetch
 }) => {
   const [isHobbiesOpened, setHobbies] = useState(false);
   const [isPreferencesOpened, setPreferences] = useState(false);
@@ -30,6 +31,7 @@ const UserInterestsQuestionnaire = ({
   const handleQuestionnaireSubmission = async () => {
     setPreferences(false);
     const userInterests = await updateUserInterests({userInterests:{interests, hobbies, preferences}});
+    refetch();
     console.log('userInterests', userInterests);
     
   };

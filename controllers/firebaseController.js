@@ -73,7 +73,7 @@ export const updateUserInterests = async (userObject) => {
 
     const updatedData = await db.collection('Users').doc(id).update(userObject);
 
-    console.log('userInterest updated');
+    console.log('userInterest updated', updatedData);
     return updatedData;
   } catch (e) {
     console.log(e);

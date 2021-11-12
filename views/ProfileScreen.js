@@ -59,6 +59,7 @@ const ProfileScreen = ({ navigation }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [refetchUser, setRefetch] = useState(false);
 
   // fetch current user data: temporal solution, redux will be used later
   useEffect(() => {
@@ -68,7 +69,7 @@ const ProfileScreen = ({ navigation }) => {
 
       setUser(user);
     })();
-  }, []);
+  }, [refetchUser]);
 
   const handleNameChange = (text) => setName(text);
   const handleEmailChange = (text) => setEmail(text);
@@ -110,6 +111,8 @@ const ProfileScreen = ({ navigation }) => {
       Interests: expanded !== 'Interests' ? false : !isInterestListExpanded.Interests,
       Preferences: expanded !== 'Preferences' ? false : !isInterestListExpanded.Preferences
     });
+
+  const refetch = () => setRefetch(!refetchUser);
 
   const moreMenu = () => {
     const anchorEl = (
@@ -253,6 +256,7 @@ const ProfileScreen = ({ navigation }) => {
             <UserInterestsQuestionnaire
               isQuestionnaireOpened={isQuestionnaireOpened}
               closeFirstQuestionnaireDialog={closeQuestionnaire}
+              refetch={refetch}
             />
           </View>
         </ScrollView>
