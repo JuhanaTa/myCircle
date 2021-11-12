@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -11,6 +11,7 @@ import useCamera from '../hooks/useCamera';
 import { Divider, IconButton, List, Menu } from 'react-native-paper';
 import EditProfile from '../components/profile/EditProfile';
 import AppLoading from 'expo-app-loading';
+import firebase from 'firebase';
 
 import { LinearGradient } from 'expo-linear-gradient';
 import {
@@ -26,6 +27,7 @@ import {
   Inter_900Black
 } from '@expo-google-fonts/inter';
 import UserInterestsQuestionnaire from '../components/profile/UserInterestsQuestionnaire';
+import { getUser } from '../controllers/firebaseController';
 
 const ProfileScreen = ({ navigation }) => {
   let [fontsLoaded] = useFonts({
@@ -39,11 +41,17 @@ const ProfileScreen = ({ navigation }) => {
     Inter_700Bold,
     Inter_800ExtraBold
   });
+  const [user, setUser] = useState();
   const { image, getImage, launchCamera } = useCamera({ aspect: [4, 3] });
   const [isExpanded, setAccordion] = useState({
     personalData: false,
     events: false,
     interests: false
+  });
+  const [isInterestListExpanded, setNestedAccordion] = useState({
+    Hobbies: false,
+    Interests: false,
+    Preferences: false
   });
   const [isOpen, setMoreMenu] = useState(false);
   const [isEditDialogOpen, setEditDialog] = useState(false);
@@ -51,6 +59,16 @@ const ProfileScreen = ({ navigation }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  // fetch current user data: temporal solution, redux will be used later
+  useEffect(() => {
+    (async () => {
+      const id = await firebase.auth().currentUser.uid;
+      const user = await getUser(id);
+
+      setUser(user);
+    })();
+  }, []);
 
   const handleNameChange = (text) => setName(text);
   const handleEmailChange = (text) => setEmail(text);
@@ -83,6 +101,15 @@ const ProfileScreen = ({ navigation }) => {
       interests: expanded !== 'interests' ? false : !isExpanded.interests,
       events: expanded !== 'events' ? false : !isExpanded.events
     });
+    // controlls lists nested in the interests and preferences Accordion
+    const openNestedAccordion = (expanded) => () =>
+    setNestedAccordion({
+      ...isInterestListExpanded,
+      Hobbies:
+        expanded !== 'Hobbies' ? false : !isInterestListExpanded.Hobbies,
+      Interests: expanded !== 'Interests' ? false : !isInterestListExpanded.Interests,
+      Preferences: expanded !== 'Preferences' ? false : !isInterestListExpanded.Preferences
+    });
 
   const moreMenu = () => {
     const anchorEl = (
@@ -112,6 +139,26 @@ const ProfileScreen = ({ navigation }) => {
       </Menu>
     );
   };
+
+  const userPreferences = (data, title) => {
+    return (
+        <List.Accordion
+          theme={{ colors: { primary: '#007bff' } }}
+          title={title}
+          expanded={isInterestListExpanded[title]}
+          onPress={openNestedAccordion(title)}
+          style={styles.accordion}
+        >
+          <View>
+            {data?.map((item) => (
+            <List.Item key={item} title={item} style={styles.accordionItme} />
+          ))}
+             </View>
+          
+        </List.Accordion>
+    );
+  };
+
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
@@ -142,11 +189,8 @@ const ProfileScreen = ({ navigation }) => {
                 onPress={openAccordion('personalData')}
                 style={styles.accordion}
               >
-                <List.Item title="@username" style={styles.accordionItme} />
-                <List.Item
-                  title={email ? email : 'first.last@me.fi'}
-                  style={styles.accordionItme}
-                />
+                <List.Item title={user?.name} style={styles.accordionItme} />
+                <List.Item title={user?.email} style={styles.accordionItme} />
               </List.Accordion>
               <Divider style={styles.divier} />
               <List.Accordion
@@ -182,8 +226,14 @@ const ProfileScreen = ({ navigation }) => {
                 onPress={openAccordion('interests')}
                 style={styles.accordion}
               >
-                <List.Item title="Set Your Interests" style={styles.accordionItme} onPress={() => openQuestionnaire()} />
-                <List.Item title="Second item" style={styles.accordionItme} />
+                <List.Item
+                  title="Set Your Interests"
+                  style={styles.accordionItme}
+                  onPress={() => openQuestionnaire()}
+                />
+               {userPreferences(user?.userInterests?.hobbies, 'Hobbies')}
+               {userPreferences(user?.userInterests?.interests, 'Interests')}
+               {userPreferences(user?.userInterests?.preferences, 'Preferences')}
               </List.Accordion>
             </List.Section>
             <EditProfile
