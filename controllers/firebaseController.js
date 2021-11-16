@@ -58,7 +58,10 @@ export const updateUser = async (userObject) => {
   try {
     const id = await firebase.auth().currentUser.uid;
 
-    const updatedData = await db.collection('Users').doc(id).update(userObject);
+    await db.collection('Users').doc(id).update(userObject);
+    
+    // refetch user for redux store update
+    const updatedData = await getUser(id);
 
     console.log('user updated', updatedData);
     return updatedData;

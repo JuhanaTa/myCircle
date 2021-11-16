@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import {updateUser} from '../../controllers/firebaseController';
+import { useDispatch } from 'react-redux';
+import { modifyCurrentUser } from '../../reducers/currentUserReducer';
 import ModalDialog from '../globalReUseAbles/ModalDialog';
 import Radiobutton from '../RadioButton/RadioButton';
 import { HOBBIES, INTERESTS, PREFERENCES } from './questionnaireConstants';
 
 const UserInterestsQuestionnaire = ({
   isQuestionnaireOpened,
-  closeFirstQuestionnaireDialog,
-  refetch
+  closeFirstQuestionnaireDialog
 }) => {
+  const dispatch = useDispatch();
   const [isHobbiesOpened, setHobbies] = useState(false);
   const [isPreferencesOpened, setPreferences] = useState(false);
   const [interests, setCheckedInterests] = useState([]);
@@ -30,10 +31,10 @@ const UserInterestsQuestionnaire = ({
 
   const handleQuestionnaireSubmission = async () => {
     setPreferences(false);
-    const userInterests = await updateUser({userInterests:{interests, hobbies, preferences}});
-    //refetch();
-    console.log('userInterests', userInterests);
-    
+    // updates user's interests in the db and the app's redux store
+    dispatch(
+      modifyCurrentUser({ userInterests: { interests, hobbies, preferences } })
+    );
   };
 
   const onCheckBoxPress = (checkedItem, checkedState, setState) => {
@@ -47,7 +48,9 @@ const UserInterestsQuestionnaire = ({
       return (
         <Radiobutton
           key={index}
-          onRadioButtonPress={() => onCheckBoxPress(item, checkedState, setState)}
+          onRadioButtonPress={() =>
+            onCheckBoxPress(item, checkedState, setState)
+          }
           isChecked={checkedState.includes(item)}
           text={item}
         />
