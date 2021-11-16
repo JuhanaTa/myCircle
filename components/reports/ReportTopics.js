@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, SafeAreaView } from 'react-native';
-import { RadioButton } from 'react-native-paper';
-import ModalDialog from '../globalReUseAbles/ModalDialog';
+import { View, StyleSheet } from 'react-native';
+
 import { reportTopics } from './reportConstants';
 import Radiobutton from '../RadioButton/RadioButton';
 

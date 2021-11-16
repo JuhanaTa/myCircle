@@ -7,12 +7,20 @@ import { v4 as uuidv4 } from 'uuid';
 //create user to database
 export const createUser = async (name, email, id) => {
   try {
-    await db.collection('Users').doc(id).set({
-      name: name,
-      email: email,
-      userId: id,
-      reportObject: []
-    });
+    await db
+      .collection('Users')
+      .doc(id)
+      .set({
+        name: name,
+        email: email,
+        userId: id,
+        reportObject: [],
+        userInterests: {
+          interests: [],
+          hobbies: [],
+          preferences: []
+        }
+      });
 
     console.log('user added');
   } catch (e) {
@@ -54,6 +62,19 @@ export const updateUser = async (name, email, id) => {
     });
 
     console.log('user modified');
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const updateUserInterests = async (userObject) => {
+  try {
+    const id = await firebase.auth().currentUser.uid;
+
+    const updatedData = await db.collection('Users').doc(id).update(userObject);
+
+    console.log('userInterest updated', updatedData);
+    return updatedData;
   } catch (e) {
     console.log(e);
   }

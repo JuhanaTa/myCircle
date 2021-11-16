@@ -6,7 +6,6 @@ import {
   View,
   LogBox,
   Text,
-  TouchableOpacity,
   Alert
 } from 'react-native';
 import { Button } from 'react-native-paper';
@@ -62,7 +61,7 @@ export default function RegisterPage({ navigation }) {
 
         //creating User in Firebase
 
-        await createUser(email, password, result.user.uid);
+        await createUser(username, email, result.user.uid);
         console.log('user created');
       } else {
         Alert.alert('Check Password', 'Password too short', [
@@ -125,14 +124,18 @@ export default function RegisterPage({ navigation }) {
               Register
             </Button>
           </View>
-          <TouchableOpacity
+          <View
             style={{ margin: 30, flex: 1, justifyContent: 'flex-end' }}
-            onPress={() => {
-              navigation.popToTop();
-            }}
           >
-            <Text style={styles.link}>Already have account?</Text>
-          </TouchableOpacity>
+            <Text
+              style={styles.link}
+              onPress={() => {
+                navigation.popToTop();
+              }}
+            >
+              Already have account?
+            </Text>
+          </View>
         </View>
       </LinearGradient>
     );

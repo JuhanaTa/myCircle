@@ -54,17 +54,19 @@ const NewReport = ({navigation}) => {
       location = await Location.getCurrentPositionAsync({});
       console.log(location);
     }
+
     // push new report to firebase  and updates redux store (asynchronously)
     dispatch(createNewReport(image.uri, location, description, checkedTopic));
     
+    setPreview(false);
+    setSnackbar(true);
     setDescription('');
     setCheckedTopic('');
     setImage(null);
-    setPreview(false);
-    setSnackbar(true);
 
     navigation.navigate('HomeStack', {screen: 'HomeStack'});
   };
+  
   let [fontsLoaded] = useFonts({
     Inter_900Black,
     Inter_100Thin,
