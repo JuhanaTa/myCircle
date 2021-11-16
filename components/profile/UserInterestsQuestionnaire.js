@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {updateUserInterests} from '../../controllers/firebaseController';
+import {updateUser} from '../../controllers/firebaseController';
 import ModalDialog from '../globalReUseAbles/ModalDialog';
 import Radiobutton from '../RadioButton/RadioButton';
 import { HOBBIES, INTERESTS, PREFERENCES } from './questionnaireConstants';
@@ -30,7 +30,7 @@ const UserInterestsQuestionnaire = ({
 
   const handleQuestionnaireSubmission = async () => {
     setPreferences(false);
-    const userInterests = await updateUserInterests({userInterests:{interests, hobbies, preferences}});
+    const userInterests = await updateUser({userInterests:{interests, hobbies, preferences}});
     refetch();
     console.log('userInterests', userInterests);
     

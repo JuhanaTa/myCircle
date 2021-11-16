@@ -52,28 +52,15 @@ export const getReports = async () => {
   }
 };
 
-//modify user
-export const updateUser = async (name, email, id) => {
-  try {
-    await db.collection('Users').doc(id).update({
-      name: name,
-      email: email,
-      userId: id
-    });
-
-    console.log('user modified');
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-export const updateUserInterests = async (userObject) => {
+// modify user
+// pass the user fields to be updated as an object parameter to updateUser()
+export const updateUser = async (userObject) => {
   try {
     const id = await firebase.auth().currentUser.uid;
 
     const updatedData = await db.collection('Users').doc(id).update(userObject);
 
-    console.log('userInterest updated', updatedData);
+    console.log('user updated', updatedData);
     return updatedData;
   } catch (e) {
     console.log(e);
