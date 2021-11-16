@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, FlatList} from 'react-native';
 import EventListItem from '../components/EventListItem';
 import {LinearGradient} from 'expo-linear-gradient';
-import {getReports} from '../controllers/firebaseController';
 
 export default function EventList({navigation, reportsData}) {
     console.log('reports data in event list',reportsData);
@@ -20,7 +19,7 @@ export default function EventList({navigation, reportsData}) {
                 <FlatList
                     data={reportsData}
                     renderItem={renderItem}
-                    keyExtractor={item => item.description}
+                    keyExtractor={item => `${item.description}-${item.image}`}
                 />
         </View>
     );

@@ -5,8 +5,8 @@ const reportReducer = (state = [], action) => {
   switch (action.type) {
     case 'SET_REPORTS':
       return action.reports;
-    case 'NEW_REPORT':
-      return state;
+    case 'NEW_REPORT_ADDED':
+      return action.newReportAdded;
     default:
       return state;
   }
@@ -27,18 +27,18 @@ const createNewReport = (imageUri, location, description, reportTopic) => {
     try {
 
       const image = await uploadImageToFirebaseStorage(imageUri);
-      const newReport = await createReport(
+      const newReportAdded = await createReport(
       description,
       image,
       {latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0, longitudeDelta: 0,},
       reportTopic,
       firebase.auth().currentUser.uid
       );
-      console.log('new report', newReport);
+      console.log('new report', newReportAdded);
       
       dispatch({
-        type: 'NEW_BLOG',
-        newReport
+        type: 'NEW_REPORT_ADDED',
+        newReportAdded
       });
     } catch (error) {
       console.log('new report error', error);

@@ -97,9 +97,8 @@ export const createReport = async (description, image, location, topic, id) => {
       topic: topic,
       userId: id
     };
-    let response;
-
-    response = await db.collection('Reports').add(reportObject);
+    // newly created report object is not contained in the firebase response
+    await db.collection('Reports').add(reportObject);
 
     const user = await getUser(id);
 
@@ -119,43 +118,10 @@ export const createReport = async (description, image, location, topic, id) => {
       reportObject: reportArray
     });
 
-    /*
-        switch (topic) {
-            case 1:
-                response = await db.collection('Maintenance').add(reportObject);
-                reportObject.topic = 'Maintenance';
-                break;
-            case 2:
-                response = await db.collection('Event').add(reportObject);
-                reportObject.topic = 'Event';
-                break;
-            case 3:
-                response = await db.collection('Reports').add(reportObject);
-                reportObject.topic = 'Reports';
-                break;
-            case 4:
-                response = await db.collection('Topic4').add(reportObject);
-                reportObject.topic = 'Topic4';
-                break;
-            case 5:
-                response = await db.collection('Topic5').add(reportObject);
-                reportObject.topic = 'Topic5';
-                break;
-            case 6:
-                response = await db.collection('Topic6').add(reportObject);
-                reportObject.topic = 'Topic6';
-                break;
-            case 7:
-                response = await db.collection('Topic7').add(reportObject);
-                reportObject.topic = 'Topic7';
-                break;
-            default:
-            // code block
-        }*/
-
     console.log('created Report');
-
-    return response;
+    // all reports all refetched to include the newly created report
+    // the returned value will be used to update redux store;
+    return await getReports();
   } catch (e) {
     console.log(e);
   }
