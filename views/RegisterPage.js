@@ -49,10 +49,6 @@ export default function RegisterPage({ navigation }) {
     Inter_800ExtraBold
   });
 
-  useEffect(() => {
-    //createUser('Test', 'Test@Test.com', 123456789);
-  }, []);
-
   const handleRegister = async () => {
     try {
       if (password.length >= 6) {

@@ -8,9 +8,11 @@ import firebase from 'firebase';
 import AuthNavigator from './navigators/AuthNavigator';
 import AppLoading from 'expo-app-loading';
 import reportReducer, {setFetchedReports} from './reducers/reportReducer';
+import toggleReducers from './reducers/toggleReducers';
 
 const reducers = combineReducers({
-  reports: reportReducer
+  reports: reportReducer,
+  toggles: toggleReducers,
 });
 const store = createStore(reducers, applyMiddleware(thunk));
 
@@ -21,7 +23,7 @@ export default function App() {
   const checkLogin = async () => {
     await firebase.auth().onAuthStateChanged((user) => {
       if (user != null) {
-        console.log('current user', user.uid);
+        console.log('current user', user);
         setShowLogin(false);
         setChecked(true);
       } else {

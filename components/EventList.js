@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {StyleSheet, View, FlatList} from 'react-native';
 import EventListItem from '../components/EventListItem';
 import {LinearGradient} from 'expo-linear-gradient';
