@@ -4,7 +4,7 @@ import {createReport, getReports, uploadImageToFirebaseStorage} from "../control
 const reportReducer = (state = [], action) => {
   switch (action.type) {
     case 'SET_REPORTS':
-      return action.reports;
+      return action.reports || state;
     case 'NEW_REPORT_ADDED':
       return action.newReportAdded;
     default:

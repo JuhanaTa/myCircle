@@ -11,8 +11,6 @@ import {
   Image
 } from 'react-native';
 import { Button } from 'react-native-paper';
-
-import { useEffect } from 'react';
 import AppLoading from 'expo-app-loading';
 import { loginWithUserAndPassword } from '../controllers/firebaseController';
 import BackgroundImage from '../components/BackgorundCircle';
@@ -47,10 +45,6 @@ export default function LoginPage({ navigation }) {
   const [password, setPassword] = useState('');
 
   console.log(email, password);
-
-  useEffect(() => {
-    //createUser('Test', 'Test@Test.com', 123456789);
-  }, []);
 
   const handleLogin = async () => {
     try {
