@@ -1,9 +1,19 @@
 import React, { useEffect, useState } from 'react';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { Provider, useDispatch } from 'react-redux';
+import thunk from 'redux-thunk';
 import { StyleSheet } from 'react-native';
 import MainNavigator from './navigators/MainNavigator';
 import firebase from 'firebase';
 import AuthNavigator from './navigators/AuthNavigator';
 import AppLoading from 'expo-app-loading';
+import reportReducer, {setFetchedReports} from './reducers/reportReducer';
+
+const reducers = combineReducers({
+  reports: reportReducer
+});
+const store = createStore(reducers, applyMiddleware(thunk));
+
 export default function App() {
   const [showLogin, setShowLogin] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -23,7 +33,14 @@ export default function App() {
   };
   console.log(showLogin);
   const Navigation = () => {
-    if(checked) {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+      // initializes the redux store with data from firebase
+      dispatch(setFetchedReports());
+    }, [dispatch]);
+
+    if (checked) {
       if (!showLogin) {
         console.log('showing main');
         return <MainNavigator></MainNavigator>;
@@ -34,14 +51,17 @@ export default function App() {
     } else {
       return <AppLoading />;
     }
-    
   };
 
   useEffect(() => {
     checkLogin();
   }, []);
 
-  return <Navigation></Navigation>;
+  return (
+    <Provider store={store}>
+      <Navigation />
+    </Provider>
+  );
 }
 
 const styles = StyleSheet.create({

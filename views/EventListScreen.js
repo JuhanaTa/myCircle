@@ -1,39 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, FlatList} from 'react-native';
-import EventListItem from '../components/EventListItem';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import {StyleSheet, View } from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
-import {getReports} from '../controllers/firebaseController';
 import EventList from '../components/EventList';
 
 export default function EventListScreen({navigation}) {
-
-    const [reportsData, setReportsData] = useState();
-
-    const fetchReports = async () => {
-        const reports = await getReports();
-        setReportsData(reports);
-    };
-
-    //Fetch ListData here. Now uses Data array
-    const DATA = [
-        {
-            id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-            title: 'First Item',
-        },
-        {
-            id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-            title: 'Second Item',
-        },
-        {
-            id: '58694a0f-3da1-471f-bd96-145571e29d72',
-            title: 'Third Item',
-        },
-    ];
-
-    useEffect(() => {
-        fetchReports();
-    }, []);
-
+    // returns reports from redux store
+    const reportsData = useSelector(store => store.reports);
 
     return (
         <View style={styles.container}>

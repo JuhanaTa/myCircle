@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View, Text, ScrollView, TextInput} from 'react-native';
 import {Button, Snackbar} from 'react-native-paper';
 import ImagePicker from '../components/reports/ImagePicker';
@@ -19,12 +19,9 @@ import {
   Inter_800ExtraBold,
   Inter_900Black
 } from '@expo-google-fonts/inter';
-import {
-  createReport,
-  uploadImageToFirebaseStorage
-} from '../controllers/firebaseController';
-import firebase from 'firebase';
 import * as Location from 'expo-location';
+import {useDispatch} from 'react-redux';
+import {createNewReport} from '../reducers/reportReducer';
 
 const NewReport = ({navigation}) => {
   const {image, video, getImage, launchCamera, setImage} = useCamera({});
@@ -33,7 +30,7 @@ const NewReport = ({navigation}) => {
   const [isPreviewOpened, setPreview] = useState(false);
   const [isSnackbarLanuched, setSnackbar] = useState(false);
   const [checkedTopic, setCheckedTopic] = useState();
-  const [location, setLocatiom] = useState('');
+  const dispatch = useDispatch();
 
   const openDialog = () => setDialog(true);
   const closeDialog = () => setDialog(false);
@@ -58,24 +55,18 @@ const NewReport = ({navigation}) => {
       console.log(location);
     }
 
+    // push new report to firebase  and updates redux store (asynchronously)
+    dispatch(createNewReport(image.uri, location, description, checkedTopic));
+    
     setPreview(false);
     setSnackbar(true);
-
-    const imageUrl = await uploadImageToFirebaseStorage(image.uri);
-    const response = await createReport(
-      description,
-      imageUrl,
-      {latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0, longitudeDelta: 0,},
-      checkedTopic,
-      firebase.auth().currentUser.uid
-    );
-
     setDescription('');
     setCheckedTopic('');
     setImage(null);
 
     navigation.navigate('HomeStack', {screen: 'HomeStack'});
   };
+  
   let [fontsLoaded] = useFonts({
     Inter_900Black,
     Inter_100Thin,

@@ -118,9 +118,8 @@ export const createReport = async (description, image, location, topic, id) => {
       topic: topic,
       userId: id
     };
-    let response;
-
-    response = await db.collection('Reports').add(reportObject);
+    // newly created report object is not contained in the firebase response
+    await db.collection('Reports').add(reportObject);
 
     const user = await getUser(id);
 
@@ -140,9 +139,10 @@ export const createReport = async (description, image, location, topic, id) => {
       reportObject: reportArray
     });
 
-    console.log('created Report', response);
-
-    return response;
+    console.log('created Report');
+    // all reports all refetched to include the newly created report
+    // the returned value will be used to update redux store;
+    return await getReports();
   } catch (e) {
     console.log(e);
   }
