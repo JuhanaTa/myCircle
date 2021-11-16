@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-import { getUser } from '../controllers/firebaseController';
+import { getUser, updateUser } from '../controllers/firebaseController';
 import { loginOff, loginOn, toggleCheckedOn } from './toggleReducers';
 
 const currentUserReducer = (state = {}, action) => {
@@ -7,7 +7,7 @@ const currentUserReducer = (state = {}, action) => {
     case 'SET_CURRENT_USER':
       return action.currentUser;
     case 'MODIFY_USER':
-      return state;
+      return action.modifiedUser;
     default:
       return state;
   }
@@ -34,11 +34,13 @@ const setCurrentUser = () => {
   };
 };
 
-const modifyCurrentUser = () => {
+const modifyCurrentUser = (userData) => {
   return async (dispatch) => {
     try {
+      const modifiedUser = await updateUser(userData);
       dispatch({
-        type: 'MODIFY_USER'
+        type: 'MODIFY_USER',
+        modifiedUser
       });
     } catch (error) {
       console.log('user update error', error);

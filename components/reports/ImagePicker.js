@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Image, Text } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import { Button, Menu, Divider } from 'react-native-paper';
 
 const ImagePicker = ({ image, getImage, launchCamera }) => {
