@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -11,7 +11,6 @@ import useCamera from '../hooks/useCamera';
 import { Divider, IconButton, List, Menu } from 'react-native-paper';
 import EditProfile from '../components/profile/EditProfile';
 import AppLoading from 'expo-app-loading';
-import firebase from 'firebase';
 
 import { LinearGradient } from 'expo-linear-gradient';
 import {
@@ -27,7 +26,7 @@ import {
   Inter_900Black
 } from '@expo-google-fonts/inter';
 import UserInterestsQuestionnaire from '../components/profile/UserInterestsQuestionnaire';
-import { getUser } from '../controllers/firebaseController';
+import {useSelector} from 'react-redux';
 
 const ProfileScreen = ({ navigation }) => {
   let [fontsLoaded] = useFonts({
@@ -41,7 +40,7 @@ const ProfileScreen = ({ navigation }) => {
     Inter_700Bold,
     Inter_800ExtraBold
   });
-  const [user, setUser] = useState();
+  const user = useSelector(state => state.currentUser);
   const { image, getImage, launchCamera } = useCamera({ aspect: [4, 3] });
   const [isExpanded, setAccordion] = useState({
     personalData: false,
@@ -62,14 +61,8 @@ const ProfileScreen = ({ navigation }) => {
   const [refetchUser, setRefetch] = useState(false);
 
   // fetch current user data: temporal solution, redux will be used later
-  useEffect(() => {
-    (async () => {
-      const id = await firebase.auth().currentUser.uid;
-      const user = await getUser(id);
-
-      setUser(user);
-    })();
-  }, [refetchUser]);
+  console.log('cUser', user);
+  
 
   const handleNameChange = (text) => setName(text);
   const handleEmailChange = (text) => setEmail(text);

@@ -31,7 +31,7 @@ const UserInterestsQuestionnaire = ({
   const handleQuestionnaireSubmission = async () => {
     setPreferences(false);
     const userInterests = await updateUser({userInterests:{interests, hobbies, preferences}});
-    refetch();
+    //refetch();
     console.log('userInterests', userInterests);
     
   };
