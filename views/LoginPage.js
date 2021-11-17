@@ -66,7 +66,7 @@ export default function LoginPage({ navigation }) {
     return <AppLoading />;
   } else {
     return (
-      <LinearGradient colors={['#eef4fb', '#dbe9f7']} style={styles.background}>
+      <LinearGradient colors={['#00c6ff', '#0072ff']} style={styles.background}>
         <View style={styles.container}>
           <BackgroundImage></BackgroundImage>
           <Image
