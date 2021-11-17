@@ -157,7 +157,7 @@ const ProfileScreen = ({ navigation }) => {
           <View style={styles.container}>
             <View style={styles.avatarContainer}>
               <View style={styles.avatar}>
-                <UserAvatar image={image} style={styles.avatarImg} />
+                <UserAvatar />
 
                 {moreMenu()}
               </View>
