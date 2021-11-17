@@ -222,8 +222,10 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   submitbutton: {
-    marginTop: 10,
-    marginBottom: 10,
+    width: '90%',
+
+    margin: 10,
+
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

@@ -26,7 +26,7 @@ import {
   Inter_900Black
 } from '@expo-google-fonts/inter';
 import UserInterestsQuestionnaire from '../components/profile/UserInterestsQuestionnaire';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const ProfileScreen = ({ navigation }) => {
   let [fontsLoaded] = useFonts({
@@ -40,7 +40,7 @@ const ProfileScreen = ({ navigation }) => {
     Inter_700Bold,
     Inter_800ExtraBold
   });
-  const user = useSelector(state => state.currentUser);
+  const user = useSelector((state) => state.currentUser);
   const { image, getImage, launchCamera } = useCamera({ aspect: [4, 3] });
   const [isExpanded, setAccordion] = useState({
     personalData: false,
@@ -90,14 +90,15 @@ const ProfileScreen = ({ navigation }) => {
       interests: expanded !== 'interests' ? false : !isExpanded.interests,
       events: expanded !== 'events' ? false : !isExpanded.events
     });
-    // controlls lists nested in the interests and preferences Accordion
-    const openNestedAccordion = (expanded) => () =>
+  // controlls lists nested in the interests and preferences Accordion
+  const openNestedAccordion = (expanded) => () =>
     setNestedAccordion({
       ...isInterestListExpanded,
-      Hobbies:
-        expanded !== 'Hobbies' ? false : !isInterestListExpanded.Hobbies,
-      Interests: expanded !== 'Interests' ? false : !isInterestListExpanded.Interests,
-      Preferences: expanded !== 'Preferences' ? false : !isInterestListExpanded.Preferences
+      Hobbies: expanded !== 'Hobbies' ? false : !isInterestListExpanded.Hobbies,
+      Interests:
+        expanded !== 'Interests' ? false : !isInterestListExpanded.Interests,
+      Preferences:
+        expanded !== 'Preferences' ? false : !isInterestListExpanded.Preferences
     });
 
   const moreMenu = () => {
@@ -131,20 +132,19 @@ const ProfileScreen = ({ navigation }) => {
 
   const userPreferences = (data, title) => {
     return (
-        <List.Accordion
-          theme={{ colors: { primary: '#007bff' } }}
-          title={title}
-          expanded={isInterestListExpanded[title]}
-          onPress={openNestedAccordion(title)}
-          style={styles.accordion}
-        >
-          <View>
-            {data?.map((item) => (
+      <List.Accordion
+        theme={{ colors: { primary: '#007bff' } }}
+        title={title}
+        expanded={isInterestListExpanded[title]}
+        onPress={openNestedAccordion(title)}
+        style={styles.accordion}
+      >
+        <View>
+          {data?.map((item) => (
             <List.Item key={item} title={item} style={styles.accordionItme} />
           ))}
-             </View>
-          
-        </List.Accordion>
+        </View>
+      </List.Accordion>
     );
   };
 
@@ -152,7 +152,7 @@ const ProfileScreen = ({ navigation }) => {
     return <AppLoading />;
   } else {
     return (
-      <LinearGradient colors={['#eef4fb', '#dbe9f7']} style={styles.background}>
+      <LinearGradient colors={['#00c6ff', '#0072ff']} style={styles.background}>
         <ScrollView>
           <View style={styles.container}>
             <View style={styles.avatarContainer}>
@@ -220,9 +220,12 @@ const ProfileScreen = ({ navigation }) => {
                   style={styles.accordionItme}
                   onPress={() => openQuestionnaire()}
                 />
-               {userPreferences(user?.userInterests?.hobbies, 'Hobbies')}
-               {userPreferences(user?.userInterests?.interests, 'Interests')}
-               {userPreferences(user?.userInterests?.preferences, 'Preferences')}
+                {userPreferences(user?.userInterests?.hobbies, 'Hobbies')}
+                {userPreferences(user?.userInterests?.interests, 'Interests')}
+                {userPreferences(
+                  user?.userInterests?.preferences,
+                  'Preferences'
+                )}
               </List.Accordion>
             </List.Section>
             <EditProfile
