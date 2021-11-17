@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Dimensions, Image, StyleSheet, Text, View} from 'react-native';
+import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import MapView, {Callout} from 'react-native-maps';
-import {helloFunction} from '../controllers/firebaseFunctions';
 import * as Location from 'expo-location';
 import {getReports} from '../controllers/firebaseController';
 import AppLoading from 'expo-app-loading';
@@ -10,10 +9,10 @@ export default function MapScreen({navigation}) {
 
 
     const [coordinates, setCoordinates] = useState([]);
-    const [userLocation, setUserLocation] = useState({});
+    const [currentLoc, setCurrentLoc] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    console.log('loc of user', userLocation);
+    //console.log('loc of user', userLocation);
 
     // calculates distances between two different coordinates
 
@@ -49,8 +48,6 @@ export default function MapScreen({navigation}) {
 
             if (element.location != '') {
                 if (calculateDistance(element.location.latitude, element.location.longitude, userLocation.coords.latitude, userLocation.coords.longitude) <= 10) {
-                    //coordinates from reports
-                    //newCoordinates.push({latitude: element.location.latitude, longitude: element.location.longitude, latitudeDelta: 0, longitudeDelta: 0});
                     newCoordinates.push(element);
                 } else {
                     console.log('too far');
@@ -60,9 +57,8 @@ export default function MapScreen({navigation}) {
 
         });
 
-        console.log('koordinaatit', coordinates);
-        //setUserLocation({latitude: userLocation.coords.latitude, longitude: userLocation.coords.longitude, latitudeDelta: 0, longitudeDelta: 0});
         setCoordinates(newCoordinates);
+        setCurrentLoc(userLocation);
         setLoading(false);
 
     };
@@ -85,11 +81,6 @@ export default function MapScreen({navigation}) {
     }, []);
 
 
-
-    const item = {
-        title: 'Test'
-    };
-
     if (loading) {
         return <AppLoading />;
     } else {
@@ -99,10 +90,10 @@ export default function MapScreen({navigation}) {
                     <MapView style={styles.map}
                         showsUserLocation={true}
                         initialRegion={{
-                            latitude: 65.012615,
-                            longitude: 25.471453,
-                            latitudeDelta: 0.0922,
-                            longitudeDelta: 0.0421
+                            latitude: currentLoc.coords.latitude,
+                            longitude: currentLoc.coords.longitude,
+                            latitudeDelta: 0.11,
+                            longitudeDelta: 0.11
                         }}
                     >
 
@@ -116,8 +107,8 @@ export default function MapScreen({navigation}) {
 
                         <MapView.Circle
                             center={{
-                                latitude: 65.012615,
-                                longitude: 25.471453
+                                latitude: currentLoc.coords.latitude,
+                                longitude: currentLoc.coords.longitude,
                             }}
                             radius={3000}
                             strokeWidth={1}
@@ -145,55 +136,8 @@ export default function MapScreen({navigation}) {
                             </MapView.Marker>
                         ))}
 
-
-                        <MapView.Marker
-                            coordinate={{
-                                latitude: 65.002615,
-                                longitude: 25.461453,
-                            }}
-                            title={'Default marker 2'}>
-                            <Callout onPress={() => {
-                                console.log('clicked marker view');
-                                navigation.navigate('EventScreen', {
-                                    data: item
-                                });
-                            }}>
-                                <View>
-                                    <View style={{width: 200, height: 200, padding: 10}}>
-                                        <Text>Test marker text. Kuva Lorem ipsum...</Text>
-                                        <Image source={require("../assets/placeholderMap.jpg")} style={{width: '90%', height: 200, alignSelf: 'center'}}></Image>
-                                    </View>
-                                </View>
-                            </Callout>
-                        </MapView.Marker>
-
-                        <MapView.Marker
-                            coordinate={{
-                                latitude: 65.022615,
-                                longitude: 25.481453,
-                            }}
-                            title={'Default marker 3'}>
-                            <Callout onPress={() => {
-                                console.log('clicked marker view');
-                                navigation.navigate('EventScreen', {
-                                    data: item
-                                });
-                            }}>
-                                <View>
-                                    <View style={{width: 200, height: 200, padding: 10}}>
-                                        <Text>Test marker text. Lorem ipsum...</Text>
-                                        <Image
-                                            source={require("../assets/placeholderMap.jpg")}
-                                            resizeMode='center'
-                                            style={{width: '100%'}}
-                                        ></Image>
-                                    </View>
-                                </View>
-                            </Callout>
-
-                        </MapView.Marker>
-
                     </MapView>
+                            
                 }
             </View>
         );

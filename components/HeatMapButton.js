@@ -1,7 +1,8 @@
 import React from "react";
-import { AntDesign } from "@expo/vector-icons";
+import {AntDesign} from "@expo/vector-icons";
 import AppLoading from "expo-app-loading";
-import { LinearGradient } from "expo-linear-gradient";
+import {LinearGradient} from "expo-linear-gradient";
+import MapView, {Callout} from 'react-native-maps';
 import {
   Text,
   StyleSheet,
@@ -11,6 +12,7 @@ import {
   View,
   ImageBackground,
   Image,
+  Dimensions,
 } from "react-native";
 import {
   useFonts,
@@ -24,9 +26,9 @@ import {
   Inter_800ExtraBold,
   Inter_900Black,
 } from "@expo-google-fonts/inter";
-const image = { uri: "https://reactjs.org/logo-og.png" };
+const image = {uri: "https://reactjs.org/logo-og.png"};
 
-export default function HeatMapButton({navigation}) {
+export default function HeatMapButton({navigation, location, reportsData}) {
   let [fontsLoaded] = useFonts({
     Inter_900Black,
     Inter_100Thin,
@@ -38,35 +40,64 @@ export default function HeatMapButton({navigation}) {
     Inter_700Bold,
     Inter_800ExtraBold,
   });
-
+  console.log('location', reportsData);
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
     return (
       <View style={styles.container}>
-        <Pressable style={styles.button} onPress={() => navigation.navigate('MapScreen')}>
-          <ImageBackground
-            imageStyle={{ borderRadius: 25 }}
-            source={require("../assets/placeholderMap.jpg")}
-            resizeMode="cover"
-            style={styles.image}
+        <View style={styles.button} >
+
+          <MapView style={styles.map}
+            showsUserLocation={true}
+            initialRegion={{
+              latitude: location.coords.latitude,
+              longitude: location.coords.longitude,
+              latitudeDelta: 0.06,
+              longitudeDelta: 0.06
+            }}
           >
-            <Text style={styles.text}>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry.
-            </Text>
+            <MapView.Circle
+              center={{
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude,
+              }}
+              radius={3000}
+              strokeWidth={1}
+              strokeColor={'#1a66ff'}
+              fillColor={'rgba(230,238,255,0.5)'}
+            />
+
+            {reportsData.map(marker => (
+              <MapView.Marker
+                key={marker.location.description}
+                coordinate={marker.location}
+                
+                
+              >
+                
+              </MapView.Marker>
+            ))}
+
+          </MapView>
+
+          <View style={{position: 'absolute', bottom: 0, left: 0, right: 0, justifyContent: 'flex-end', flexDirection: 'row'}}>
+
             <View style={styles.containerButton}>
-              <View style={styles.buttonContent}>
+              <Pressable onPress={() => navigation.navigate('MapScreen')} style={styles.buttonContent}>
                 <AntDesign
                   style={styles.buttonArrow}
                   name="right"
                   size={18}
                   color="#007bff"
                 />
-              </View>
+              </Pressable>
             </View>
-          </ImageBackground>
-        </Pressable>
+
+          </View>
+
+
+        </View>
       </View>
     );
   }
@@ -78,7 +109,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     elevation: 10,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
+    shadowOffset: {width: 0, height: 3},
     shadowOpacity: 0.15,
     shadowRadius: 5,
   },
@@ -117,12 +148,16 @@ const styles = StyleSheet.create({
     padding: "3%",
     backgroundColor: "#fff",
     shadowColor: "#888",
-    shadowOffset: { width: 0, height: 0 },
+    shadowOffset: {width: 0, height: 0},
     shadowOpacity: 0.5,
     borderRadius: 25,
   },
   background: {
     padding: "1%",
     borderRadius: 25,
+  },
+  map: {
+    width: '100%',
+    height: 200,
   },
 });
