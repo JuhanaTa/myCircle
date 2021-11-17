@@ -1,9 +1,16 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, } from 'react-native';
-import {Button} from 'react-native-paper';
+import React, { useEffect, useState } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Image,
+  TouchableOpacity
+} from 'react-native';
+import { Button } from 'react-native-paper';
 import AppLoading from 'expo-app-loading';
-import {LinearGradient} from 'expo-linear-gradient';
-import {useSelector} from 'react-redux';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useSelector } from 'react-redux';
 import * as Location from 'expo-location';
 import {
   useFonts,
@@ -19,11 +26,11 @@ import {
 } from '@expo-google-fonts/inter';
 import HeatMapButton from '../components/HeatMapButton';
 import EventListButton from '../components/EventListButton';
-import {logOut} from '../controllers/firebaseController';
+import { logOut } from '../controllers/firebaseController';
 import TickAnimationWrapper from '../components/globalReUseAbles/TickAnimationWrapper.js';
 import EventList from '../components/EventList';
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({ navigation }) => {
   const [location, setLocation] = useState([]);
   let [fontsLoaded] = useFonts({
     Inter_900Black,
@@ -39,7 +46,7 @@ const HomeScreen = ({navigation}) => {
 
   useEffect(() => {
     (async () => {
-      let {status} = await Location.requestForegroundPermissionsAsync();
+      let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         console.log('Permission to access location was denied');
         //navigation.popToTop();
@@ -51,31 +58,31 @@ const HomeScreen = ({navigation}) => {
     })();
   }, []);
 
-  const reportsData = useSelector(store => store.reports);
+  const reportsData = useSelector((store) => store.reports);
   //Show only 5 reports
   //this needs some logic to show relevant/newest reports
   const recentReports = reportsData.slice(0, 4);
 
   //dummy advertisement
   recentReports.unshift({
-    description: "Tule ja maista Lassen pullat!",
-    image: "https://firebasestorage.googleapis.com/v0/b/mycircle-ca851.appspot.com/o/images%2FlassenLeipomo.png?alt=media&token=8cbda895-1832-40b8-8136-410fea11c9ef",
+    description: 'Tule ja maista Lassen pullat!',
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/mycircle-ca851.appspot.com/o/images%2FlassenLeipomo.png?alt=media&token=8cbda895-1832-40b8-8136-410fea11c9ef',
     location: {
       latitude: 60.4032739,
       latitudeDelta: 0,
       longitude: 24.8564713,
-      longitudeDelta: 0,
+      longitudeDelta: 0
     },
-    topic: "Advertisement",
-    userId: "ad",
+    topic: 'Advertisement',
+    userId: 'ad'
   });
-
 
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
     return (
-      <LinearGradient colors={['#eef4fb', '#dbe9f7']} style={styles.background}>
+      <LinearGradient colors={['#00c6ff', '#0072ff']} style={styles.background}>
         <ScrollView style={styles.list}>
           <View style={styles.container}>
             <View style={styles.logoContainer}>
@@ -86,7 +93,7 @@ const HomeScreen = ({navigation}) => {
               />
               <Button
                 style={styles.button}
-                theme={{colors: {primary: '#007bff'}}}
+                theme={{ colors: { primary: '#007bff' } }}
                 onPress={async () => {
                   await logOut();
                 }}
@@ -98,23 +105,52 @@ const HomeScreen = ({navigation}) => {
               <Text style={styles.mainHeader}>Welcome!</Text>
             </View>
 
-
             <TickAnimationWrapper />
-            {location.length != 0 &&
-              <HeatMapButton navigation={navigation} location={location} reportsData={reportsData}></HeatMapButton>
-            }
+            {location.length != 0 && (
+              <HeatMapButton
+                navigation={navigation}
+                location={location}
+                reportsData={reportsData}
+              ></HeatMapButton>
+            )}
             <View style={styles.listContainer}>
-              {reportsData &&
-                <View >
-                  <View style={{flexDirection: 'row', justifyContent: 'space-between', marginLeft: 10, marginRight: 10}}>
-                    <Text style={styles.recentHeader}>5 new events in your area</Text>
-                    <TouchableOpacity onPress={() => {navigation.navigate('EventListScreen'), {location: location};}}>
+              {reportsData && (
+                <View
+                  style={{
+                    width: '100%',
+                    backgroundColor: '#f2f4f7',
+                    paddingTop: '8%',
+                    paddingBottom: '5%',
+                    borderTopLeftRadius: 25,
+                    borderTopRightRadius: 25
+                  }}
+                >
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      marginLeft: 10,
+                      marginRight: 10
+                    }}
+                  >
+                    <Text style={styles.recentHeader}>
+                      5 new events in your area
+                    </Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate('EventListScreen'),
+                          { location: location };
+                      }}
+                    >
                       <Text style={styles.recentHeader}>More</Text>
                     </TouchableOpacity>
                   </View>
-                  <EventList navigation={navigation} reportsData={recentReports}></EventList>
+                  <EventList
+                    navigation={navigation}
+                    reportsData={recentReports}
+                  ></EventList>
                 </View>
-              }
+              )}
             </View>
           </View>
         </ScrollView>
@@ -171,7 +207,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   mainHeader: {
-    color: '#112454',
+    color: '#fff',
     paddingLeft: '3%',
     paddingTop: '5%',
     paddingBottom: '4%',
@@ -186,7 +222,7 @@ const styles = StyleSheet.create({
     paddingBottom: '2%',
     fontSize: 16,
     fontFamily: 'Inter_400Regular',
-    color: '#566787'
+    color: '#112454'
   },
   recentHeader: {
     paddingLeft: '2%',
@@ -194,7 +230,7 @@ const styles = StyleSheet.create({
     paddingBottom: '2%',
     fontSize: 16,
     fontFamily: 'Inter_400Regular',
-    color: '#566787'
+    color: '#112454'
   },
   content: {
     backgroundColor: '#f4f6f8'
@@ -209,6 +245,7 @@ const styles = StyleSheet.create({
   listContainer: {
     flex: 1,
     padding: 0,
+    width: '100%',
     paddingTop: '3%',
     margin: 0
   },
