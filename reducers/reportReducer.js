@@ -4,6 +4,7 @@ import {
   getReports,
   uploadImageToFirebaseStorage
 } from '../controllers/firebaseController';
+import {setSnackbar, setTickAnimation} from './toggleReducers';
 
 const reportReducer = (state = [], action) => {
   switch (action.type) {
@@ -47,6 +48,7 @@ const createNewReport = (imageUri, location, description, reportTopic) => {
         type: 'NEW_REPORT_ADDED',
         newReportAdded
       });
+      dispatch(setTickAnimation());
     } catch (error) {
       console.log('new report error', error);
     }

@@ -17,7 +17,7 @@ const setCurrentUser = () => {
   return async (dispatch) => {
     await firebase.auth().onAuthStateChanged(async (user) => {
       if (user != null) {
-        console.log('current user', user);
+       // console.log('current user', user);
         dispatch(loginOff());
         dispatch(toggleCheckedOn());
         const currentUser = await getUser(user.uid);

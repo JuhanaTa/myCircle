@@ -45,7 +45,6 @@ export const getReports = async () => {
       fetchedReports.push(element.data());
     });
 
-    console.log('asdsa', fetchedReports);
     return fetchedReports;
   } catch (e) {
     console.log(e);
@@ -75,7 +74,7 @@ export const registerWithEmailAndPassword = async (email, password) => {
     .auth()
     .createUserWithEmailAndPassword(email, password);
 
-  console.log('auth response', response);
+  //console.log('auth response', response);
 
   return response;
 };
@@ -112,8 +111,6 @@ export const createReport = async (description, image, location, topic, id) => {
     await db.collection('Reports').add(reportObject);
 
     const user = await getUser(id);
-
-    console.log('user obejct', user.reportObject);
 
     const reportArray = [];
 
@@ -166,7 +163,5 @@ export const uploadImageToFirebaseStorage = async (uri) => {
   imageBlob.close();
 
   const imgUrl = await uploadResponse.ref.getDownloadURL();
-  console.log('uploaded', imgUrl);
-
   return imgUrl;
 };
