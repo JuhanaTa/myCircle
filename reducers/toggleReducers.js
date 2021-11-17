@@ -1,5 +1,10 @@
 const toggleReducer = (
-  state = { showLogin: false, checked: false },
+  state = {
+    showLogin: false,
+    checked: false,
+    isSnackbarOpened: false,
+    isTickAnimationOpened: false
+  },
   action
 ) => {
   switch (action.type) {
@@ -11,6 +16,10 @@ const toggleReducer = (
       return { ...state, checked: true };
     case 'UNCHECH':
       return { ...state, checked: false };
+    case 'SET_SNACKBAR':
+      return { ...state, isSnackbarOpened: action.snackbar };
+    case 'SET_TICKANIMATION':
+      return { ...state, isTickAnimationOpened: !state.isTickAnimationOpened };
     default:
       return state;
   }
@@ -39,4 +48,34 @@ const toggleCheckedOff = () => {
   };
 };
 
-export {toggleReducer as default, loginOff, loginOn, toggleCheckedOn, toggleCheckedOff};
+const setSnackbar = (snackbar) => {
+  return {
+    type: 'SET_SNACKBAR',
+    snackbar
+  };
+};
+
+const setTickAnimation = () => {
+  return async (dispatch) => {
+    dispatch({
+      type: 'SET_TICKANIMATION'
+    });
+    await new Promise(() => {
+      setTimeout(() => {
+        dispatch({
+          type: 'SET_TICKANIMATION'
+        });
+      }, 5000);
+    });
+  };
+};
+
+export {
+  toggleReducer as default,
+  loginOff,
+  loginOn,
+  toggleCheckedOn,
+  toggleCheckedOff,
+  setSnackbar,
+  setTickAnimation
+};

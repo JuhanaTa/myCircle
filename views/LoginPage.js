@@ -50,7 +50,7 @@ export default function LoginPage({ navigation }) {
     try {
       if (password.length >= 6) {
         const result = await loginWithUserAndPassword(email, password);
-        console.log('result', result);
+        //console.log('result', result);
       } else {
         Alert.alert('Check Password', 'Password too short', [
           { text: 'OK', onPress: () => console.log('OK Pressed') }

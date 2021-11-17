@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, Text, ScrollView, TextInput} from 'react-native';
-import {Button, Snackbar} from 'react-native-paper';
+import {Button} from 'react-native-paper';
 import ImagePicker from '../components/reports/ImagePicker';
 import PreviewReport from '../components/reports/PreviewReport';
 import ReportTopics from '../components/reports/ReportTopics';
@@ -28,7 +28,6 @@ const NewReport = ({navigation}) => {
   const [description, setDescription] = useState('');
   const [open, setDialog] = useState(false);
   const [isPreviewOpened, setPreview] = useState(false);
-  const [isSnackbarLanuched, setSnackbar] = useState(false);
   const [checkedTopic, setCheckedTopic] = useState();
   const dispatch = useDispatch();
 
@@ -41,8 +40,6 @@ const NewReport = ({navigation}) => {
   };
   const handlePreviewClosing = () => setPreview(false);
   const openPreview = () => setPreview(true);
-
-  const closeSnackbar = () => setSnackbar(false);
 
   const handleReportSubmission = async () => {
     let location;
@@ -57,14 +54,11 @@ const NewReport = ({navigation}) => {
 
     // push new report to firebase  and updates redux store (asynchronously)
     dispatch(createNewReport(image.uri, location, description, checkedTopic));
-    
+    navigation.navigate('HomeStack', {screen: 'HomeStack'});
     setPreview(false);
-    setSnackbar(true);
     setDescription('');
     setCheckedTopic('');
     setImage(null);
-
-    navigation.navigate('HomeStack', {screen: 'HomeStack'});
   };
   
   let [fontsLoaded] = useFonts({
@@ -126,13 +120,6 @@ const NewReport = ({navigation}) => {
               description={description}
               image={image}
             />
-            <Snackbar
-              visible={isSnackbarLanuched}
-              onDismiss={closeSnackbar}
-              style={styles.snackbar}
-            >
-              Report successfully submitted!
-            </Snackbar>
           </View>
         </ScrollView>
       </LinearGradient>

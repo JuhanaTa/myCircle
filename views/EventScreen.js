@@ -22,7 +22,7 @@ export default function EventScreen({ navigation, route }) {
   const uri = { uri: 'http://placekitten.com/200/300' };
 
   const { data } = route.params;
-  console.log('one item', data);
+  
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {

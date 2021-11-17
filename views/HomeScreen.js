@@ -18,10 +18,10 @@ import {
 } from '@expo-google-fonts/inter';
 import HeatMapButton from '../components/HeatMapButton';
 import EventListButton from '../components/EventListButton';
-import { useEffect } from 'react';
-import { createUser, logOut } from '../controllers/firebaseController';
+import { logOut } from '../controllers/firebaseController';
+import TickAnimationWrapper from '../components/globalReUseAbles/TickAnimationWrapper.js';
 
-export default function HomeScreen({ navigation }) {
+const HomeScreen = ({ navigation }) => {
   let [fontsLoaded] = useFonts({
     Inter_900Black,
     Inter_100Thin,
@@ -33,10 +33,6 @@ export default function HomeScreen({ navigation }) {
     Inter_700Bold,
     Inter_800ExtraBold
   });
-
-  useEffect(() => {
-    //createUser('Test', 'Test@Test.com', 123456789);
-  }, []);
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -65,8 +61,8 @@ export default function HomeScreen({ navigation }) {
               <Text style={styles.mainHeader}>Welcome!</Text>
               <Text style={styles.subHeader}>5 new events in your area</Text>
             </View>
+            <TickAnimationWrapper />
             <HeatMapButton navigation={navigation}></HeatMapButton>
-
             <View style={styles.listContainer}>
               <Text style={styles.listHeader}>Recent events</Text>
               <EventListButton navigation={navigation} />
@@ -76,7 +72,9 @@ export default function HomeScreen({ navigation }) {
       </LinearGradient>
     );
   }
-}
+};
+
+export default HomeScreen;
 
 const styles = StyleSheet.create({
   container: {

@@ -4,7 +4,7 @@ import EventListItem from '../components/EventListItem';
 import {LinearGradient} from 'expo-linear-gradient';
 
 export default function EventList({navigation, reportsData}) {
-    console.log('reports data in event list',reportsData);
+    //console.log('reports data in event list',reportsData);
     //item that is rendered
     const renderItem = ({item}) => (
         <EventListItem item={item} navigation={navigation} />
