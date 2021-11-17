@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
-import {StyleSheet, View, Text, ScrollView, TextInput} from 'react-native';
-import {Button} from 'react-native-paper';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, ScrollView, TextInput } from 'react-native';
+import { Button } from 'react-native-paper';
 import ImagePicker from '../components/reports/ImagePicker';
 import PreviewReport from '../components/reports/PreviewReport';
 import ReportTopics from '../components/reports/ReportTopics';
 import AppLoading from 'expo-app-loading';
 import useCamera from '../hooks/useCamera';
-import {LinearGradient} from 'expo-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 import {
   useFonts,
   Inter_100Thin,
@@ -20,11 +20,11 @@ import {
   Inter_900Black
 } from '@expo-google-fonts/inter';
 import * as Location from 'expo-location';
-import {useDispatch} from 'react-redux';
-import {createNewReport} from '../reducers/reportReducer';
+import { useDispatch } from 'react-redux';
+import { createNewReport } from '../reducers/reportReducer';
 
-const NewReport = ({navigation}) => {
-  const {image, video, getImage, launchCamera, setImage} = useCamera({});
+const NewReport = ({ navigation }) => {
+  const { image, video, getImage, launchCamera, setImage } = useCamera({});
   const [description, setDescription] = useState('');
   const [open, setDialog] = useState(false);
   const [isPreviewOpened, setPreview] = useState(false);
@@ -43,7 +43,7 @@ const NewReport = ({navigation}) => {
 
   const handleReportSubmission = async () => {
     let location;
-    let {status} = await Location.requestForegroundPermissionsAsync();
+    let { status } = await Location.requestForegroundPermissionsAsync();
 
     if (status !== 'granted') {
       console.log('Permission to access location was denied');
@@ -54,13 +54,13 @@ const NewReport = ({navigation}) => {
 
     // push new report to firebase  and updates redux store (asynchronously)
     dispatch(createNewReport(image.uri, location, description, checkedTopic));
-    navigation.navigate('HomeStack', {screen: 'HomeStack'});
+    navigation.navigate('HomeStack', { screen: 'HomeStack' });
     setPreview(false);
     setDescription('');
     setCheckedTopic('');
     setImage(null);
   };
-  
+
   let [fontsLoaded] = useFonts({
     Inter_900Black,
     Inter_100Thin,
@@ -77,7 +77,7 @@ const NewReport = ({navigation}) => {
     return <AppLoading />;
   } else {
     return (
-      <LinearGradient colors={['#eef4fb', '#dbe9f7']} style={styles.background}>
+      <LinearGradient colors={['#00c6ff', '#0072ff']} style={styles.background}>
         <ScrollView>
           <View style={styles.container}>
             <View style={styles.header}>
@@ -105,7 +105,7 @@ const NewReport = ({navigation}) => {
             <View style={styles.submitbuttonContainer}>
               <Button
                 style={styles.submitbutton}
-                theme={{colors: {primary: '#007bff'}}}
+                theme={{ colors: { primary: '#007bff' } }}
                 onPress={openPreview}
                 accessibilityLabel="preview report and send"
               >
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     paddingBottom: '2%',
     fontSize: 16,
     fontFamily: 'Inter_400Regular',
-    color: '#566787'
+    color: '#112454'
   },
   description: {
     fontFamily: 'Inter_400Regular',
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
 
     elevation: 10,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 3},
+    shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.15,
     shadowRadius: 5,
     borderRadius: 25
@@ -222,8 +222,10 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   submitbutton: {
-    marginTop: 10,
-    marginBottom: 10,
+    width: '90%',
+
+    margin: 10,
+
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -233,7 +235,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_400Regular',
     elevation: 10,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 3},
+    shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.15,
     shadowRadius: 5,
     borderRadius: 25

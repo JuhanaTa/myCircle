@@ -22,12 +22,12 @@ export default function EventScreen({ navigation, route }) {
   const uri = { uri: 'http://placekitten.com/200/300' };
 
   const { data } = route.params;
-  
+
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
     return (
-      <LinearGradient colors={['#eef4fb', '#dbe9f7']} style={styles.background}>
+      <LinearGradient colors={['#00c6ff', '#0072ff']} style={styles.background}>
         <View style={styles.container}>
           <View style={styles.content}>
             <View style={styles.textcontent}>
@@ -55,25 +55,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    paddingTop: '5%'
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: '5%',
+    height: '100%'
   },
   background: {
     position: 'absolute',
     left: 0,
     right: 0,
     top: 0,
+    width: '100%',
     height: '100%'
   },
   button: {
-    width: 380,
-    backgroundColor: '#FFF',
-    margin: '2%',
+    backgroundColor: 'red',
+    width: '100%',
+    height: '100%',
+
     justifyContent: 'center',
     flexDirection: 'column',
     borderRadius: 25,
-    elevation: 10,
+
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.15,
@@ -81,17 +84,16 @@ const styles = StyleSheet.create({
   },
 
   content: {
+    backgroundColor: '#fff',
     flex: 1,
-    width: '95%',
+    width: '100%',
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    backgroundColor: '#FFF',
-    margin: '2%',
-
-    borderRadius: 25,
+    borderTopRightRadius: 25,
+    borderTopLeftRadius: 25,
     elevation: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 3 },

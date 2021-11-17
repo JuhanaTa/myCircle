@@ -67,7 +67,8 @@ const styles = StyleSheet.create({
     marginTop: 5,
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    width: '100%'
   },
   image: {
     alignSelf: 'center',
@@ -77,6 +78,7 @@ const styles = StyleSheet.create({
     marginBottom: 15
   },
   buttons: {
+    width: '90%',
     marginBottom: 10
   },
   button: {
@@ -86,7 +88,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 4,
     backgroundColor: '#fff',
-
+    width: '100%',
     elevation: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 3 },

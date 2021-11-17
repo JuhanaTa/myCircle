@@ -42,7 +42,7 @@ export default function EventListItem({ navigation, item }) {
           <View style={styles.content}>
             <View style={styles.imageContainer}>
               <Image
-                source={{uri: item.image}}
+                source={{ uri: item.image }}
                 resizeMode="cover"
                 style={styles.image}
               />
@@ -82,10 +82,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     borderRadius: 25,
     elevation: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.15,
-    shadowRadius: 5
+    shadowColor: '#000'
   },
 
   content: {
@@ -93,27 +90,29 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start'
   },
   imageContainer: {
-    width: '100%',
-    flex: 2,
-    height: '20%',
-    borderTopRightRadius: 25,
+    margin: '3%',
+    width: '50%',
+    flex: 1,
+    height: '100%',
     overflow: 'hidden',
-    borderTopLeftRadius: 25
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   image: {
-    height: 150,
-    borderTopRightRadius: 25,
+    height: 90,
+    width: 90,
     overflow: 'hidden',
-    borderTopLeftRadius: 25
+    borderRadius: 25
   },
   textcontent: {
     width: '100%',
-    flex: 1,
+    flex: 2,
     display: 'flex',
     flexDirection: 'column'
   },
@@ -138,7 +137,7 @@ const styles = StyleSheet.create({
   containerButton: {
     display: 'flex',
     width: '100%',
-    padding: '2%',
+    padding: '5%',
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
     borderRadius: 25

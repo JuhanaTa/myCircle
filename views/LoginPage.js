@@ -66,7 +66,7 @@ export default function LoginPage({ navigation }) {
     return <AppLoading />;
   } else {
     return (
-      <LinearGradient colors={['#eef4fb', '#dbe9f7']} style={styles.background}>
+      <LinearGradient colors={['#00c6ff', '#0072ff']} style={styles.background}>
         <View style={styles.container}>
           <BackgroundImage></BackgroundImage>
           <Image
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     paddingBottom: '2%',
     fontSize: 16,
     fontFamily: 'Inter_400Regular',
-    color: '#566787'
+    color: '#fff'
   },
   link: {
     textAlign: 'left',
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     paddingBottom: '2%',
     fontSize: 16,
     fontFamily: 'Inter_400Regular',
-    color: '#007bff'
+    color: '#fff'
   },
   input: {
     fontFamily: 'Inter_400Regular',
@@ -179,6 +179,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 44 / 2,
     shadowColor: '#000',
+    width: '100%',
     shadowOffset: {
       width: 0,
       height: 1
