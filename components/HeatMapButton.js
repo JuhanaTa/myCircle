@@ -13,6 +13,7 @@ import {
   ImageBackground,
   Image,
   Dimensions,
+  TouchableOpacity
 } from "react-native";
 import {
   useFonts,
@@ -40,70 +41,69 @@ export default function HeatMapButton({navigation, location, reportsData}) {
     Inter_700Bold,
     Inter_800ExtraBold,
   });
-  console.log('location', reportsData);
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
     return (
-      <View style={styles.container}>
-        <View style={styles.button} >
-
-          <MapView style={styles.map}
-            showsUserLocation={true}
-            initialRegion={{
-              latitude: location.coords.latitude,
-              longitude: location.coords.longitude,
-              latitudeDelta: 0.06,
-              longitudeDelta: 0.06
-            }}
-          >
-            <MapView.Circle
-              center={{
+      <Pressable style={styles.container} onPress={() => {navigation.navigate('MapScreen');}}>
+          <Pressable style={styles.button} pointerEvents="none">
+            <MapView style={styles.map} 
+              showsUserLocation={true}
+              initialRegion={{
                 latitude: location.coords.latitude,
                 longitude: location.coords.longitude,
+                latitudeDelta: 0.06,
+                longitudeDelta: 0.06
               }}
-              radius={3000}
-              strokeWidth={1}
-              strokeColor={'#1a66ff'}
-              fillColor={'rgba(230,238,255,0.5)'}
-            />
+            >
+              <MapView.Circle
+                center={{
+                  latitude: location.coords.latitude,
+                  longitude: location.coords.longitude,
+                }}
+                radius={3000}
+                strokeWidth={1}
+                strokeColor={'#1a66ff'}
+                fillColor={'rgba(230,238,255,0.5)'}
+              />
 
-            {reportsData.map(marker => (
-              <MapView.Marker
-                key={marker.location.description}
-                coordinate={marker.location}
-                
-                
-              >
-                
-              </MapView.Marker>
-            ))}
+              {reportsData.map(marker => (
+                <MapView.Marker
+                  key={marker.location.description}
+                  coordinate={marker.location}
 
-          </MapView>
 
-          <View style={{position: 'absolute', bottom: 0, left: 0, right: 0, justifyContent: 'flex-end', flexDirection: 'row'}}>
+                >
 
-            <View style={styles.containerButton}>
-              <Pressable onPress={() => navigation.navigate('MapScreen')} style={styles.buttonContent}>
-                <AntDesign
-                  style={styles.buttonArrow}
-                  name="right"
-                  size={18}
-                  color="#007bff"
-                />
-              </Pressable>
+                </MapView.Marker>
+              ))}
+
+            </MapView>
+
+            <View style={{position: 'absolute', bottom: 0, left: 0, right: 0, justifyContent: 'flex-end', flexDirection: 'row'}}>
+
+              <View style={styles.containerButton}>
+                <View style={styles.buttonContent}>
+                  <AntDesign
+                    style={styles.buttonArrow}
+                    name="right"
+                    size={18}
+                    color="#007bff"
+                  />
+                </View>
+              </View>
+
             </View>
 
-          </View>
 
-
-        </View>
-      </View>
+          </Pressable>
+      </Pressable>
     );
   }
 }
 const styles = StyleSheet.create({
   container: {
+    width: Dimensions.get('window').width - 20,
     display: "flex",
     alignItems: "center",
     justifyContent: "flex-start",
@@ -112,11 +112,15 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 3},
     shadowOpacity: 0.15,
     shadowRadius: 5,
+    borderRadius: 25,
+    overflow: 'hidden',
+    marginLeft: 10,
+    marginRight: 10,
   },
   button: {
-    width: 380,
+    width: Dimensions.get('window').width - 20,
     backgroundColor: "#FFFF",
-
+    overflow: 'hidden',
     margin: "5%",
 
     alignItems: "flex-start",
@@ -159,5 +163,7 @@ const styles = StyleSheet.create({
   map: {
     width: '100%',
     height: 200,
+    borderRadius: 10,
+
   },
 });

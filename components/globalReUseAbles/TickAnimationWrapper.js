@@ -43,11 +43,14 @@ export default TickAnimationWrapper;
 const styles = StyleSheet.create({
   animationContainer: {
     position: 'absolute',
-    zIndex: 2,
+    zIndex: 10,
     top: '50%',
-    left: '50%',
-    alignItems: 'center',
+    left: '18%',
+    alignSelf: 'center',
     justifyContent: 'center',
-    flex: 1
+    flex: 1,
+    marginTop: -10
+    
+
   }
 });
