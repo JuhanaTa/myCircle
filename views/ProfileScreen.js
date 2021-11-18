@@ -28,7 +28,7 @@ import {
 import UserInterestsQuestionnaire from '../components/profile/UserInterestsQuestionnaire';
 import { useSelector } from 'react-redux';
 import AvatarGenerator from '../components/profile/AvatarGenerator';
-import getAvatarUri from '../components/profile/avatarConfig';
+import getAvatarUri, {avatarDefaults} from '../components/profile/avatarConfig';
 
 const ProfileScreen = ({ navigation }) => {
   let [fontsLoaded] = useFonts({
@@ -55,16 +55,7 @@ const ProfileScreen = ({ navigation }) => {
     Preferences: false
   });
   const [avatarOptions, setAvatar] = useState({
-    avatarStyle: 'Circle',
-    topType: 'LongHairNotTooLong',
-    accessoriesType: 'Prescription02',
-    hairColor: 'Blonde',
-    facialHairType: 'Blank',
-    clotheType: 'BlazerSweater',
-    eyeType: 'Close',
-    eyebrowType: 'Default',
-    mouthType: 'Default',
-    skinColor: 'Pale'
+    ...avatarDefaults
   });
   const [isOpen, setMoreMenu] = useState(false);
   const [isEditDialogOpen, setEditDialog] = useState(false);
@@ -118,9 +109,7 @@ const ProfileScreen = ({ navigation }) => {
   const generateAvatar = (option) => {
     setAvatar({ ...avatarOptions, [option.varName]: option.value });
   };
-  console.log('avatar options', avatarOptions);
-  
-
+  const resetAvatar = () => setAvatar({...avatarDefaults});
   const moreMenu = () => {
     const anchorEl = (
       <TouchableOpacity onPress={() => openEditDialog()}>
@@ -190,8 +179,8 @@ const ProfileScreen = ({ navigation }) => {
                     avatarOptions.mouthType,
                     avatarOptions.skinColor
                   )}
+                  transparent={ avatarOptions.avatarStyle === 'Transparent'}
                 />
-
                 {moreMenu()}
               </View>
               <View style={styles.infoContainer}>
@@ -200,7 +189,7 @@ const ProfileScreen = ({ navigation }) => {
                 </Text>
               </View>
             </View>
-            <AvatarGenerator generateAvatar={generateAvatar} />
+            <AvatarGenerator generateAvatar={generateAvatar} resetAvatar ={resetAvatar} />
             <Divider />
             <List.Section style={styles.listsection}>
               <List.Accordion

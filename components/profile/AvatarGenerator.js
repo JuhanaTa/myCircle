@@ -9,7 +9,7 @@ import {
 import { AVATAR_OPTIONS } from './avatarConfig';
 import OptionsMenu from './OptionsMenu';
 
-const AvatarGenerator = ({ generateAvatar }) => {
+const AvatarGenerator = ({ generateAvatar, resetAvatar, saveAvatar }) => {
   const [selected, setSelected] = useState({});
   const [visible, setVisible] = useState(false);
   const [highlighted, setHighlighted] = useState({});
@@ -60,6 +60,8 @@ const AvatarGenerator = ({ generateAvatar }) => {
         options={selected.data}
         action={handleSelectedOption}
         onClose={closeOptionMenu}
+        reset={resetAvatar}
+        save ={saveAvatar}
         title={selected.title}
       />
     </SafeAreaView>

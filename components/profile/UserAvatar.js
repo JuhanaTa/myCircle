@@ -2,10 +2,10 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import {  SvgCssUri } from 'react-native-svg';
 
-const UserAvatar = ({uri}) => {
+const UserAvatar = ({uri, transparent}) => {
   return (
     <View style={styles.container}>
-      <View style={styles.avatar}>
+      <View style={!transparent && styles.avatar}>
       <SvgCssUri
         width="250"
         height="250"

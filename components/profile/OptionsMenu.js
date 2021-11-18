@@ -18,31 +18,50 @@ const Option = ({ option, action }) => (
     <Text style={styles.text}>{option}</Text>
   </TouchableOpacity>
 );
-const OptionsMenu = ({ visible, options, action, onClose, title }) => {
+const OptionsMenu = ({
+  visible,
+  options,
+  action,
+  onClose,
+  save,
+  reset,
+  title
+}) => {
   const [open, setMoreMenu] = useState(false);
   const closeMenu = () => setMoreMenu(false);
+
+  const handleSave = () => {
+    closeMenu();
+    save();
+    onClose();
+  };
+  const handleReset = () => {
+    closeMenu();
+    reset();
+    onClose();
+  };
 
   if (!visible) return null;
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Button color='#007bff' icon="close" onPress={onClose}></Button>
+        <Button color="#007bff" icon="close" onPress={onClose}></Button>
         <Text style={[styles.text, { fontWeight: 'bold' }]}> {title} </Text>
         <Menu
           visible={open}
           onDismiss={() => setMoreMenu(false)}
           anchor={
             <Button
-              color='#007bff'
+              color="#007bff"
               icon="dots-vertical"
               onPress={() => setMoreMenu(true)}
             ></Button>
           }
         >
-          <Menu.Item onPress={closeMenu} title="Reset Avatar" />
+          <Menu.Item onPress={handleReset} title="Reset Avatar" />
           <Divider />
-          <Menu.Item onPress={closeMenu} title="Save" />
+          <Menu.Item onPress={handleSave} title="Save" />
         </Menu>
       </View>
 
@@ -69,7 +88,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 8,
+    padding: 8
   },
   text: {
     padding: 10

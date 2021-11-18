@@ -170,6 +170,19 @@ const HAIR_COLOR = [
   'SilverGray'
 ];
 
+export const avatarDefaults = {
+  avatarStyle: 'Circle',
+  topType: 'LongHairNotTooLong',
+  accessoriesType: 'Prescription02',
+  hairColor: 'Blonde',
+  facialHairType: 'Blank',
+  clotheType: 'BlazerSweater',
+  eyeType: 'Close',
+  eyebrowType: 'Default',
+  mouthType: 'Default',
+  skinColor: 'Pale'
+};
+
 export const AVATAR_OPTIONS = [
   {
     varName: 'accessoriesType',
