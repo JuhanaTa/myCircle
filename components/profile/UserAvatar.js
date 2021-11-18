@@ -1,23 +1,18 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
-import { Avatar } from 'react-native-paper';
+import { StyleSheet, View } from 'react-native';
+import { SvgUri, SvgCssUri } from 'react-native-svg';
+import getAvatarUri from './avatarConfig';
 
-const UserAvatar = ({ image, size }) => {
+const UserAvatar = () => {
   return (
     <View style={styles.container}>
-      {image ? (
-        <Avatar.Image
-          size={size ? size : 250}
-          source={{ uri: image }}
-          style={styles.avatar}
-        />
-      ) : (
-        <Avatar.Icon
-          size={size ? size : 250}
-          icon="account"
-          style={styles.avatar}
-        />
-      )}
+      <View style={styles.avatar}>
+      <SvgCssUri
+        width="250"
+        height="250"
+        uri={getAvatarUri()}
+      />
+      </View>
     </View>
   );
 };
