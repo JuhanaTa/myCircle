@@ -1,15 +1,18 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SvgUri, SvgCssUri } from 'react-native-svg';
+import getAvatarUri from './avatarConfig';
 
 const UserAvatar = () => {
   return (
     <View style={styles.container}>
+      <View style={styles.avatar}>
       <SvgCssUri
         width="250"
         height="250"
-        uri='https://avataaars.io/?avatarStyle=Circle&topType=LongHairNotTooLong&accessoriesType=Prescription02&hairColor=Blonde&facialHairType=Blank&clotheType=BlazerSweater&eyeType=Close&eyebrowType=Angry&mouthType=Tongue&skinColor=Yellow'
+        uri={getAvatarUri()}
       />
+      </View>
     </View>
   );
 };
