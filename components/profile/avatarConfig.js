@@ -12,23 +12,9 @@ const getAvatarUri = (
 ) => {
   return `https://avataaars.io/?avatarStyle=${avatarStyle}&topType=${topType}&accessoriesType=${accessoriesType}&hairColor=${hairColor}&facialHairType=${facialHairType}&clotheType=${clotheType}&eyeType=${eyeType}&eyebrowType=${eyebrowType}&mouthType=${mouthType}&skinColor=${skinColor}`;
 };
-export default getAvatarUri;
 
-export const AVATAR_OPTIONS = [
-  { option: 'Accessories', icon: '👓' },
-  { option: 'Mouth', icon: '👄' },
-  { option: 'Clothe', icon: '👔 ' },
-  { option: 'Eyes', icon: '👁' },
-  { option: 'Avatar Style', icon: '' },
-  { option: 'Top', icon: '' },
-  { option: 'Hat Color', icon: '' },
-  { option: 'Facial Hair', icon: '' },
-  { option: 'Skin Tone', icon: '' },
-  { option: 'Eye Brow', icon: ' ' }
-];
-
-export const AVATAR_STYLE = ['Circle', 'Transparent'];
-export const Top_TYPE = [
+const AVATAR_STYLE = ['Circle', 'Transparent'];
+const Top_TYPE = [
   'NoHair',
   'Eyepatch',
   'Hat',
@@ -66,7 +52,7 @@ export const Top_TYPE = [
   'ShortHairTheCaesarSidePart'
 ];
 
-export const ACCESSORIES_TYPE = [
+const ACCESSORIES_TYPE = [
   'Blank',
   'Kurt',
   'Prescription01',
@@ -76,7 +62,7 @@ export const ACCESSORIES_TYPE = [
   'Wayfarers'
 ];
 
-export const HAT_COLOR = [
+const HAT_COLOR = [
   'Black',
   'Blue01',
   'Blue02',
@@ -94,7 +80,7 @@ export const HAT_COLOR = [
   'White'
 ];
 
-export const FACIAL_HAIR = [
+const FACIAL_HAIR = [
   'Blank',
   'BeardMedium',
   'BeardLight',
@@ -103,7 +89,7 @@ export const FACIAL_HAIR = [
   'MoustacheMagnum'
 ];
 
-export const CLOTHE = [
+const CLOTHE = [
   'BlazerShirt',
   'BlazerSweater',
   'CollarSweater',
@@ -115,7 +101,7 @@ export const CLOTHE = [
   'ShirtVNeck'
 ];
 
-export const EYES = [
+const EYES = [
   'Close',
   'Cry',
   'Default',
@@ -130,7 +116,7 @@ export const EYES = [
   'WinkWacky'
 ];
 
-export const EYE_BROW = [
+const EYE_BROW = [
   'Angry',
   'AngryNatural',
   'Default',
@@ -145,7 +131,7 @@ export const EYE_BROW = [
   'UpDownNatural'
 ];
 
-export const MOUTH = [
+const MOUTH = [
   'Concerned',
   'Default',
   'Disbelief',
@@ -160,7 +146,7 @@ export const MOUTH = [
   'Vomit'
 ];
 
-export const SKINCOLOR = [
+const SKINCOLOR = [
   'Tanned',
   'Yellow',
   'Pale',
@@ -169,3 +155,18 @@ export const SKINCOLOR = [
   'DarkBrown',
   'Black'
 ];
+
+export const AVATAR_OPTIONS = [
+  { option: 'Accessories', icon: '👓', data: ACCESSORIES_TYPE },
+  { option: 'Mouth', icon: '👄', data: MOUTH },
+  { option: 'Clothe', icon: '👔 ', data: CLOTHE },
+  { option: 'Eyes', icon: '👁', data: EYES },
+  { option: 'Avatar Style', icon: '', data: AVATAR_STYLE },
+  { option: 'Top', icon: '', data: Top_TYPE },
+  { option: 'Hat Color', icon: '', data: HAT_COLOR },
+  { option: 'Facial Hair', icon: '', data: FACIAL_HAIR },
+  { option: 'Skin Tone', icon: '', data: SKINCOLOR },
+  { option: 'Eye Brow', icon: ' ', data: EYE_BROW }
+];
+
+export default getAvatarUri;

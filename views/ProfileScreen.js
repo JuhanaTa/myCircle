@@ -169,6 +169,7 @@ const ProfileScreen = ({ navigation }) => {
               </View>
             </View>
             <AvatarGenerator />
+            <Divider/>
             <List.Section style={styles.listsection}>
               <List.Accordion
                 theme={{ colors: { primary: '#007bff' } }}
