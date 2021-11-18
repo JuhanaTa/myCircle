@@ -15,15 +15,15 @@ const getAvatarUri = (
 export default getAvatarUri;
 
 export const AVATAR_OPTIONS = [
+  { option: 'Accessories', icon: '👓' },
+  { option: 'Mouth', icon: '👄' },
+  { option: 'Clothe', icon: '👔 ' },
+  { option: 'Eyes', icon: '👁' },
   { option: 'Avatar Style', icon: '' },
   { option: 'Top', icon: '' },
-  { option: 'Accessories', icon: '👓' },
   { option: 'Hat Color', icon: '' },
   { option: 'Facial Hair', icon: '' },
-  { option: 'Mouth', icon: '👄' },
   { option: 'Skin Tone', icon: '' },
-  { option: 'Eyes', icon: '👁' },
-  { option: 'Clothe', icon: '👔 ' },
   { option: 'Eye Brow', icon: ' ' }
 ];
 

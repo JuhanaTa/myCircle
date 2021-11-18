@@ -27,6 +27,7 @@ import {
 } from '@expo-google-fonts/inter';
 import UserInterestsQuestionnaire from '../components/profile/UserInterestsQuestionnaire';
 import { useSelector } from 'react-redux';
+import AvatarGenerator from '../components/profile/AvatarGenerator';
 
 const ProfileScreen = ({ navigation }) => {
   let [fontsLoaded] = useFonts({
@@ -167,6 +168,7 @@ const ProfileScreen = ({ navigation }) => {
                 </Text>
               </View>
             </View>
+            <AvatarGenerator />
             <List.Section style={styles.listsection}>
               <List.Accordion
                 theme={{ colors: { primary: '#007bff' } }}
