@@ -12,14 +12,19 @@ import OptionsMenu from './OptionsMenu';
 const AvatarGenerator = ({ generateAvatar }) => {
   const [selected, setSelected] = useState({});
   const [visible, setVisible] = useState(false);
+  const [highlighted, setHighlighted] = useState({});
 
   const handleSelectedOption = (selectedMenuItem) => {
     generateAvatar({varName: selected.varName, value: selectedMenuItem});
-    setVisible(!visible);
   };
   const openOptionMenu = (item) => () => {
     setSelected(item);
+    setHighlighted(item);
     setVisible(true);
+  };
+  const closeOptionMenu = () => {
+    setVisible(!visible);
+    setHighlighted({});
   };
 
   const Option = ({ option }) => {
@@ -29,13 +34,13 @@ const AvatarGenerator = ({ generateAvatar }) => {
           styles.avatarOption,
           {
             backgroundColor:
-              option.title === selected.title ? '#112454' : '#ffffff'
+              option.title === highlighted.title ? '#112454' : '#ffffff'
           }
         ]}
         onPress={openOptionMenu(option)}
       >
         <Text
-          style={option.title === selected.title && { color: '#ffffff' }}
+          style={option.title === highlighted.title && { color: '#ffffff' }}
         >{`${option?.icon} ${option?.title}`}</Text>
       </TouchableOpacity>
     );
@@ -47,13 +52,14 @@ const AvatarGenerator = ({ generateAvatar }) => {
         data={AVATAR_OPTIONS}
         renderItem={({ item }) => <Option option={item} />}
         keyExtractor={(item) => item.title}
-        extraData={selected}
+        extraData={highlighted}
         horizontal={true}
       />
       <OptionsMenu
         visible={visible}
         options={selected.data}
         action={handleSelectedOption}
+        onClose={closeOptionMenu}
         title={selected.title}
       />
     </SafeAreaView>
