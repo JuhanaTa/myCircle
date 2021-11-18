@@ -74,7 +74,7 @@ export default function RegisterPage({ navigation }) {
     return <AppLoading />;
   } else {
     return (
-      <LinearGradient colors={['#eef4fb', '#dbe9f7']} style={styles.background}>
+      <LinearGradient colors={['#00c6ff', '#0072ff']} style={styles.background}>
         <View style={styles.container}>
           <BackgroundImage></BackgroundImage>
           <Image
@@ -120,9 +120,7 @@ export default function RegisterPage({ navigation }) {
               Register
             </Button>
           </View>
-          <View
-            style={{ margin: 30, flex: 1, justifyContent: 'flex-end' }}
-          >
+          <View style={{ margin: 30, flex: 1, justifyContent: 'flex-end' }}>
             <Text
               style={styles.link}
               onPress={() => {
@@ -169,7 +167,7 @@ const styles = StyleSheet.create({
     paddingBottom: '2%',
     fontSize: 16,
     fontFamily: 'Inter_400Regular',
-    color: '#566787'
+    color: '#fff'
   },
   link: {
     textAlign: 'left',
@@ -177,7 +175,7 @@ const styles = StyleSheet.create({
     paddingBottom: '2%',
     fontSize: 16,
     fontFamily: 'Inter_400Regular',
-    color: '#007bff'
+    color: '#fff'
   },
   input: {
     fontFamily: 'Inter_400Regular',
@@ -197,6 +195,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff'
   },
   button: {
+    width: '100%',
     fontFamily: 'Inter_400Regular',
     marginTop: 5,
     marginLeft: 'auto',

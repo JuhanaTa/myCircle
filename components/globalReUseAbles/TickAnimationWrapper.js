@@ -28,20 +28,24 @@ class TickAnimation extends React.Component {
   }
 }
 
-// the class compenent is wrapped with a functional component 
+// the class compenent is wrapped with a functional component
 // to enable Hook API implementations
 const TickAnimationWrapper = () => {
   const { isTickAnimationOpened } = useSelector((state) => state.toggles);
 
   if (!isTickAnimationOpened) return null;
   console.log('tick', isTickAnimationOpened);
-  
+
   return <TickAnimation />;
 };
 export default TickAnimationWrapper;
 
 const styles = StyleSheet.create({
   animationContainer: {
+    position: 'absolute',
+    zIndex: 2,
+    top: '50%',
+    left: '50%',
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1

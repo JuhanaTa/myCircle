@@ -15,8 +15,8 @@ export default function BackgroundImage() {
       <Svg height="100%" width="100%" viewBox="40 0 30 100" style={styles.svg}>
         <Defs>
           <LinearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-            <Stop offset="0%" stopColor="#dbe9f7" />
-            <Stop offset="100%" stopColor="#eef4fb'" />
+            <Stop offset="0%" stopColor="#00c6ff" />
+            <Stop offset="100%" stopColor="#0072ff" />
           </LinearGradient>
         </Defs>
         <Circle
