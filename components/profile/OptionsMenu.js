@@ -12,11 +12,11 @@ import {
 // onClose func for closing the menu
 // visible => boolean for the state of the menu
 const Option = ({ option, action }) => (
-  <TouchableOpacity onPress={action}>
+  <TouchableOpacity onPress={() => action(option)}>
     <Text style={styles.text}>{option}</Text>
   </TouchableOpacity>
 );
-const OptionsMenu = ({ visible, onClose, options, action, title }) => {
+const OptionsMenu = ({ visible, options, action, title }) => {
   if (!visible) return null;
 
   return (

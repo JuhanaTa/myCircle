@@ -1,14 +1,14 @@
 const getAvatarUri = (
-  avatarStyle = 'Circle',
-  topType = 'LongHairNotTooLong',
-  accessoriesType = 'Prescription02',
-  hairColor = 'Blonde',
-  facialHairType = 'Blank',
-  clotheType = 'BlazerSweater',
-  eyeType = 'Close',
-  eyebrowType = 'Default',
-  mouthType = 'Default',
-  skinColor = 'Yellow'
+  avatarStyle,
+  topType,
+  accessoriesType,
+  hairColor,
+  facialHairType,
+  clotheType,
+  eyeType,
+  eyebrowType,
+  mouthType,
+  skinColor
 ) => {
   return `https://avataaars.io/?avatarStyle=${avatarStyle}&topType=${topType}&accessoriesType=${accessoriesType}&hairColor=${hairColor}&facialHairType=${facialHairType}&clotheType=${clotheType}&eyeType=${eyeType}&eyebrowType=${eyebrowType}&mouthType=${mouthType}&skinColor=${skinColor}`;
 };
@@ -156,17 +156,46 @@ const SKINCOLOR = [
   'Black'
 ];
 
+const HAIR_COLOR = [
+  'Auburn',
+  'Black',
+  'Blonde',
+  'BlondeGolden',
+  'Brown',
+  'BrownDark',
+  'PastelPink',
+  'Blue',
+  'Platinum',
+  'Red',
+  'SilverGray'
+];
+
 export const AVATAR_OPTIONS = [
-  { option: 'Accessories', icon: '👓', data: ACCESSORIES_TYPE },
-  { option: 'Mouth', icon: '👄', data: MOUTH },
-  { option: 'Clothe', icon: '👔 ', data: CLOTHE },
-  { option: 'Eyes', icon: '👁', data: EYES },
-  { option: 'Avatar Style', icon: '', data: AVATAR_STYLE },
-  { option: 'Top', icon: '', data: Top_TYPE },
-  { option: 'Hat Color', icon: '', data: HAT_COLOR },
-  { option: 'Facial Hair', icon: '', data: FACIAL_HAIR },
-  { option: 'Skin Tone', icon: '', data: SKINCOLOR },
-  { option: 'Eye Brow', icon: ' ', data: EYE_BROW }
+  {
+    varName: 'accessoriesType',
+    title: 'Accessories',
+    icon: '👓',
+    data: ACCESSORIES_TYPE
+  },
+  { varName: 'mouthType', title: 'Mouth', icon: '👄', data: MOUTH },
+  { varName: 'clotheType', title: 'Clothe', icon: '👔 ', data: CLOTHE },
+  { varName: 'eyeType', title: 'Eyes', icon: '👁', data: EYES },
+  {
+    varName: 'avatarStyle',
+    title: 'Avatar Style',
+    icon: '',
+    data: AVATAR_STYLE
+  },
+  { varName: 'topType', title: 'Top', icon: '', data: Top_TYPE },
+  { varName: 'hairColor', title: 'Hair Color', icon: '💈', data: HAT_COLOR },
+  {
+    varName: 'facialHairType',
+    title: 'Facial Hair',
+    icon: '',
+    data: FACIAL_HAIR
+  },
+  { varName: 'skinColor', title: 'Skin Tone', icon: '', data: SKINCOLOR },
+  { varName: 'eyebrowType', title: 'Eye Brow', icon: ' ', data: EYE_BROW }
 ];
 
 export default getAvatarUri;

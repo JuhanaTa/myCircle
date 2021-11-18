@@ -1,16 +1,15 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { SvgUri, SvgCssUri } from 'react-native-svg';
-import getAvatarUri from './avatarConfig';
+import {  SvgCssUri } from 'react-native-svg';
 
-const UserAvatar = () => {
+const UserAvatar = ({uri}) => {
   return (
     <View style={styles.container}>
       <View style={styles.avatar}>
       <SvgCssUri
         width="250"
         height="250"
-        uri={getAvatarUri()}
+        uri={uri}
       />
       </View>
     </View>

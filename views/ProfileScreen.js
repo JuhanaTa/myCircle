@@ -28,6 +28,7 @@ import {
 import UserInterestsQuestionnaire from '../components/profile/UserInterestsQuestionnaire';
 import { useSelector } from 'react-redux';
 import AvatarGenerator from '../components/profile/AvatarGenerator';
+import getAvatarUri from '../components/profile/avatarConfig';
 
 const ProfileScreen = ({ navigation }) => {
   let [fontsLoaded] = useFonts({
@@ -52,6 +53,18 @@ const ProfileScreen = ({ navigation }) => {
     Hobbies: false,
     Interests: false,
     Preferences: false
+  });
+  const [avatarOptions, setAvatar] = useState({
+    avatarStyle: 'Circle',
+    topType: 'LongHairNotTooLong',
+    accessoriesType: 'Prescription02',
+    hairColor: 'Blonde',
+    facialHairType: 'Blank',
+    clotheType: 'BlazerSweater',
+    eyeType: 'Close',
+    eyebrowType: 'Default',
+    mouthType: 'Default',
+    skinColor: 'Pale'
   });
   const [isOpen, setMoreMenu] = useState(false);
   const [isEditDialogOpen, setEditDialog] = useState(false);
@@ -101,6 +114,12 @@ const ProfileScreen = ({ navigation }) => {
       Preferences:
         expanded !== 'Preferences' ? false : !isInterestListExpanded.Preferences
     });
+
+  const generateAvatar = (option) => {
+    setAvatar({ ...avatarOptions, [option.varName]: option.value });
+  };
+  console.log('avatar options', avatarOptions);
+  
 
   const moreMenu = () => {
     const anchorEl = (
@@ -158,7 +177,20 @@ const ProfileScreen = ({ navigation }) => {
           <View style={styles.container}>
             <View style={styles.avatarContainer}>
               <View style={styles.avatar}>
-                <UserAvatar />
+                <UserAvatar
+                  uri={getAvatarUri(
+                    avatarOptions.avatarStyle,
+                    avatarOptions.topType,
+                    avatarOptions.accessoriesType,
+                    avatarOptions.hairColor,
+                    avatarOptions.facialHairType,
+                    avatarOptions.clotheType,
+                    avatarOptions.eyeType,
+                    avatarOptions.eyebrowType,
+                    avatarOptions.mouthType,
+                    avatarOptions.skinColor
+                  )}
+                />
 
                 {moreMenu()}
               </View>
@@ -168,8 +200,8 @@ const ProfileScreen = ({ navigation }) => {
                 </Text>
               </View>
             </View>
-            <AvatarGenerator />
-            <Divider/>
+            <AvatarGenerator generateAvatar={generateAvatar} />
+            <Divider />
             <List.Section style={styles.listsection}>
               <List.Accordion
                 theme={{ colors: { primary: '#007bff' } }}

@@ -3,31 +3,40 @@ import {
   FlatList,
   StyleSheet,
   SafeAreaView,
-  View,
   Text,
   TouchableOpacity
 } from 'react-native';
-import { SvgUri, SvgCssUri } from 'react-native-svg';
-import getAvatarUri, { AVATAR_OPTIONS, MOUTH } from './avatarConfig';
+import { AVATAR_OPTIONS } from './avatarConfig';
 import OptionsMenu from './OptionsMenu';
 
-const AvatarGenerator = () => {
+const AvatarGenerator = ({ generateAvatar }) => {
   const [selected, setSelected] = useState({});
   const [visible, setVisible] = useState(false);
 
-  const handleSelectedOption = () => setVisible(!visible);
+  const handleSelectedOption = (selectedMenuItem) => {
+    generateAvatar({varName: selected.varName, value: selectedMenuItem});
+    setVisible(!visible);
+  };
   const openOptionMenu = (item) => () => {
     setSelected(item);
     setVisible(true);
   };
 
-  console.log('selected', selected);
-  
-
   const Option = ({ option }) => {
     return (
-      <TouchableOpacity style={styles.avatarOption} onPress={openOptionMenu(option)}>
-        <Text>{`${option?.icon} ${option?.option}`}</Text>
+      <TouchableOpacity
+        style={[
+          styles.avatarOption,
+          {
+            backgroundColor:
+              option.title === selected.title ? '#112454' : '#ffffff'
+          }
+        ]}
+        onPress={openOptionMenu(option)}
+      >
+        <Text
+          style={option.title === selected.title && { color: '#ffffff' }}
+        >{`${option?.icon} ${option?.title}`}</Text>
       </TouchableOpacity>
     );
   };
@@ -37,14 +46,15 @@ const AvatarGenerator = () => {
       <FlatList
         data={AVATAR_OPTIONS}
         renderItem={({ item }) => <Option option={item} />}
-        keyExtractor={(item) => item.option}
+        keyExtractor={(item) => item.title}
+        extraData={selected}
         horizontal={true}
       />
       <OptionsMenu
         visible={visible}
         options={selected.data}
         action={handleSelectedOption}
-        title={selected.option}
+        title={selected.title}
       />
     </SafeAreaView>
   );
@@ -54,11 +64,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   avatarOption: {
-    backgroundColor: '#ffffff',
-
     padding: 8,
     margin: 2,
     borderTopEndRadius: 8,
