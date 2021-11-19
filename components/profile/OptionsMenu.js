@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import { Button, Menu, Divider } from 'react-native-paper';
+import { Button, Menu, Divider, Snackbar } from 'react-native-paper';
 
 // opens a dropdown menu
 // menu options are passed as a prop of type Array
@@ -28,6 +28,7 @@ const OptionsMenu = ({
   title
 }) => {
   const [open, setMoreMenu] = useState(false);
+  const [isSnackbarOpened, setSnackbar] = useState(false);
   const closeMenu = () => setMoreMenu(false);
 
   const handleSave = () => {
@@ -38,15 +39,33 @@ const OptionsMenu = ({
   const handleReset = () => {
     closeMenu();
     reset();
-    onClose();
+  };
+
+  const handleclose = () => {
+    setSnackbar(true);
+  };
+  const closeSnackbar = () => {
+    setMoreMenu(true);
+    setSnackbar(false);
   };
 
   if (!visible) return null;
 
   return (
     <SafeAreaView style={styles.container}>
+      
+        <Snackbar
+          style={[styles.Snackbar, {backgroundColor: '#112454'}]}
+          visible={isSnackbarOpened}
+          onDismiss={closeSnackbar}
+          duration={3000}
+        >
+          You&#39;ll lose your changes, modifications to avatar not saved!
+        </Snackbar>
+      
+
       <View style={styles.header}>
-        <Button color="#007bff" icon="close" onPress={onClose}></Button>
+        <Button color="#007bff" icon="close" onPress={handleclose}></Button>
         <Text style={[styles.text, { fontWeight: 'bold' }]}> {title} </Text>
         <Menu
           visible={open}
@@ -59,9 +78,11 @@ const OptionsMenu = ({
             ></Button>
           }
         >
+          <Menu.Item onPress={handleSave} title="Save" />
+          <Divider />
           <Menu.Item onPress={handleReset} title="Reset Avatar" />
           <Divider />
-          <Menu.Item onPress={handleSave} title="Save" />
+          <Menu.Item onPress={onClose} title="Cancel" />
         </Menu>
       </View>
 
@@ -92,6 +113,12 @@ const styles = StyleSheet.create({
   },
   text: {
     padding: 10
+  },
+  Snackbar: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flex: 1,
+    padding: 8
   }
 });
 

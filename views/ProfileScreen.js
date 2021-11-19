@@ -26,9 +26,12 @@ import {
   Inter_900Black
 } from '@expo-google-fonts/inter';
 import UserInterestsQuestionnaire from '../components/profile/UserInterestsQuestionnaire';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AvatarGenerator from '../components/profile/AvatarGenerator';
-import getAvatarUri, {avatarDefaults} from '../components/profile/avatarConfig';
+import getAvatarUri, {
+  avatarDefaults
+} from '../components/profile/avatarConfig';
+import { modifyCurrentUser } from '../reducers/currentUserReducer';
 
 const ProfileScreen = ({ navigation }) => {
   let [fontsLoaded] = useFonts({
@@ -42,7 +45,9 @@ const ProfileScreen = ({ navigation }) => {
     Inter_700Bold,
     Inter_800ExtraBold
   });
-  const user = useSelector((state) => state.currentUser);
+  const { currentUser } = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const [visible, setVisible] = useState(false);
   const { image, getImage, launchCamera } = useCamera({ aspect: [4, 3] });
   const [isExpanded, setAccordion] = useState({
     personalData: false,
@@ -54,8 +59,9 @@ const ProfileScreen = ({ navigation }) => {
     Interests: false,
     Preferences: false
   });
+
   const [avatarOptions, setAvatar] = useState({
-    ...avatarDefaults
+    ...currentUser.userAvatar.options
   });
   const [isOpen, setMoreMenu] = useState(false);
   const [isEditDialogOpen, setEditDialog] = useState(false);
@@ -109,7 +115,43 @@ const ProfileScreen = ({ navigation }) => {
   const generateAvatar = (option) => {
     setAvatar({ ...avatarOptions, [option.varName]: option.value });
   };
-  const resetAvatar = () => setAvatar({...avatarDefaults});
+
+  const saveAvatarToDb = () =>
+    dispatch(
+      modifyCurrentUser({
+        userAvatar: {
+          uri: getAvatarUri(
+            avatarOptions.avatarStyle,
+            avatarOptions.topType,
+            avatarOptions.accessoriesType,
+            avatarOptions.hairColor,
+            avatarOptions.facialHairType,
+            avatarOptions.clotheType,
+            avatarOptions.eyeType,
+            avatarOptions.eyebrowType,
+            avatarOptions.mouthType,
+            avatarOptions.skinColor
+          ),
+          options: {
+            avatarStyle: avatarOptions.avatarStyle,
+            topType: avatarOptions.topType,
+            accessoriesType: avatarOptions.accessoriesType,
+            hairColor: avatarOptions.hairColor,
+            facialHairType: avatarOptions.facialHairType,
+            clotheType: avatarOptions.clotheType,
+            eyeType: avatarOptions.eyeType,
+            eyebrowType: avatarOptions.eyebrowType,
+            mouthType: avatarOptions.mouthType,
+            skinColor: avatarOptions.skinColor
+          }
+        }
+      })
+    );
+
+  const resetAvatar = () => {
+    setAvatar({ ...avatarDefaults });
+  };
+
   const moreMenu = () => {
     const anchorEl = (
       <TouchableOpacity onPress={() => openEditDialog()}>
@@ -167,19 +209,23 @@ const ProfileScreen = ({ navigation }) => {
             <View style={styles.avatarContainer}>
               <View style={styles.avatar}>
                 <UserAvatar
-                  uri={getAvatarUri(
-                    avatarOptions.avatarStyle,
-                    avatarOptions.topType,
-                    avatarOptions.accessoriesType,
-                    avatarOptions.hairColor,
-                    avatarOptions.facialHairType,
-                    avatarOptions.clotheType,
-                    avatarOptions.eyeType,
-                    avatarOptions.eyebrowType,
-                    avatarOptions.mouthType,
-                    avatarOptions.skinColor
-                  )}
-                  transparent={ avatarOptions.avatarStyle === 'Transparent'}
+                  uri={
+                    visible
+                      ? getAvatarUri(
+                          avatarOptions.avatarStyle,
+                          avatarOptions.topType,
+                          avatarOptions.accessoriesType,
+                          avatarOptions.hairColor,
+                          avatarOptions.facialHairType,
+                          avatarOptions.clotheType,
+                          avatarOptions.eyeType,
+                          avatarOptions.eyebrowType,
+                          avatarOptions.mouthType,
+                          avatarOptions.skinColor
+                        )
+                      : currentUser?.userAvatar.uri
+                  }
+                  transparent={avatarOptions.avatarStyle === 'Transparent'}
                 />
                 {moreMenu()}
               </View>
@@ -189,7 +235,13 @@ const ProfileScreen = ({ navigation }) => {
                 </Text>
               </View>
             </View>
-            <AvatarGenerator generateAvatar={generateAvatar} resetAvatar ={resetAvatar} />
+            <AvatarGenerator
+              generateAvatar={generateAvatar}
+              resetAvatar={resetAvatar}
+              saveAvatarToDb={saveAvatarToDb}
+              setVisible={setVisible}
+              visible={visible}
+            />
             <Divider />
             <List.Section style={styles.listsection}>
               <List.Accordion
@@ -202,8 +254,14 @@ const ProfileScreen = ({ navigation }) => {
                 onPress={openAccordion('personalData')}
                 style={styles.accordion}
               >
-                <List.Item title={user?.name} style={styles.accordionItme} />
-                <List.Item title={user?.email} style={styles.accordionItme} />
+                <List.Item
+                  title={currentUser?.name}
+                  style={styles.accordionItme}
+                />
+                <List.Item
+                  title={currentUser?.email}
+                  style={styles.accordionItme}
+                />
               </List.Accordion>
               <Divider style={styles.divier} />
               <List.Accordion
@@ -244,10 +302,16 @@ const ProfileScreen = ({ navigation }) => {
                   style={styles.accordionItme}
                   onPress={() => openQuestionnaire()}
                 />
-                {userPreferences(user?.userInterests?.hobbies, 'Hobbies')}
-                {userPreferences(user?.userInterests?.interests, 'Interests')}
                 {userPreferences(
-                  user?.userInterests?.preferences,
+                  currentUser?.userInterests?.hobbies,
+                  'Hobbies'
+                )}
+                {userPreferences(
+                  currentUser?.userInterests?.interests,
+                  'Interests'
+                )}
+                {userPreferences(
+                  currentUser?.userInterests?.preferences,
                   'Preferences'
                 )}
               </List.Accordion>

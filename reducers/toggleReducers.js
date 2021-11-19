@@ -3,7 +3,8 @@ const toggleReducer = (
     showLogin: false,
     checked: false,
     isSnackbarOpened: false,
-    isTickAnimationOpened: false
+    isTickAnimationOpened: false,
+    isAvatarOptionsOpened: false
   },
   action
 ) => {
@@ -20,6 +21,8 @@ const toggleReducer = (
       return { ...state, isSnackbarOpened: action.snackbar };
     case 'SET_TICKANIMATION':
       return { ...state, isTickAnimationOpened: !state.isTickAnimationOpened };
+    case 'SET_AVATARMENU':
+      return { ...state, isAvatarOptionsOpened: !state.isAvatarOptionsOpened };
     default:
       return state;
   }
@@ -55,6 +58,12 @@ const setSnackbar = (snackbar) => {
   };
 };
 
+const setAvatarMenu = () => {
+  return async (dispatch) => {
+    dispatch({ type: 'SET_AVATARMENU' });
+  };
+};
+
 const setTickAnimation = () => {
   return async (dispatch) => {
     dispatch({
@@ -77,5 +86,6 @@ export {
   toggleCheckedOn,
   toggleCheckedOff,
   setSnackbar,
-  setTickAnimation
+  setTickAnimation,
+  setAvatarMenu
 };
