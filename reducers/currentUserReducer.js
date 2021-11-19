@@ -33,7 +33,7 @@ const setCurrentUser = () => {
     });
   };
 };
-
+// user data is of type object, {...userData}
 const modifyCurrentUser = (userData) => {
   return async (dispatch) => {
     try {

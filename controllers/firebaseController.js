@@ -1,6 +1,10 @@
 import { db } from '../configs/firebaseConfig';
 import firebase from 'firebase';
 import { v4 as uuidv4 } from 'uuid';
+import {
+  avatarDefaults,
+  defaultAvatarUri
+} from '../components/profile/avatarConfig';
 
 //Add your firebase functions/calls here
 
@@ -19,7 +23,8 @@ export const createUser = async (name, email, id) => {
           interests: [],
           hobbies: [],
           preferences: []
-        }
+        },
+        userAvatar: { uri: defaultAvatarUri, options: avatarDefaults }
       });
 
     console.log('user added');
@@ -58,7 +63,7 @@ export const updateUser = async (userObject) => {
     const id = await firebase.auth().currentUser.uid;
 
     await db.collection('Users').doc(id).update(userObject);
-    
+
     // refetch user for redux store update
     const updatedData = await getUser(id);
 

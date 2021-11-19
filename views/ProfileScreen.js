@@ -26,7 +26,12 @@ import {
   Inter_900Black
 } from '@expo-google-fonts/inter';
 import UserInterestsQuestionnaire from '../components/profile/UserInterestsQuestionnaire';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import AvatarGenerator from '../components/profile/AvatarGenerator';
+import getAvatarUri, {
+  avatarDefaults
+} from '../components/profile/avatarConfig';
+import { modifyCurrentUser } from '../reducers/currentUserReducer';
 
 const ProfileScreen = ({ navigation }) => {
   let [fontsLoaded] = useFonts({
@@ -40,7 +45,9 @@ const ProfileScreen = ({ navigation }) => {
     Inter_700Bold,
     Inter_800ExtraBold
   });
-  const user = useSelector((state) => state.currentUser);
+  const { currentUser } = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const [visible, setVisible] = useState(false);
   const { image, getImage, launchCamera } = useCamera({ aspect: [4, 3] });
   const [isExpanded, setAccordion] = useState({
     personalData: false,
@@ -51,6 +58,10 @@ const ProfileScreen = ({ navigation }) => {
     Hobbies: false,
     Interests: false,
     Preferences: false
+  });
+
+  const [avatarOptions, setAvatar] = useState({
+    ...currentUser.userAvatar.options
   });
   const [isOpen, setMoreMenu] = useState(false);
   const [isEditDialogOpen, setEditDialog] = useState(false);
@@ -100,6 +111,46 @@ const ProfileScreen = ({ navigation }) => {
       Preferences:
         expanded !== 'Preferences' ? false : !isInterestListExpanded.Preferences
     });
+
+  const generateAvatar = (option) => {
+    setAvatar({ ...avatarOptions, [option.varName]: option.value });
+  };
+
+  const saveAvatarToDb = () =>
+    dispatch(
+      modifyCurrentUser({
+        userAvatar: {
+          uri: getAvatarUri(
+            avatarOptions.avatarStyle,
+            avatarOptions.topType,
+            avatarOptions.accessoriesType,
+            avatarOptions.hairColor,
+            avatarOptions.facialHairType,
+            avatarOptions.clotheType,
+            avatarOptions.eyeType,
+            avatarOptions.eyebrowType,
+            avatarOptions.mouthType,
+            avatarOptions.skinColor
+          ),
+          options: {
+            avatarStyle: avatarOptions.avatarStyle,
+            topType: avatarOptions.topType,
+            accessoriesType: avatarOptions.accessoriesType,
+            hairColor: avatarOptions.hairColor,
+            facialHairType: avatarOptions.facialHairType,
+            clotheType: avatarOptions.clotheType,
+            eyeType: avatarOptions.eyeType,
+            eyebrowType: avatarOptions.eyebrowType,
+            mouthType: avatarOptions.mouthType,
+            skinColor: avatarOptions.skinColor
+          }
+        }
+      })
+    );
+
+  const resetAvatar = () => {
+    setAvatar({ ...avatarDefaults });
+  };
 
   const moreMenu = () => {
     const anchorEl = (
@@ -157,8 +208,25 @@ const ProfileScreen = ({ navigation }) => {
           <View style={styles.container}>
             <View style={styles.avatarContainer}>
               <View style={styles.avatar}>
-                <UserAvatar />
-
+                <UserAvatar
+                  uri={
+                    visible
+                      ? getAvatarUri(
+                          avatarOptions.avatarStyle,
+                          avatarOptions.topType,
+                          avatarOptions.accessoriesType,
+                          avatarOptions.hairColor,
+                          avatarOptions.facialHairType,
+                          avatarOptions.clotheType,
+                          avatarOptions.eyeType,
+                          avatarOptions.eyebrowType,
+                          avatarOptions.mouthType,
+                          avatarOptions.skinColor
+                        )
+                      : currentUser?.userAvatar.uri
+                  }
+                  transparent={avatarOptions.avatarStyle === 'Transparent'}
+                />
                 {moreMenu()}
               </View>
               <View style={styles.infoContainer}>
@@ -167,6 +235,14 @@ const ProfileScreen = ({ navigation }) => {
                 </Text>
               </View>
             </View>
+            <AvatarGenerator
+              generateAvatar={generateAvatar}
+              resetAvatar={resetAvatar}
+              saveAvatarToDb={saveAvatarToDb}
+              setVisible={setVisible}
+              visible={visible}
+            />
+            <Divider />
             <List.Section style={styles.listsection}>
               <List.Accordion
                 theme={{ colors: { primary: '#007bff' } }}
@@ -178,8 +254,14 @@ const ProfileScreen = ({ navigation }) => {
                 onPress={openAccordion('personalData')}
                 style={styles.accordion}
               >
-                <List.Item title={user?.name} style={styles.accordionItme} />
-                <List.Item title={user?.email} style={styles.accordionItme} />
+                <List.Item
+                  title={currentUser?.name}
+                  style={styles.accordionItme}
+                />
+                <List.Item
+                  title={currentUser?.email}
+                  style={styles.accordionItme}
+                />
               </List.Accordion>
               <Divider style={styles.divier} />
               <List.Accordion
@@ -220,10 +302,16 @@ const ProfileScreen = ({ navigation }) => {
                   style={styles.accordionItme}
                   onPress={() => openQuestionnaire()}
                 />
-                {userPreferences(user?.userInterests?.hobbies, 'Hobbies')}
-                {userPreferences(user?.userInterests?.interests, 'Interests')}
                 {userPreferences(
-                  user?.userInterests?.preferences,
+                  currentUser?.userInterests?.hobbies,
+                  'Hobbies'
+                )}
+                {userPreferences(
+                  currentUser?.userInterests?.interests,
+                  'Interests'
+                )}
+                {userPreferences(
+                  currentUser?.userInterests?.preferences,
                   'Preferences'
                 )}
               </List.Accordion>
