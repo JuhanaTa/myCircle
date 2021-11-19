@@ -1,8 +1,9 @@
 import { db } from '../configs/firebaseConfig';
 import firebase from 'firebase';
 import { v4 as uuidv4 } from 'uuid';
-import getAvatarUri, {
-  avatarDefaults
+import {
+  avatarDefaults,
+  defaultAvatarUri
 } from '../components/profile/avatarConfig';
 
 //Add your firebase functions/calls here
@@ -23,7 +24,7 @@ export const createUser = async (name, email, id) => {
           hobbies: [],
           preferences: []
         },
-        userAvatar: { uri: '', options: avatarDefaults }
+        userAvatar: { uri: defaultAvatarUri, options: avatarDefaults }
       });
 
     console.log('user added');
