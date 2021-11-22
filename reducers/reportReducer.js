@@ -34,12 +34,7 @@ const createNewReport = (imageUri, location, description, reportTopic) => {
       const newReportAdded = await createReport(
         description,
         image,
-        {
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-          latitudeDelta: 0,
-          longitudeDelta: 0
-        },
+        location,
         reportTopic,
         firebase.auth().currentUser.uid
       );

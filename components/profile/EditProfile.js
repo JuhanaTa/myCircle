@@ -1,62 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, ScrollView, View, TextInput } from 'react-native';
-import { Menu, Divider, IconButton } from 'react-native-paper';
 import ModalDialog from '../globalReUseAbles/ModalDialog';
-import UserAvatar from './UserAvatar';
 
 const EditProfile = ({
   open,
   closeDialog,
   action,
-  image,
   name,
   email,
   password,
   handleNameChange,
   handleEmailChange,
-  handlePasswordChange,
-  launchCamera,
-  getImage
+  handlePasswordChange
 }) => {
   // dialog for editing user's profile
-
-  const [isCameraOpen, setCameraMenu] = useState(false);
-
-  const openCameraMenu = () => setCameraMenu(true);
-  const closeCameraMenu = () => setCameraMenu(false);
-
-  const handleImagePicking = () => {
-    getImage();
-    closeCameraMenu();
-  };
-  const handleCamershot = () => {
-    launchCamera();
-    closeCameraMenu();
-  };
-
-  const cameramenu = () => {
-    const anchorEl = (
-      <IconButton
-        onPress={openCameraMenu}
-        icon="camera"
-        labelStyle={{ fontSize: 30 }}
-        style={styles.editprofilebutton}
-        color={'#007bff'}
-      />
-    );
-
-    return (
-      <Menu
-        visible={isCameraOpen}
-        onDismiss={closeCameraMenu}
-        anchor={anchorEl}
-      >
-        <Menu.Item onPress={handleCamershot} title="camera" />
-        <Divider />
-        <Menu.Item onPress={handleImagePicking} title="pick from gallery" />
-      </Menu>
-    );
-  };
 
   return (
     <ModalDialog
@@ -69,10 +26,6 @@ const EditProfile = ({
     >
       <ScrollView>
         <View style={styles.container}>
-          <View style={styles.avatar}>
-            <UserAvatar image={image} size={110} />
-            {cameramenu()}
-          </View>
           <TextInput
             onChangeText={handleNameChange}
             style={styles.textInput}

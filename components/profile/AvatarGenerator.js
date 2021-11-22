@@ -9,9 +9,11 @@ import {
 import { AVATAR_OPTIONS } from './avatarConfig';
 import OptionsMenu from './OptionsMenu';
 
-const AvatarGenerator = ({ generateAvatar, resetAvatar, saveAvatarToDb, setVisible, visible }) => {
-  const [selected, setSelected] = useState({});
-  const [highlighted, setHighlighted] = useState({});
+const AvatarGenerator = ({ generateAvatar, resetAvatar, saveAvatarToDb, setVisible, visible, isAvatarSystemOpened }) => {
+  const [selected, setSelected] = useState({...AVATAR_OPTIONS[0]});
+  const [highlighted, setHighlighted] = useState({...AVATAR_OPTIONS[0]});
+
+  if(!isAvatarSystemOpened) return null;
 
   const handleSelectedOption = (selectedMenuItem) => {
     generateAvatar({varName: selected.varName, value: selectedMenuItem});
