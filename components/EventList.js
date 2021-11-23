@@ -15,7 +15,9 @@ export default function EventList({ navigation, reportsData }) {
       <FlatList
         data={reportsData}
         renderItem={renderItem}
-        keyExtractor={(item) => `${item.description}-${item.image}`}
+        keyExtractor={(item) =>
+          `${item.description}-${item.image}-${item.topic}-${item.location.address}`
+        }
       />
     </View>
   );

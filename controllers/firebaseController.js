@@ -106,10 +106,10 @@ export const logOut = async () => {
 export const createReport = async (description, image, location, topic, id) => {
   try {
     const reportObject = {
-      description: description,
-      image: image,
-      location: location,
-      topic: topic,
+      description,
+      image,
+      location,
+      topic,
       userId: id
     };
     // newly created report object is not contained in the firebase response

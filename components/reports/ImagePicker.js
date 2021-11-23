@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { Button, Menu, Divider } from 'react-native-paper';
 
-const ImagePicker = ({ image, getImage, launchCamera }) => {
-  const [open, setMenu] = useState(false);
+const ImagePicker = ({ image, getImage, launchCamera, open, setMenu }) => {
   const closeMenu = () => setMenu(false);
   const openMenu = () => {
     setMenu(true);

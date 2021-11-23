@@ -7,8 +7,7 @@ import {
   ScrollView
 } from 'react-native';
 import UserAvatar from '../components/profile/UserAvatar';
-import useCamera from '../hooks/useCamera';
-import { Divider, IconButton, List, Menu } from 'react-native-paper';
+import { IconButton } from 'react-native-paper';
 import EditProfile from '../components/profile/EditProfile';
 import AppLoading from 'expo-app-loading';
 
@@ -32,6 +31,7 @@ import getAvatarUri, {
   avatarDefaults
 } from '../components/profile/avatarConfig';
 import { modifyCurrentUser } from '../reducers/currentUserReducer';
+import ProfileSectionContainer from '../components/profile/ProfileSectionContainer';
 
 const ProfileScreen = ({ navigation }) => {
   let [fontsLoaded] = useFonts({
@@ -47,23 +47,15 @@ const ProfileScreen = ({ navigation }) => {
   });
   const { currentUser } = useSelector((state) => state);
   const dispatch = useDispatch();
-  const [visible, setVisible] = useState(false);
-  const { image, getImage, launchCamera } = useCamera({ aspect: [4, 3] });
-  const [isExpanded, setAccordion] = useState({
-    personalData: false,
-    events: false,
-    interests: false
-  });
-  const [isInterestListExpanded, setNestedAccordion] = useState({
-    Hobbies: false,
-    Interests: false,
-    Preferences: false
-  });
-
+ 
   const [avatarOptions, setAvatar] = useState({
     ...currentUser.userAvatar.options
-  });
-  const [isOpen, setMoreMenu] = useState(false);
+  }); 
+  const [visible, setVisible] = useState(true);
+  const [isAvatarSystemOpened, setAvatarSystem] = useState(true);
+  const [isPersonalDataOpened, setPersonalData] = useState(false);
+  const [isInterestOpened, setInterest] = useState(false);
+  const [isEventOpened, setEvent] = useState(false);
   const [isEditDialogOpen, setEditDialog] = useState(false);
   const [isQuestionnaireOpened, setQuestionnaire] = useState(false);
   const [name, setName] = useState('');
@@ -74,15 +66,9 @@ const ProfileScreen = ({ navigation }) => {
   const handleEmailChange = (text) => setEmail(text);
   const handlePasswordChange = (text) => setPassword(text);
 
-  const closeMoreMenu = () => setMoreMenu(false);
-
   // opens a dialog for user to edit their profile info
   const openEditDialog = () => setEditDialog(true);
   const closeEditDialog = () => setEditDialog(false);
-  const handleMenuItemEditProfilePress = () => {
-    closeMoreMenu();
-    openEditDialog();
-  };
 
   // launches questionnaire for user's interests and preferences
   const openQuestionnaire = () => setQuestionnaire(true);
@@ -92,28 +78,41 @@ const ProfileScreen = ({ navigation }) => {
     closeEditDialog();
   };
 
-  // controlls list expansion or colapse
-  const openAccordion = (expanded) => () =>
-    setAccordion({
-      ...isExpanded,
-      personalData:
-        expanded !== 'personalData' ? false : !isExpanded.personalData,
-      interests: expanded !== 'interests' ? false : !isExpanded.interests,
-      events: expanded !== 'events' ? false : !isExpanded.events
-    });
-  // controlls lists nested in the interests and preferences Accordion
-  const openNestedAccordion = (expanded) => () =>
-    setNestedAccordion({
-      ...isInterestListExpanded,
-      Hobbies: expanded !== 'Hobbies' ? false : !isInterestListExpanded.Hobbies,
-      Interests:
-        expanded !== 'Interests' ? false : !isInterestListExpanded.Interests,
-      Preferences:
-        expanded !== 'Preferences' ? false : !isInterestListExpanded.Preferences
-    });
-
   const generateAvatar = (option) => {
     setAvatar({ ...avatarOptions, [option.varName]: option.value });
+  };
+
+  // handle profile tab nav
+  const handleTabPress = (type) => {
+    switch (type) {
+      case 'interests':
+        setInterest(true);
+        setPersonalData(false);
+        setEvent(false);
+        setAvatarSystem(false);
+        return;
+      case 'events':
+        setInterest(false);
+        setPersonalData(false);
+        setEvent(true);
+        setAvatarSystem(false);
+        return;
+      case 'personalData':
+        setInterest(false);
+        setPersonalData(true);
+        setEvent(false);
+        setAvatarSystem(false);
+        return;
+      case 'avatar':
+        setInterest(false);
+        setPersonalData(false);
+        setEvent(false);
+        setAvatarSystem(true);
+        return;
+
+      default:
+        return;
+    }
   };
 
   const saveAvatarToDb = () =>
@@ -152,50 +151,33 @@ const ProfileScreen = ({ navigation }) => {
     setAvatar({ ...avatarDefaults });
   };
 
-  const moreMenu = () => {
-    const anchorEl = (
-      <TouchableOpacity onPress={() => openEditDialog()}>
-        <IconButton
-          labelStyle={{ fontSize: 30 }}
-          style={styles.editprofilebutton}
-          color={'#007bff'}
-          icon="pencil"
-        />
-      </TouchableOpacity>
-    );
+  const navBarItems = [
+    { type: 'avatar', icon: 'pencil', state: isAvatarSystemOpened },
+    { type: 'interests', icon: 'account-cog-outline', state: isInterestOpened },
+    { type: 'personalData', icon: 'account', state: isPersonalDataOpened },
+    { type: 'events', icon: 'calendar-heart', state: isEventOpened }
+  ];
 
+  const NavBar = () => {
     return (
-      <Menu
-        visible={isOpen}
-        onDismiss={closeMoreMenu}
-        anchor={anchorEl}
-        style={styles.menu}
-      >
-        <Menu.Item onPress={closeMoreMenu} title="Settings/Preferences" />
-        <Divider />
-        <Menu.Item
-          onPress={handleMenuItemEditProfilePress}
-          title="Edit Profile"
-        />
-      </Menu>
-    );
-  };
-
-  const userPreferences = (data, title) => {
-    return (
-      <List.Accordion
-        theme={{ colors: { primary: '#007bff' } }}
-        title={title}
-        expanded={isInterestListExpanded[title]}
-        onPress={openNestedAccordion(title)}
-        style={styles.accordion}
-      >
-        <View>
-          {data?.map((item) => (
-            <List.Item key={item} title={item} style={styles.accordionItme} />
-          ))}
-        </View>
-      </List.Accordion>
+      <View style={styles.navBar}>
+        {navBarItems.map((item) => (
+          <TouchableOpacity
+            key={item.type}
+            onPress={() => handleTabPress(item.type)}
+          >
+            <IconButton
+              labelStyle={{ fontSize: 30 }}
+              style={[
+                styles.editprofilebutton,
+                item.state && { backgroundColor: '#112454' }
+              ]}
+              color={item.state ? '#ffffff' : '#007bff'}
+              icon={item.icon}
+            />
+          </TouchableOpacity>
+        ))}
+      </View>
     );
   };
 
@@ -227,7 +209,7 @@ const ProfileScreen = ({ navigation }) => {
                   }
                   transparent={avatarOptions.avatarStyle === 'Transparent'}
                 />
-                {moreMenu()}
+                <NavBar />
               </View>
               <View style={styles.infoContainer}>
                 <Text style={styles.username}>
@@ -241,94 +223,46 @@ const ProfileScreen = ({ navigation }) => {
               saveAvatarToDb={saveAvatarToDb}
               setVisible={setVisible}
               visible={visible}
+              isAvatarSystemOpened={isAvatarSystemOpened}
             />
-            <Divider />
-            <List.Section style={styles.listsection}>
-              <List.Accordion
-                theme={{ colors: { primary: '#007bff' } }}
-                title="Personal Data"
-                left={(props) => (
-                  <List.Icon {...props} icon="account" color={'#007bff'} />
-                )}
-                expanded={isExpanded.personalData}
-                onPress={openAccordion('personalData')}
-                style={styles.accordion}
-              >
-                <List.Item
-                  title={currentUser?.name}
-                  style={styles.accordionItme}
-                />
-                <List.Item
-                  title={currentUser?.email}
-                  style={styles.accordionItme}
-                />
-              </List.Accordion>
-              <Divider style={styles.divier} />
-              <List.Accordion
-                theme={{ colors: { primary: '#007bff' } }}
-                title="Saved Events"
-                left={(props) => (
-                  <List.Icon
-                    {...props}
-                    icon="calendar-heart"
-                    color={'#007bff'}
-                  />
-                )}
-                expanded={isExpanded.events}
-                onPress={openAccordion('events')}
-                style={styles.accordion}
-              >
-                <List.Item title="First item" style={styles.accordionItme} />
-                <List.Item title="Second item" style={styles.accordionItme} />
-              </List.Accordion>
-              <Divider style={styles.divier} />
-              <List.Accordion
-                theme={{ colors: { primary: '#007bff' } }}
-                title="Interests &amp; Preferences"
-                description="set your interests to receive personalised contextual content"
-                left={(props) => (
-                  <List.Icon
-                    {...props}
-                    icon="account-cog-outline"
-                    color={'#007bff'}
-                  />
-                )}
-                expanded={isExpanded.interests}
-                onPress={openAccordion('interests')}
-                style={styles.accordion}
-              >
-                <List.Item
-                  title="Set Your Interests"
-                  style={styles.accordionItme}
-                  onPress={() => openQuestionnaire()}
-                />
-                {userPreferences(
-                  currentUser?.userInterests?.hobbies,
-                  'Hobbies'
-                )}
-                {userPreferences(
-                  currentUser?.userInterests?.interests,
-                  'Interests'
-                )}
-                {userPreferences(
-                  currentUser?.userInterests?.preferences,
-                  'Preferences'
-                )}
-              </List.Accordion>
-            </List.Section>
+            <ProfileSectionContainer
+              visible={isPersonalDataOpened}
+              title="Personal Data"
+              type="personalData"
+              action={
+                <TouchableOpacity onPress={openEditDialog}>
+                  <IconButton icon="pencil" />
+                </TouchableOpacity>
+              }
+            />
+
+            <ProfileSectionContainer
+              visible={isInterestOpened}
+              title="Your Interests"
+              type="interests"
+              action={
+                <TouchableOpacity onPress={openQuestionnaire}>
+                  <IconButton icon="pencil" />
+                </TouchableOpacity>
+              }
+            />
+
+            <ProfileSectionContainer
+              visible={isEventOpened}
+              title="Saved Events"
+              type="events"
+            />
+
             <EditProfile
               email={email}
               name={name}
               password={password}
-              image={image?.uri}
               handleEmailChange={handleEmailChange}
               handleNameChange={handleNameChange}
               handlePasswordChange={handlePasswordChange}
               open={isEditDialogOpen}
               closeDialog={closeEditDialog}
               action={handleProfileUpdate}
-              launchCamera={launchCamera}
-              getImage={getImage}
             />
             <UserInterestsQuestionnaire
               isQuestionnaireOpened={isQuestionnaireOpened}
@@ -388,12 +322,12 @@ const styles = StyleSheet.create({
   editprofilebutton: {
     padding: 5,
     backgroundColor: '#FFF',
-    width: 52,
-    height: 52,
-    borderTopEndRadius: 500,
-    borderTopStartRadius: 500,
-    borderBottomRightRadius: 500,
-    borderBottomLeftRadius: 500,
+    width: 40,
+    height: 40,
+    borderTopEndRadius: 400,
+    borderTopStartRadius: 400,
+    borderBottomRightRadius: 400,
+    borderBottomLeftRadius: 400,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.15,
@@ -404,6 +338,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  navBar: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   menu: {
     position: 'absolute',
