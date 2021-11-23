@@ -6,6 +6,7 @@ const ModalDialog = ({
   open,
   closeDialog,
   action,
+  secondaryAction,
   label,
   title,
   children
@@ -19,7 +20,8 @@ const ModalDialog = ({
         <Dialog.Content>{children}</Dialog.Content>
         <Divider />
         <Dialog.Actions style={styles.actions}>
-          <Button icon="close" onPress={closeDialog}></Button>
+          {!secondaryAction && <Button icon="close" onPress={closeDialog}></Button>}
+          {secondaryAction }
           {action && <Button onPress={action}>{label}</Button>}
         </Dialog.Actions>
       </Dialog>

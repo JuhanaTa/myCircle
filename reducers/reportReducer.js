@@ -4,7 +4,7 @@ import {
   getReports,
   uploadImageToFirebaseStorage
 } from '../controllers/firebaseController';
-import {setSnackbar, setTickAnimation} from './toggleReducers';
+import { setSnackbar, setTickAnimation } from './toggleReducers';
 
 const reportReducer = (state = [], action) => {
   switch (action.type) {
@@ -30,7 +30,9 @@ const setFetchedReports = () => {
 const createNewReport = (imageUri, location, description, reportTopic) => {
   return async (dispatch) => {
     try {
-      const image = await uploadImageToFirebaseStorage(imageUri);
+      const image = imageUri
+        ? await uploadImageToFirebaseStorage(imageUri)
+        : '';
       const newReportAdded = await createReport(
         description,
         image,
@@ -38,12 +40,11 @@ const createNewReport = (imageUri, location, description, reportTopic) => {
         reportTopic,
         firebase.auth().currentUser.uid
       );
-
+      dispatch(setTickAnimation());
       dispatch({
         type: 'NEW_REPORT_ADDED',
         newReportAdded
       });
-      dispatch(setTickAnimation());
     } catch (error) {
       console.log('new report error', error);
     }
