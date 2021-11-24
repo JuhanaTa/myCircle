@@ -20,6 +20,7 @@ class TickAnimation extends React.Component {
             height: 250
             //backgroundColor: '#eee',
           }}
+          duration={3}
           source={require('../../assets/tick-pop.json')}
           //more Lottie files @ https://lottiefiles.com/featured
         />

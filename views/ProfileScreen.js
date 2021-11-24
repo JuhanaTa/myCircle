@@ -52,8 +52,8 @@ const ProfileScreen = ({ navigation }) => {
     ...currentUser.userAvatar.options
   }); 
   const [visible, setVisible] = useState(true);
-  const [isAvatarSystemOpened, setAvatarSystem] = useState(true);
-  const [isPersonalDataOpened, setPersonalData] = useState(false);
+  const [isAvatarSystemOpened, setAvatarSystem] = useState(false);
+  const [isPersonalDataOpened, setPersonalData] = useState(true);
   const [isInterestOpened, setInterest] = useState(false);
   const [isEventOpened, setEvent] = useState(false);
   const [isEditDialogOpen, setEditDialog] = useState(false);
@@ -267,6 +267,7 @@ const ProfileScreen = ({ navigation }) => {
             <UserInterestsQuestionnaire
               isQuestionnaireOpened={isQuestionnaireOpened}
               closeFirstQuestionnaireDialog={closeQuestionnaire}
+              openQuestionnaire={openQuestionnaire}
             />
           </View>
         </ScrollView>
