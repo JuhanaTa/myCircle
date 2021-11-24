@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Button } from 'react-native-paper';
-import { useDispatch } from 'react-redux';
+import { Button, Snackbar } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
 import { modifyCurrentUser } from '../../reducers/currentUserReducer';
 import ModalDialog from '../globalReUseAbles/ModalDialog';
 import Radiobutton from '../RadioButton/RadioButton';
@@ -16,10 +16,12 @@ import {
 const UserInterestsQuestionnaire = ({
   isQuestionnaireOpened,
   closeFirstQuestionnaireDialog,
-  openQuestionnaire
+  openQuestionnaire,
+  handleTabPress
 }) => {
   const dispatch = useDispatch();
-  const [isPersonalDataOpened, setPersonalData] = useState(false);
+  const {currentUser} = useSelector(state => state);
+  const [isSnackbarOpened, setSnackbar] = useState(false);
   const [isPetsDialogOpened, setPetsDialog] = useState(false);
   const [isTransportationDialogOpened, setTransportationDialog] =
     useState(false);
@@ -72,17 +74,32 @@ const UserInterestsQuestionnaire = ({
 
   const handleQuestionnaireSubmission = async () => {
     setHousingDialog(false);
-    setPersonalData(false);
+    if (
+      interests.length === 0 &&
+      pets.length === 0 &&
+      transportType.length === 0 &&
+      !housingType &&
+      !employmentStatus
+    )
+      return setSnackbar(true);
+
     // updates user's interests in the db and the app's redux store
     dispatch(
       modifyCurrentUser({
-        interests,
-        pets,
-        transportType,
-        housingType,
-        employmentStatus
+        interests: interests.length !== 0 ? interests: [...currentUser?.interests] ,
+        pets: pets.length !== 0 ? pets : [...currentUser?.pets],
+        transportType: transportType.length !== 0 ? transportType : [...currentUser?.transportType],
+        housingType: housingType ? housingType : currentUser?.housingType,
+        employmentStatus: employmentStatus ? employmentStatus :currentUser?.employmentStatus
       })
     );
+    // opens the section that is updated
+    if(!interests.length) handleTabPress('personalData');
+    setCheckedInterests([]);
+    setCheckedPets([]);
+    setCheckedTransportType([]);
+    setCheckedHousingType(''),
+    setCheckedEmploymentStatus('');
   };
 
   const onCheckBoxPress = (checkedItem, checkedState, setState, type) => {
@@ -130,7 +147,9 @@ const UserInterestsQuestionnaire = ({
         open={isEmploymentDialogOpened}
         closeDialog={() => setEmploymentDialog(false)}
         action={goToPetsDialog}
-        secondaryAction={<Button icon="skip-previous" onPress={restartQuestionaire}></Button>}
+        secondaryAction={
+          <Button icon="skip-previous" onPress={restartQuestionaire}></Button>
+        }
         theme={{ colors: { primary: '#112454' } }}
         label="Next"
         title="Tell us a little bit about you!"
@@ -152,7 +171,12 @@ const UserInterestsQuestionnaire = ({
         open={isPetsDialogOpened}
         closeDialog={() => setPetsDialog(false)}
         action={goToTransportationDialog}
-        secondaryAction={<Button icon="skip-previous" onPress={backToEmploymentDialog}></Button>}
+        secondaryAction={
+          <Button
+            icon="skip-previous"
+            onPress={backToEmploymentDialog}
+          ></Button>
+        }
         theme={{ colors: { primary: '#112454' } }}
         label="Next"
         title="Tell us a little bit about you!"
@@ -170,7 +194,9 @@ const UserInterestsQuestionnaire = ({
         open={isTransportationDialogOpened}
         closeDialog={() => setTransportationDialog(false)}
         action={goToHousingDialog}
-        secondaryAction={<Button icon="skip-previous" onPress={backToPetsDialog}></Button>}
+        secondaryAction={
+          <Button icon="skip-previous" onPress={backToPetsDialog}></Button>
+        }
         theme={{ colors: { primary: '#112454' } }}
         label="Next"
         title="Tell us a little bit about you!"
@@ -192,7 +218,12 @@ const UserInterestsQuestionnaire = ({
         open={isHousingDialogOpened}
         closeDialog={() => setHousingDialog(false)}
         action={handleQuestionnaireSubmission}
-        secondaryAction={<Button icon="skip-previous" onPress={backToTransportationDialog}></Button>}
+        secondaryAction={
+          <Button
+            icon="skip-previous"
+            onPress={backToTransportationDialog}
+          ></Button>
+        }
         theme={{ colors: { primary: '#112454' } }}
         label="Submit"
         title="Tell us a little bit about you!"
@@ -216,6 +247,14 @@ const UserInterestsQuestionnaire = ({
       <Pets />
       <TransportType />
       <HousingType />
+      <Snackbar
+        style={[styles.Snackbar, { backgroundColor: '#112454' }]}
+        visible={isSnackbarOpened}
+        onDismiss={() => setSnackbar(false)}
+        duration={3000}
+      >
+        Nothing to save, no modifications made!
+      </Snackbar>
     </>
   );
 };
@@ -223,6 +262,10 @@ const UserInterestsQuestionnaire = ({
 const styles = StyleSheet.create({
   interestsContainer: {
     height: 300
+  },
+  Snackbar: {
+    justifyContent: 'center',
+    padding: 2
   }
 });
 

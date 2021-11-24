@@ -268,6 +268,7 @@ const ProfileScreen = ({ navigation }) => {
               isQuestionnaireOpened={isQuestionnaireOpened}
               closeFirstQuestionnaireDialog={closeQuestionnaire}
               openQuestionnaire={openQuestionnaire}
+              handleTabPress={handleTabPress}
             />
           </View>
         </ScrollView>
