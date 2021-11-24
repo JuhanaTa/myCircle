@@ -1,57 +1,100 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Dimensions, ScrollView, StatusBar, StyleSheet, Text, View} from 'react-native';
+import {Dimensions, ScrollView, StatusBar, StyleSheet, Text, View, Image, Platform} from 'react-native';
 import MapView, {Callout} from 'react-native-maps';
 import * as Location from 'expo-location';
-import {getReports} from '../controllers/firebaseController';
 import AppLoading from 'expo-app-loading';
 import {calculateDistance} from '../utils/DistanceCalculator';
-import {Divider, IconButton, Menu, TextInput} from 'react-native-paper';
+import {IconButton} from 'react-native-paper';
 import ModalDialog from '../components/globalReUseAbles/ModalDialog';
 import ReportTopics from '../components/reports/ReportTopics';
+import {useSelector} from 'react-redux';
 
 export default function MapScreen({navigation}) {
 
+    //all nearby reports
+    const [filteredReports, setFilteredReports] = useState([]);
 
-    const [coordinates, setCoordinates] = useState([]);
     const [currentLoc, setCurrentLoc] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isFilterDialogOpen, setFilterDialogOpen] = useState(false);
-    const [checkedTopic, setCheckedTopic] = useState();
-    const [open, setDialog] = useState(false);
+    const [checkedTopic, setCheckedTopic] = useState("");
 
-    const closeDialog = () => setDialog(false);
     const openFilterMenu = () => setFilterDialogOpen(true);
-    const closeFilterMenu = () => setFilterDialogOpen(false);
+
+    const closeFilterMenu = () => {
+        setFilterDialogOpen(false);
+        //deleteFilters();
+    };
+
+    const reports = useSelector((store) => store.reports);
 
     console.log('checked topic', checkedTopic);
 
-    const handleMenuItemEditProfilePress = () => {
-        closeFilterMenu();
-        openFilterMenu();
-    };
-
-    const handleFilerUpdate = () => {
-        closeFilterMenu();
-    };
-
     const handleChecked = (topic) => {
         setCheckedTopic(topic);
-        closeDialog();
+        applyFilterToReports(topic);
     };
 
-    const getMapMarkers = async (userLocation) => {
 
-        const newCoordinates = [];
 
-        const reports = await getReports();
-        console.log('reports', reports);
+    const getLocation = async () => {
+        let {status} = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+            console.log('Permission to access location was denied');
+            //navigation.popToTop();
+            return;
+        }
+
+        let location = await Location.getCurrentPositionAsync({});
+        console.log(location);
+
+        return location;
+    };
+
+    const deleteFilters = async () => {
+
+        const loopedReports = [];
+        const location = await getLocation();
 
         reports.forEach(element => {
 
+            if (element.location != '') {
+                if (calculateDistance(element.location.latitude, element.location.longitude, location.coords.latitude, location.coords.longitude) <= 10) {
+                    loopedReports.push(element);
+                } else {
+                    console.log('too far');
+                }
+            }
+
+
+        });
+
+        setFilteredReports(loopedReports);
+        setCheckedTopic('');
+        setCurrentLoc(location);
+    };
+
+    const getMapMarkers = async () => {
+
+        const loopedReports = [];
+
+        const location = await getLocation();
+
+        reports.forEach(element => {
 
             if (element.location != '') {
-                if (calculateDistance(element.location.latitude, element.location.longitude, userLocation.coords.latitude, userLocation.coords.longitude) <= 10) {
-                    newCoordinates.push(element);
+                if (calculateDistance(element.location.latitude, element.location.longitude, location.coords.latitude, location.coords.longitude) <= 10) {
+
+                    if (checkedTopic.length != 0) {
+                        if (element.topic == checkedTopic) {
+                            loopedReports.push(element);
+                        } else {
+                            console.log('wrong topic');
+                        }
+                    } else {
+                        loopedReports.push(element);
+                    }
+
                 } else {
                     console.log('too far');
                 }
@@ -60,26 +103,44 @@ export default function MapScreen({navigation}) {
 
         });
 
-        setCoordinates(newCoordinates);
-        setCurrentLoc(userLocation);
+        setFilteredReports(loopedReports);
+        setCurrentLoc(location);
         setLoading(false);
 
     };
 
+    const applyFilterToReports = async (topic) => {
+
+        const loopedReports = [];
+
+        const location = await getLocation();
+
+        reports.forEach(element => {
+
+            if (element.location != '') {
+                if (calculateDistance(element.location.latitude, element.location.longitude, location.coords.latitude, location.coords.longitude) <= 10) {
+                    if (element.topic == topic) {
+                        loopedReports.push(element);
+                    } else {
+                        console.log('wrong topic');
+                    }
+                } else {
+                    console.log('too far');
+                }
+            }
+
+        });
+
+        setFilteredReports(loopedReports);
+        setCurrentLoc(location);
+    };
+
+
+    console.log('reports', filteredReports[0]);
 
     useEffect(() => {
         (async () => {
-            let {status} = await Location.requestForegroundPermissionsAsync();
-            if (status !== 'granted') {
-                console.log('Permission to access location was denied');
-                //navigation.popToTop();
-                return;
-            }
-
-            let location = await Location.getCurrentPositionAsync({});
-            console.log(location);
-
-            getMapMarkers(location);
+            getMapMarkers();
         })();
     }, []);
 
@@ -108,56 +169,89 @@ export default function MapScreen({navigation}) {
                     radius={50}
                     maxIntensity={100}
                     gradientSmoothing={10}
-                    heatmapMode={"POINTS_DENSITY"} /> */}
+                    heatmapMode={"POINTS_DENSITY"} /> 
+                    
+                    
+                    <Text style={{alignSelf: 'center'}}> <Image style={{ height: 100, width: 100 }} source={{ uri: marker.image }} resizeMode='contain' /> </Text>*/
+                            }
 
                             <MapView.Circle
                                 center={{
                                     latitude: currentLoc.coords.latitude,
                                     longitude: currentLoc.coords.longitude,
                                 }}
-                                radius={3000}
+                                radius={10000}
                                 strokeWidth={1}
                                 strokeColor={'#1a66ff'}
                                 fillColor={'rgba(230,238,255,0.5)'}
                             />
-                            {coordinates.map(marker => (
+                            {filteredReports.map(marker => (
+
                                 <MapView.Marker
                                     key={marker.location.description}
                                     coordinate={marker.location}
                                     title={marker.description}
                                 >
-                                    <Callout onPress={() => {
+                                    <Callout tooltip onPress={() => {
                                         console.log('clicked marker view', marker);
                                         navigation.navigate('EventScreen', {
                                             data: marker
                                         });
+
+
                                     }}>
-                                        <View>
-                                            <View style={{width: 200, height: 200, padding: 10}}>
-                                                <Text>{marker.description}</Text>
-                                            </View>
+                                        <View style={{width: 200, height: 200, padding: 10, borderRadius: 20, backgroundColor: 'white'}}>
+                                            <Text>Topic: {marker.topic}</Text>
+                                            <Text>Description: {marker.description}</Text>
                                         </View>
                                     </Callout>
                                 </MapView.Marker>
                             ))}
 
                         </MapView>
+
                         <View
                             style={{
                                 position: 'absolute',//use absolute position to show button on top of the map
-                                top: '0%', //for center align
-                                right: '82%',
-                                alignSelf: 'flex-end' //for align to right
+                                top: '1%', //for center align
+                                right: '83%',
+                                alignSelf: 'flex-end', //for align to right
+                                backgroundColor: 'white',
+                                borderRadius: 30,
+
                             }}
                         >
-                            <IconButton title='asd'
-                                icon="filter-outline"
-                                color={'#007bff'}
-                                style={{backgroundColor: 'white'}}
-                                size={35}
-                                onPress={() => openFilterMenu()}
-                            >
-                            </IconButton>
+                            {checkedTopic.length == 0 ? (
+                                <IconButton title='asd'
+                                    icon="filter-outline"
+                                    color={'#007bff'}
+                                    style={{backgroundColor: 'white'}}
+                                    size={30}
+                                    onPress={() => openFilterMenu()}
+                                >
+                                </IconButton>
+
+                            ) : (
+                                <View style>
+                                    <IconButton title='asd'
+                                        icon="filter-outline"
+                                        color={'#007bff'}
+                                        style={{backgroundColor: 'white', borderBottomLeftRadius: 0, borderBottomRightRadius: 0}}
+                                        size={30}
+                                        onPress={() => openFilterMenu()}
+                                    >
+                                    </IconButton>
+                                    <IconButton title='asd'
+                                        icon="close"
+                                        color={'#007bff'}
+                                        style={{backgroundColor: 'white', borderTopLeftRadius: 0, borderTopRightRadius: 0}}
+                                        size={30}
+                                        onPress={async () => {await deleteFilters();}}
+                                    >
+                                    </IconButton>
+                                </View>
+                            )}
+
                         </View>
 
                     </>
@@ -165,9 +259,8 @@ export default function MapScreen({navigation}) {
                 <ModalDialog
                     open={isFilterDialogOpen}
                     closeDialog={closeFilterMenu}
-                    action={handleFilerUpdate}
                     theme={{colors: {primary: '#112454'}}}
-                    label="Select"
+                    label="Apply"
                     title="Edit Filters"
                 >
                     <ScrollView>

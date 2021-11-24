@@ -6,7 +6,7 @@ import Radiobutton from '../RadioButton/RadioButton';
 
 const ReportTopics = ({ checked, setChecked }) => {
   // renders the report topics for user to choose from
-
+  console.log('checked topic in report topics', checked);
   const onRadioButtonPress = (checkedItem) => {
     setChecked(checkedItem);
   };

@@ -52,8 +52,8 @@ export default function HeatMapButton({navigation, location, reportsData}) {
               initialRegion={{
                 latitude: location.coords.latitude,
                 longitude: location.coords.longitude,
-                latitudeDelta: 0.06,
-                longitudeDelta: 0.06
+                latitudeDelta: 0.001,
+                longitudeDelta: 0.001
               }}
             >
               <MapView.Circle
@@ -61,7 +61,7 @@ export default function HeatMapButton({navigation, location, reportsData}) {
                   latitude: location.coords.latitude,
                   longitude: location.coords.longitude,
                 }}
-                radius={3000}
+                radius={10000}
                 strokeWidth={1}
                 strokeColor={'#1a66ff'}
                 fillColor={'rgba(230,238,255,0.5)'}

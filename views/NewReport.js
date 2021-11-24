@@ -294,7 +294,6 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    paddingTop: '25%'
   },
   background: {
     position: 'absolute',

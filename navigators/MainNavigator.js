@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from '../views/HomeScreen';
 import ProfileScreen from '../views/ProfileScreen';
 import NewReport from '../views/NewReport';
+import ReportsPage from '../views/ReportsPage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Provider as PaperProvider } from 'react-native-paper';
@@ -58,10 +59,16 @@ const NewStackScreen = () => {
   return (
     <NewStack.Navigator>
       <NewStack.Screen
-        name="NewStack"
-        component={NewReport}
+        name="Reports"
+        component={ReportsPage}
         options={{ headerShown: false }}
       />
+      <NewStack.Screen
+        name="NewStack"
+        component={NewReport}
+        options={{ headerShown: true }}
+      />
+      <HomeStack.Screen name="EventScreen" component={EventScreen} />
     </NewStack.Navigator>
   );
 };
