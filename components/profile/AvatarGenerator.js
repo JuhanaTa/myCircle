@@ -81,6 +81,7 @@ const AvatarGenerator = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    position: 'relative',
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -90,7 +91,8 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 8,
     borderTopStartRadius: 8,
     borderBottomRightRadius: 8,
-    borderBottomLeftRadius: 8
+    borderBottomLeftRadius: 8,
+    height: 40
   }
 });
 

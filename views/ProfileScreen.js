@@ -4,12 +4,19 @@ import {
   Text,
   TouchableOpacity,
   View,
-  ScrollView, Image
+  ScrollView,
+  Image,
+  ImageBackground
 } from 'react-native';
+import startImage from '../assets/game-image/start.png';
+import middleImage from '../assets/game-image/suburb.png';
+import biggestImage from '../assets/game-image/City.png';
+
 import UserAvatar from '../components/profile/UserAvatar';
 import { IconButton } from 'react-native-paper';
 import EditProfile from '../components/profile/EditProfile';
 import AppLoading from 'expo-app-loading';
+import BackgroundImage from '../components/BackgorundCircle';
 
 import { LinearGradient } from 'expo-linear-gradient';
 import {
@@ -28,7 +35,8 @@ import UserInterestsQuestionnaire from '../components/profile/UserInterestsQuest
 import { useDispatch, useSelector } from 'react-redux';
 import AvatarGenerator from '../components/profile/AvatarGenerator';
 import getAvatarUri, {
-  avatarDefaults, getRandomisedAvatarOptions
+  avatarDefaults,
+  getRandomisedAvatarOptions
 } from '../components/profile/avatarConfig';
 import { modifyCurrentUser } from '../reducers/currentUserReducer';
 import ProfileSectionContainer from '../components/profile/ProfileSectionContainer';
@@ -47,10 +55,9 @@ const ProfileScreen = ({ navigation }) => {
   });
   const { currentUser } = useSelector((state) => state);
   const dispatch = useDispatch();
- 
   const [avatarOptions, setAvatar] = useState({
     ...currentUser.userAvatar.options
-  }); 
+  });
   const [visible, setVisible] = useState(true);
   const [isAvatarSystemOpened, setAvatarSystem] = useState(false);
   const [isPersonalDataOpened, setPersonalData] = useState(true);
@@ -184,101 +191,129 @@ const ProfileScreen = ({ navigation }) => {
       </View>
     );
   };
-
-  console.log('game points', currentUser.gamePoints);
-  
+  let DEFAULT_IMAGE;
+  if (currentUser?.gamePoints >= 0 && currentUser?.gamePoints < 2000) {
+    DEFAULT_IMAGE = Image.resolveAssetSource(startImage).uri;
+  }
+  if (currentUser?.gamePoints >= 2000 && currentUser?.gamePoints < 30000) {
+    DEFAULT_IMAGE = Image.resolveAssetSource(middleImage).uri;
+  }
+  if (currentUser?.gamePoints > 30000) {
+    DEFAULT_IMAGE = Image.resolveAssetSource(biggestImage).uri;
+  }
 
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
     return (
       <LinearGradient colors={['#00c6ff', '#0072ff']} style={styles.background}>
-        <ScrollView>
+        <BackgroundImage></BackgroundImage>
+        <ScrollView contentContainerStyle={styles.list}>
           <View style={styles.container}>
-            <View style={styles.avatarContainer}>
-              <View style={styles.avatar}>
-                <UserAvatar
-                  uri={
-                    visible
-                      ? getAvatarUri(
-                          avatarOptions.avatarStyle,
-                          avatarOptions.topType,
-                          avatarOptions.accessoriesType,
-                          avatarOptions.hairColor,
-                          avatarOptions.facialHairType,
-                          avatarOptions.clotheType,
-                          avatarOptions.eyeType,
-                          avatarOptions.eyebrowType,
-                          avatarOptions.mouthType,
-                          avatarOptions.skinColor
-                        )
-                      : currentUser?.userAvatar.uri
-                  }
-                  transparent={avatarOptions.avatarStyle === 'Transparent'}
-                />
-                <NavBar />
-               { currentUser?.gamePoints > 4 && <Image style={{height:90, width:90}} source={{uri:'https://reactjs.org/logo-og.png'}} />}
+            <ImageBackground
+              source={{ uri: DEFAULT_IMAGE }}
+              resizeMode="cover"
+              style={styles.image}
+            >
+              <View style={styles.avatarContainer}>
+                <View style={styles.avatar}>
+                  <UserAvatar
+                    uri={
+                      visible
+                        ? getAvatarUri(
+                            avatarOptions.avatarStyle,
+                            avatarOptions.topType,
+                            avatarOptions.accessoriesType,
+                            avatarOptions.hairColor,
+                            avatarOptions.facialHairType,
+                            avatarOptions.clotheType,
+                            avatarOptions.eyeType,
+                            avatarOptions.eyebrowType,
+                            avatarOptions.mouthType,
+                            avatarOptions.skinColor
+                          )
+                        : currentUser?.userAvatar.uri
+                    }
+                    transparent={avatarOptions.avatarStyle === 'Transparent'}
+                  />
+                </View>
               </View>
+            </ImageBackground>
+
+            <View
+              style={{
+                flex: 1,
+                height: '100%',
+                width: '100%',
+                backgroundColor: '#f2f4f7',
+                paddingTop: '8%',
+                paddingBottom: '5%',
+                borderTopLeftRadius: 25,
+                borderTopRightRadius: 25
+              }}
+            >
+              <NavBar />
               <View style={styles.infoContainer}>
-                <Text style={styles.username}>
-                  {name ? name : 'MyCircle App '}
+                <Text style={styles.username}>{name ? name : 'User '}</Text>
+                <Text style={styles.points}>
+                  {currentUser?.gamePoints} Points
                 </Text>
               </View>
+              <AvatarGenerator
+                generateAvatar={generateAvatar}
+                generateRandomAvatar={generateRandomAvatar}
+                resetAvatar={resetAvatar}
+                saveAvatarToDb={saveAvatarToDb}
+                setVisible={setVisible}
+                visible={visible}
+                isAvatarSystemOpened={isAvatarSystemOpened}
+              />
+              <ProfileSectionContainer
+                visible={isPersonalDataOpened}
+                title="Personal Data"
+                type="personalData"
+                action={
+                  <TouchableOpacity onPress={openEditDialog}>
+                    <IconButton icon="pencil" />
+                  </TouchableOpacity>
+                }
+              />
+
+              <ProfileSectionContainer
+                visible={isInterestOpened}
+                title="Your Interests"
+                type="interests"
+                action={
+                  <TouchableOpacity onPress={openQuestionnaire}>
+                    <IconButton icon="pencil" />
+                  </TouchableOpacity>
+                }
+              />
+
+              <ProfileSectionContainer
+                visible={isEventOpened}
+                title="Saved Events"
+                type="events"
+              />
+
+              <EditProfile
+                email={email}
+                name={name}
+                password={password}
+                handleEmailChange={handleEmailChange}
+                handleNameChange={handleNameChange}
+                handlePasswordChange={handlePasswordChange}
+                open={isEditDialogOpen}
+                closeDialog={closeEditDialog}
+                action={handleProfileUpdate}
+              />
+              <UserInterestsQuestionnaire
+                isQuestionnaireOpened={isQuestionnaireOpened}
+                closeFirstQuestionnaireDialog={closeQuestionnaire}
+                openQuestionnaire={openQuestionnaire}
+                handleTabPress={handleTabPress}
+              />
             </View>
-            <AvatarGenerator
-              generateAvatar={generateAvatar}
-              generateRandomAvatar={generateRandomAvatar}
-              resetAvatar={resetAvatar}
-              saveAvatarToDb={saveAvatarToDb}
-              setVisible={setVisible}
-              visible={visible}
-              isAvatarSystemOpened={isAvatarSystemOpened}
-            />
-            <ProfileSectionContainer
-              visible={isPersonalDataOpened}
-              title="Personal Data"
-              type="personalData"
-              action={
-                <TouchableOpacity onPress={openEditDialog}>
-                  <IconButton icon="pencil" />
-                </TouchableOpacity>
-              }
-            />
-
-            <ProfileSectionContainer
-              visible={isInterestOpened}
-              title="Your Interests"
-              type="interests"
-              action={
-                <TouchableOpacity onPress={openQuestionnaire}>
-                  <IconButton icon="pencil" />
-                </TouchableOpacity>
-              }
-            />
-
-            <ProfileSectionContainer
-              visible={isEventOpened}
-              title="Saved Events"
-              type="events"
-            />
-
-            <EditProfile
-              email={email}
-              name={name}
-              password={password}
-              handleEmailChange={handleEmailChange}
-              handleNameChange={handleNameChange}
-              handlePasswordChange={handlePasswordChange}
-              open={isEditDialogOpen}
-              closeDialog={closeEditDialog}
-              action={handleProfileUpdate}
-            />
-            <UserInterestsQuestionnaire
-              isQuestionnaireOpened={isQuestionnaireOpened}
-              closeFirstQuestionnaireDialog={closeQuestionnaire}
-              openQuestionnaire={openQuestionnaire}
-              handleTabPress={handleTabPress}
-            />
           </View>
         </ScrollView>
       </LinearGradient>
@@ -294,8 +329,14 @@ const styles = StyleSheet.create({
     top: 0,
     height: '100%'
   },
+  list: {
+    flex: 1,
+    height: '100%'
+  },
   container: {
     flex: 1,
+
+    height: '100%',
     paddingTop: '20%'
   },
   accordion: {
@@ -313,7 +354,7 @@ const styles = StyleSheet.create({
     height: '1%'
   },
   avatar: {
-    flex: 0.8,
+    flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
@@ -322,12 +363,11 @@ const styles = StyleSheet.create({
     position: 'relative'
   },
   avatarContainer: {
-    flex: 0.9,
+    flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-
-    margin: '5%'
+    width: '100%'
   },
 
   editprofilebutton: {
@@ -346,14 +386,14 @@ const styles = StyleSheet.create({
   },
 
   infoContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center'
   },
   navBar: {
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   menu: {
     position: 'absolute',
@@ -366,12 +406,25 @@ const styles = StyleSheet.create({
   listsection: {},
   username: {
     color: '#112454',
-    margin: '5%',
+    margin: '1%',
     fontSize: 30,
-    width: '100%',
+
     textAlign: 'center',
     display: 'flex',
     fontFamily: 'Inter_700Bold'
+  },
+  image: {
+    flex: 1,
+    justifyContent: 'center'
+  },
+  points: {
+    color: '#112454',
+    margin: '2%',
+    fontSize: 20,
+
+    textAlign: 'center',
+    display: 'flex',
+    fontFamily: 'Inter_500Medium'
   },
   moreIcon: {
     backgroundColor: '#9042f5',

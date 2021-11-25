@@ -49,7 +49,7 @@ const ProfileSectionContainer = ({ visible, title, action, type }) => {
 
   const PersonalData = () => {
     return (
-      <View>
+      <View style={{ flex: 1 }}>
         <Text style={[styles.text]}> {currentUser?.email} </Text>
         <Text style={[styles.text]}> {currentUser?.name} </Text>
         {currentUser?.pets.length > 0 && (
@@ -117,11 +117,10 @@ const ProfileSectionContainer = ({ visible, title, action, type }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
-    padding: 10
+    flex: 1,
+    justifyContent: 'flex-start'
   },
   header: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
@@ -144,7 +143,7 @@ const styles = StyleSheet.create({
   },
   text: {
     padding: 10,
-    color: '#566787'
+    color: '#112454'
   }
 });
 

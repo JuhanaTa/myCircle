@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,10 +7,10 @@ import {
   Image,
   TouchableOpacity
 } from 'react-native';
-import {Button} from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import AppLoading from 'expo-app-loading';
-import {LinearGradient} from 'expo-linear-gradient';
-import {useSelector} from 'react-redux';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useSelector } from 'react-redux';
 import * as Location from 'expo-location';
 import {
   useFonts,
@@ -26,12 +26,14 @@ import {
 } from '@expo-google-fonts/inter';
 import HeatMapButton from '../components/HeatMapButton';
 import EventListButton from '../components/EventListButton';
-import {logOut} from '../controllers/firebaseController';
+import { logOut } from '../controllers/firebaseController';
 import TickAnimationWrapper from '../components/globalReUseAbles/TickAnimationWrapper.js';
 import EventList from '../components/EventList';
-import {calculateDistance} from '../utils/DistanceCalculator';
+import BackgroundImage from '../components/BackgorundCircle';
 
-const HomeScreen = ({navigation}) => {
+import { calculateDistance } from '../utils/DistanceCalculator';
+
+const HomeScreen = ({ navigation }) => {
   const [location, setLocation] = useState([]);
 
   let [fontsLoaded] = useFonts({
@@ -80,90 +82,85 @@ const HomeScreen = ({navigation}) => {
     userId: 'ad'
   });
 
-
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
     return (
       <LinearGradient colors={['#00c6ff', '#0072ff']} style={styles.background}>
-          <>
-            <TickAnimationWrapper />
-            <ScrollView style={styles.list}>
+        <>
+          <BackgroundImage></BackgroundImage>
+          <TickAnimationWrapper />
+          <ScrollView style={styles.list}>
+            <View style={styles.container}>
+              <View style={styles.logoContainer}>
+                <Image
+                  style={styles.image}
+                  source={require('../assets/Logo.png')}
+                  resizeMode="contain"
+                />
+                <Button
+                  style={styles.button}
+                  theme={{ colors: { primary: '#007bff' } }}
+                  onPress={async () => {
+                    await logOut();
+                  }}
+                >
+                  Log out
+                </Button>
+              </View>
+              <View style={styles.header}>
+                <Text style={styles.mainHeader}>Welcome!</Text>
+              </View>
 
-              <View style={styles.container}>
-
-                <View style={styles.logoContainer}>
-                  <Image
-                    style={styles.image}
-                    source={require('../assets/Logo.png')}
-                    resizeMode="contain"
-                  />
-                  <Button
-                    style={styles.button}
-                    theme={{colors: {primary: '#007bff'}}}
-                    onPress={async () => {
-                      await logOut();
+              {location.length != 0 && (
+                <HeatMapButton
+                  navigation={navigation}
+                  location={location}
+                  reportsData={reportsData}
+                ></HeatMapButton>
+              )}
+              <View style={styles.listContainer}>
+                {reportsData && (
+                  <View
+                    style={{
+                      width: '100%',
+                      backgroundColor: '#f2f4f7',
+                      paddingTop: '8%',
+                      paddingBottom: '5%',
+                      borderTopLeftRadius: 25,
+                      borderTopRightRadius: 25
                     }}
                   >
-                    Log out
-                  </Button>
-                </View>
-                <View style={styles.header}>
-                  <Text style={styles.mainHeader}>Welcome!</Text>
-                </View>
-
-
-                {location.length != 0 && (
-                  <HeatMapButton
-                    navigation={navigation}
-                    location={location}
-                    reportsData={reportsData}
-                  ></HeatMapButton>
-                )}
-                <View style={styles.listContainer}>
-                  {reportsData && (
                     <View
                       style={{
-                        width: '100%',
-                        backgroundColor: '#f2f4f7',
-                        paddingTop: '8%',
-                        paddingBottom: '5%',
-                        borderTopLeftRadius: 25,
-                        borderTopRightRadius: 25
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        marginLeft: 10,
+                        marginRight: 10
                       }}
                     >
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          marginLeft: 10,
-                          marginRight: 10
+                      <Text style={styles.recentHeader}></Text>
+                      <TouchableOpacity
+                        onPress={() => {
+                          navigation.navigate('EventListScreen'),
+                            { location: location };
                         }}
                       >
-                        <Text style={styles.recentHeader}>
-                          5 new events in your area
-                        </Text>
-                        <TouchableOpacity
-                          onPress={() => {
-                            navigation.navigate('EventListScreen'),
-                              {location: location};
-                          }}
-                        >
-                          <Text style={styles.recentHeader}>More</Text>
-                        </TouchableOpacity>
-                      </View>
-                      {recentReports.length > 0 &&
-                        <EventList
-                          navigation={navigation}
-                          reportsData={recentReports}
-                        ></EventList>
-                      }
+                        <Text style={styles.recentHeader}>More</Text>
+                      </TouchableOpacity>
                     </View>
-                  )}
-                </View>
+                    {recentReports.length > 0 && (
+                      <EventList
+                        navigation={navigation}
+                        reportsData={recentReports}
+                      ></EventList>
+                    )}
+                  </View>
+                )}
               </View>
-            </ScrollView>
-          </>
+            </View>
+          </ScrollView>
+        </>
       </LinearGradient>
     );
   }

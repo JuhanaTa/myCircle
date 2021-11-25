@@ -4,6 +4,7 @@ import { StyleSheet, View, Text } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import EventList from '../components/EventList';
 import AppLoading from 'expo-app-loading';
+import BackgroundImage from '../components/BackgorundCircle';
 
 import {
   useFonts,
@@ -40,6 +41,7 @@ export default function EventListScreen({ navigation }) {
           colors={['#00c6ff', '#0072ff']}
           style={styles.background}
         />
+        <BackgroundImage></BackgroundImage>
         <View style={styles.header}>
           <Text style={styles.mainHeader}>All reports</Text>
         </View>
