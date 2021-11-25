@@ -30,6 +30,7 @@ import { useDispatch } from 'react-redux';
 import { createNewReport } from '../reducers/reportReducer';
 import getGeocoding from '../controllers/apiCalls';
 import ModalDialog from '../components/globalReUseAbles/ModalDialog';
+import BackgroundImage from '../components/BackgorundCircle';
 
 const NewReport = ({ navigation }) => {
   const { image, video, getImage, launchCamera, setImage } = useCamera({});
@@ -180,6 +181,7 @@ const NewReport = ({ navigation }) => {
   } else {
     return (
       <LinearGradient colors={['#00c6ff', '#0072ff']} style={styles.background}>
+        <BackgroundImage></BackgroundImage>
         <ScrollView>
           <View style={styles.container}>
             <View style={styles.header}>
@@ -293,7 +295,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     alignItems: 'flex-start',
-    justifyContent: 'flex-start',
+    justifyContent: 'flex-start'
   },
   background: {
     position: 'absolute',
@@ -429,7 +431,7 @@ const styles = StyleSheet.create({
     padding: '1%',
     paddingLeft: '3%',
     paddingRight: '3%',
-    borderRadius: 44 / 2,
+    borderRadius: 44 / 2
   },
   dialogText: {
     fontSize: 16,

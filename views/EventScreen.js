@@ -69,7 +69,6 @@ const styles = StyleSheet.create({
     height: '100%'
   },
   button: {
-    backgroundColor: 'red',
     width: '100%',
     height: '100%',
 

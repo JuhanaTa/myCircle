@@ -14,7 +14,28 @@ import { Button, Menu, Divider, Snackbar } from 'react-native-paper';
 // onClose func for closing the menu
 // visible => boolean for the state of the menu
 const Option = ({ option, action }) => (
-  <TouchableOpacity onPress={() => action(option)}>
+  <TouchableOpacity
+    onPress={() => action(option)}
+    style={{
+      backgroundColor: '#fff',
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 1
+      },
+      shadowOpacity: 0.2,
+      shadowRadius: 1.41,
+
+      elevation: 2,
+      height: 45,
+      padding: 1,
+      margin: 3,
+      borderTopEndRadius: 8,
+      borderTopStartRadius: 8,
+      borderBottomRightRadius: 8,
+      borderBottomLeftRadius: 8
+    }}
+  >
     <Text style={styles.text}>{option}</Text>
   </TouchableOpacity>
 );
@@ -54,21 +75,25 @@ const OptionsMenu = ({
 
   return (
     <SafeAreaView style={styles.container}>
-      
-        <Snackbar
-          style={[styles.Snackbar, {backgroundColor: '#112454'}]}
-          visible={isSnackbarOpened}
-          onDismiss={closeSnackbar}
-          duration={3000}
-        >
-          You&#39;ll lose your changes, modifications to avatar not saved!
-        </Snackbar>
-      
+      <Snackbar
+        style={[styles.Snackbar, { backgroundColor: '#112454' }]}
+        visible={isSnackbarOpened}
+        onDismiss={closeSnackbar}
+        duration={3000}
+      >
+        You&#39;ll lose your changes, modifications to avatar not saved!
+      </Snackbar>
 
       <View style={styles.header}>
         <Button color="#007bff" icon="close" onPress={handleclose}></Button>
         <Text style={[styles.text, { fontWeight: 'bold' }]}> {title} </Text>
-        <Button color="#007bff" icon='shuffle-variant' onPress={generateRandomAvatar}>Random</Button>
+        <Button
+          color="#007bff"
+          icon="shuffle-variant"
+          onPress={generateRandomAvatar}
+        >
+          Random
+        </Button>
         <Menu
           visible={open}
           onDismiss={() => setMoreMenu(false)}
@@ -100,15 +125,15 @@ const OptionsMenu = ({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: '#FFF',
+    flexDirection: 'column',
+    borderRadius: 25,
+    elevation: 10,
+    shadowColor: '#000',
     paddingBottom: 8,
-    paddingLeft: 10,
-    backgroundColor: '#ffffff'
+    paddingLeft: 10
   },
   header: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -120,7 +145,6 @@ const styles = StyleSheet.create({
   Snackbar: {
     alignItems: 'center',
     justifyContent: 'space-between',
-    flex: 1,
     padding: 8
   }
 });

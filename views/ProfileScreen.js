@@ -10,6 +10,7 @@ import UserAvatar from '../components/profile/UserAvatar';
 import { IconButton } from 'react-native-paper';
 import EditProfile from '../components/profile/EditProfile';
 import AppLoading from 'expo-app-loading';
+import BackgroundImage from '../components/BackgorundCircle';
 
 import { LinearGradient } from 'expo-linear-gradient';
 import {
@@ -28,7 +29,8 @@ import UserInterestsQuestionnaire from '../components/profile/UserInterestsQuest
 import { useDispatch, useSelector } from 'react-redux';
 import AvatarGenerator from '../components/profile/AvatarGenerator';
 import getAvatarUri, {
-  avatarDefaults, getRandomisedAvatarOptions
+  avatarDefaults,
+  getRandomisedAvatarOptions
 } from '../components/profile/avatarConfig';
 import { modifyCurrentUser } from '../reducers/currentUserReducer';
 import ProfileSectionContainer from '../components/profile/ProfileSectionContainer';
@@ -47,10 +49,10 @@ const ProfileScreen = ({ navigation }) => {
   });
   const { currentUser } = useSelector((state) => state);
   const dispatch = useDispatch();
- 
+  console.log(currentUser);
   const [avatarOptions, setAvatar] = useState({
     ...currentUser.userAvatar.options
-  }); 
+  });
   const [visible, setVisible] = useState(true);
   const [isAvatarSystemOpened, setAvatarSystem] = useState(false);
   const [isPersonalDataOpened, setPersonalData] = useState(true);
@@ -190,7 +192,8 @@ const ProfileScreen = ({ navigation }) => {
   } else {
     return (
       <LinearGradient colors={['#00c6ff', '#0072ff']} style={styles.background}>
-        <ScrollView>
+        <BackgroundImage></BackgroundImage>
+        <ScrollView contentContainerStyle={styles.list}>
           <View style={styles.container}>
             <View style={styles.avatarContainer}>
               <View style={styles.avatar}>
@@ -221,60 +224,73 @@ const ProfileScreen = ({ navigation }) => {
                 </Text>
               </View>
             </View>
-            <AvatarGenerator
-              generateAvatar={generateAvatar}
-              generateRandomAvatar={generateRandomAvatar}
-              resetAvatar={resetAvatar}
-              saveAvatarToDb={saveAvatarToDb}
-              setVisible={setVisible}
-              visible={visible}
-              isAvatarSystemOpened={isAvatarSystemOpened}
-            />
-            <ProfileSectionContainer
-              visible={isPersonalDataOpened}
-              title="Personal Data"
-              type="personalData"
-              action={
-                <TouchableOpacity onPress={openEditDialog}>
-                  <IconButton icon="pencil" />
-                </TouchableOpacity>
-              }
-            />
+            <View
+              style={{
+                flex: 0.5,
+                height: '100%',
+                width: '100%',
+                backgroundColor: '#f2f4f7',
+                paddingTop: '8%',
+                paddingBottom: '5%',
+                borderTopLeftRadius: 25,
+                borderTopRightRadius: 25
+              }}
+            >
+              <AvatarGenerator
+                generateAvatar={generateAvatar}
+                generateRandomAvatar={generateRandomAvatar}
+                resetAvatar={resetAvatar}
+                saveAvatarToDb={saveAvatarToDb}
+                setVisible={setVisible}
+                visible={visible}
+                isAvatarSystemOpened={isAvatarSystemOpened}
+              />
+              <ProfileSectionContainer
+                visible={isPersonalDataOpened}
+                title="Personal Data"
+                type="personalData"
+                action={
+                  <TouchableOpacity onPress={openEditDialog}>
+                    <IconButton icon="pencil" />
+                  </TouchableOpacity>
+                }
+              />
 
-            <ProfileSectionContainer
-              visible={isInterestOpened}
-              title="Your Interests"
-              type="interests"
-              action={
-                <TouchableOpacity onPress={openQuestionnaire}>
-                  <IconButton icon="pencil" />
-                </TouchableOpacity>
-              }
-            />
+              <ProfileSectionContainer
+                visible={isInterestOpened}
+                title="Your Interests"
+                type="interests"
+                action={
+                  <TouchableOpacity onPress={openQuestionnaire}>
+                    <IconButton icon="pencil" />
+                  </TouchableOpacity>
+                }
+              />
 
-            <ProfileSectionContainer
-              visible={isEventOpened}
-              title="Saved Events"
-              type="events"
-            />
+              <ProfileSectionContainer
+                visible={isEventOpened}
+                title="Saved Events"
+                type="events"
+              />
 
-            <EditProfile
-              email={email}
-              name={name}
-              password={password}
-              handleEmailChange={handleEmailChange}
-              handleNameChange={handleNameChange}
-              handlePasswordChange={handlePasswordChange}
-              open={isEditDialogOpen}
-              closeDialog={closeEditDialog}
-              action={handleProfileUpdate}
-            />
-            <UserInterestsQuestionnaire
-              isQuestionnaireOpened={isQuestionnaireOpened}
-              closeFirstQuestionnaireDialog={closeQuestionnaire}
-              openQuestionnaire={openQuestionnaire}
-              handleTabPress={handleTabPress}
-            />
+              <EditProfile
+                email={email}
+                name={name}
+                password={password}
+                handleEmailChange={handleEmailChange}
+                handleNameChange={handleNameChange}
+                handlePasswordChange={handlePasswordChange}
+                open={isEditDialogOpen}
+                closeDialog={closeEditDialog}
+                action={handleProfileUpdate}
+              />
+              <UserInterestsQuestionnaire
+                isQuestionnaireOpened={isQuestionnaireOpened}
+                closeFirstQuestionnaireDialog={closeQuestionnaire}
+                openQuestionnaire={openQuestionnaire}
+                handleTabPress={handleTabPress}
+              />
+            </View>
           </View>
         </ScrollView>
       </LinearGradient>
@@ -290,8 +306,14 @@ const styles = StyleSheet.create({
     top: 0,
     height: '100%'
   },
+  list: {
+    flex: 1,
+    height: '100%'
+  },
   container: {
     flex: 1,
+
+    height: '100%',
     paddingTop: '20%'
   },
   accordion: {
@@ -309,7 +331,7 @@ const styles = StyleSheet.create({
     height: '1%'
   },
   avatar: {
-    flex: 0.8,
+    flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
@@ -318,12 +340,10 @@ const styles = StyleSheet.create({
     position: 'relative'
   },
   avatarContainer: {
-    flex: 0.9,
+    flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center',
-
-    margin: '5%'
+    alignItems: 'center'
   },
 
   editprofilebutton: {
@@ -349,7 +369,7 @@ const styles = StyleSheet.create({
   navBar: {
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   menu: {
     position: 'absolute',

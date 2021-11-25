@@ -1,15 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  Image,
-} from 'react-native';
-import {Button} from 'react-native-paper';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
+import { Button } from 'react-native-paper';
 import AppLoading from 'expo-app-loading';
-import {LinearGradient} from 'expo-linear-gradient';
-import {useSelector} from 'react-redux';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useSelector } from 'react-redux';
 import * as Location from 'expo-location';
 import {
   useFonts,
@@ -26,8 +20,7 @@ import {
 import EventList from '../components/EventList';
 import firebase from 'firebase';
 
-
-const ReportsPage = ({navigation}) => {
+const ReportsPage = ({ navigation }) => {
   const [location, setLocation] = useState([]);
 
   let [fontsLoaded] = useFonts({
@@ -61,75 +54,70 @@ const ReportsPage = ({navigation}) => {
   //this needs some logic to show relevant/newest reports
 
   const recentReports = [];
-  
-  reportsData.forEach(element => {
-      if(element.userId == firebase.auth().currentUser.uid){
-        recentReports.push(element);
-  }
-      
-  });
 
+  reportsData.forEach((element) => {
+    if (element.userId == firebase.auth().currentUser.uid) {
+      recentReports.push(element);
+    }
+  });
 
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
     return (
       <LinearGradient colors={['#00c6ff', '#0072ff']} style={styles.background}>
-          <>
-            <ScrollView style={styles.list}>
+        <>
+          <ScrollView contentContainerStyle={styles.list}>
+            <View style={styles.container}>
+              <View style={styles.logoContainer}>
+                <Image
+                  style={styles.image}
+                  source={require('../assets/Logo.png')}
+                  resizeMode="contain"
+                />
+                <Button
+                  style={styles.button}
+                  theme={{ colors: { primary: '#007bff' } }}
+                  onPress={async () => {
+                    navigation.navigate('NewStack');
+                  }}
+                >
+                  CREATE NEW REPORT
+                </Button>
+              </View>
 
-              <View style={styles.container}>
-
-                <View style={styles.logoContainer}>
-                  <Image
-                    style={styles.image}
-                    source={require('../assets/Logo.png')}
-                    resizeMode="contain"
-                  />
-                  <Button
-                    style={styles.button}
-                    theme={{colors: {primary: '#007bff'}}}
-                    onPress={async () => {
-                      navigation.navigate('NewStack');
+              <View style={styles.listContainer}>
+                <View
+                  style={{
+                    width: '100%',
+                    backgroundColor: '#f2f4f7',
+                    flex: 1,
+                    paddingTop: '8%',
+                    paddingBottom: '5%',
+                    borderTopLeftRadius: 25,
+                    borderTopRightRadius: 25,
+                    height: '100%'
+                  }}
+                >
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      marginLeft: 10,
+                      marginRight: 10
                     }}
                   >
-                    CREATE NEW REPORT
-                  </Button>
-                </View>
-
-                <View style={styles.listContainer}>
-                    <View
-                      style={{
-                        width: '100%',
-                        backgroundColor: '#f2f4f7',
-                        paddingTop: '8%',
-                        paddingBottom: '5%',
-                        borderTopLeftRadius: 25,
-                        borderTopRightRadius: 25
-                      }}
-                    >
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          marginLeft: 10,
-                          marginRight: 10
-                        }}
-                      >
-                        <Text style={styles.recentHeader}>
-                          Your Reports
-                        </Text>
-                      </View>
-                        <EventList
-                          navigation={navigation}
-                          reportsData={recentReports}
-                        ></EventList>
-                      
-                    </View>
+                    <Text style={styles.recentHeader}>Your Reports</Text>
+                  </View>
+                  <EventList
+                    navigation={navigation}
+                    reportsData={recentReports}
+                  ></EventList>
                 </View>
               </View>
-            </ScrollView>
-          </>
+            </View>
+          </ScrollView>
+        </>
       </LinearGradient>
     );
   }
@@ -138,14 +126,22 @@ const ReportsPage = ({navigation}) => {
 export default ReportsPage;
 
 const styles = StyleSheet.create({
-  container: {
+  list: {
     flex: 1,
-    display: 'flex',
+    height: '100%'
+  },
+  container: {
+    flexDirection: 'column',
+    flex: 1,
+    height: '100%',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    display: 'flex'
   },
 
   logoContainer: {
     display: 'flex',
-    flex: 1,
+
     justifyContent: 'space-between',
     width: '100%',
     marginTop: '15%',
@@ -219,6 +215,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 0,
     width: '100%',
+    height: '100%',
     paddingTop: '3%',
     margin: 0
   },
@@ -228,11 +225,5 @@ const styles = StyleSheet.create({
     paddingBottom: '5%',
     fontSize: 18,
     fontFamily: 'Inter_500Medium'
-  },
-  list: {
-    flex: 1,
-    width: '100%',
-    padding: 0,
-    margin: 0
   }
 });
