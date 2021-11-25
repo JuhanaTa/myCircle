@@ -29,6 +29,8 @@ import EventListButton from '../components/EventListButton';
 import { logOut } from '../controllers/firebaseController';
 import TickAnimationWrapper from '../components/globalReUseAbles/TickAnimationWrapper.js';
 import EventList from '../components/EventList';
+import BackgroundImage from '../components/BackgorundCircle';
+
 import { calculateDistance } from '../utils/DistanceCalculator';
 
 const HomeScreen = ({ navigation }) => {
@@ -86,6 +88,7 @@ const HomeScreen = ({ navigation }) => {
     return (
       <LinearGradient colors={['#00c6ff', '#0072ff']} style={styles.background}>
         <>
+          <BackgroundImage></BackgroundImage>
           <TickAnimationWrapper />
           <ScrollView style={styles.list}>
             <View style={styles.container}>
