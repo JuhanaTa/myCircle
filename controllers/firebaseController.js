@@ -24,7 +24,8 @@ export const createUser = async (name, email, id) => {
         transportType: [],
         employmentStatus: '',
         housingType: '',
-        userAvatar: { uri: defaultAvatarUri, options: avatarDefaults }
+        userAvatar: { uri: defaultAvatarUri, options: avatarDefaults },
+        gamePoints: 1
       });
 
     console.log('user added');

@@ -52,17 +52,17 @@ const ProfileSectionContainer = ({ visible, title, action, type }) => {
       <View>
         <Text style={[styles.text]}> {currentUser?.email} </Text>
         <Text style={[styles.text]}> {currentUser?.name} </Text>
-        {currentUser?.pets.length >0 && (
+        {currentUser?.pets.length > 0 && (
           <DataList text="Pets" data={currentUser?.pets} />
         )}
-        {currentUser?.transportType.length >0 && (
+        {currentUser?.transportType.length > 0 && (
           <DataList
             text="Means of Transport"
             data={currentUser?.transportType}
           />
         )}
         <Divider />
-        {currentUser?.employmentStatus !=='' && (
+        {currentUser?.employmentStatus !== '' && (
           <Text style={[styles.text]}>
             {`Employment status:  ${currentUser?.employmentStatus}`}
           </Text>
@@ -79,11 +79,12 @@ const ProfileSectionContainer = ({ visible, title, action, type }) => {
   const Interests = () => {
     return (
       <View style={styles.interests}>
-        {currentUser.interests.length && currentUser?.interests?.map((item) => (
-          <Text key={item} style={styles.text}>
-            {item}
-          </Text>
-        ))}
+        {currentUser.interests.length > 0 &&
+          currentUser?.interests?.map((item) => (
+            <Text key={item} style={styles.text}>
+              {item}
+            </Text>
+          ))}
         {!currentUser?.interests.length && (
           <Text style={{ paddingLeft: 10, paddingTop: 10 }}>
             Set your interests to receive personalised content
