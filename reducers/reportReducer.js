@@ -4,6 +4,7 @@ import {
   getReports,
   uploadImageToFirebaseStorage
 } from '../controllers/firebaseController';
+import { modifyCurrentUser } from './currentUserReducer';
 import { setSnackbar, setTickAnimation } from './toggleReducers';
 
 const reportReducer = (state = [], action) => {
@@ -27,9 +28,17 @@ const setFetchedReports = () => {
   };
 };
 
-const createNewReport = (imageUri, location, description, reportTopic) => {
+const createNewReport = (
+  imageUri,
+  location,
+  description,
+  reportTopic,
+  userGamepoints
+) => {
   return async (dispatch) => {
     try {
+      const points = userGamepoints || 0;
+      const id = await firebase.auth().currentUser.uid;
       const image = imageUri
         ? await uploadImageToFirebaseStorage(imageUri)
         : '';
@@ -38,13 +47,18 @@ const createNewReport = (imageUri, location, description, reportTopic) => {
         image,
         location,
         reportTopic,
-        firebase.auth().currentUser.uid
+        id
       );
       dispatch(setTickAnimation());
       dispatch({
         type: 'NEW_REPORT_ADDED',
         newReportAdded
       });
+      dispatch(
+        modifyCurrentUser({
+          gamePoints: imageUri ? points + 5 : points + 3
+        })
+      );
     } catch (error) {
       console.log('new report error', error);
     }

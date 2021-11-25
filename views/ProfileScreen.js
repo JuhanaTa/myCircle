@@ -4,7 +4,7 @@ import {
   Text,
   TouchableOpacity,
   View,
-  ScrollView
+  ScrollView, Image
 } from 'react-native';
 import UserAvatar from '../components/profile/UserAvatar';
 import { IconButton } from 'react-native-paper';
@@ -185,6 +185,9 @@ const ProfileScreen = ({ navigation }) => {
     );
   };
 
+  console.log('game points', currentUser.gamePoints);
+  
+
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
@@ -214,6 +217,7 @@ const ProfileScreen = ({ navigation }) => {
                   transparent={avatarOptions.avatarStyle === 'Transparent'}
                 />
                 <NavBar />
+               { currentUser?.gamePoints > 4 && <Image style={{height:90, width:90}} source={{uri:'https://reactjs.org/logo-og.png'}} />}
               </View>
               <View style={styles.infoContainer}>
                 <Text style={styles.username}>
