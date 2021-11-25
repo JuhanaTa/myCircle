@@ -28,7 +28,7 @@ import UserInterestsQuestionnaire from '../components/profile/UserInterestsQuest
 import { useDispatch, useSelector } from 'react-redux';
 import AvatarGenerator from '../components/profile/AvatarGenerator';
 import getAvatarUri, {
-  avatarDefaults
+  avatarDefaults, getRandomisedAvatarOptions
 } from '../components/profile/avatarConfig';
 import { modifyCurrentUser } from '../reducers/currentUserReducer';
 import ProfileSectionContainer from '../components/profile/ProfileSectionContainer';
@@ -80,6 +80,10 @@ const ProfileScreen = ({ navigation }) => {
 
   const generateAvatar = (option) => {
     setAvatar({ ...avatarOptions, [option.varName]: option.value });
+  };
+  // generate a random avatar
+  const generateRandomAvatar = () => {
+    setAvatar(getRandomisedAvatarOptions());
   };
 
   // handle profile tab nav
@@ -219,6 +223,7 @@ const ProfileScreen = ({ navigation }) => {
             </View>
             <AvatarGenerator
               generateAvatar={generateAvatar}
+              generateRandomAvatar={generateRandomAvatar}
               resetAvatar={resetAvatar}
               saveAvatarToDb={saveAvatarToDb}
               setVisible={setVisible}

@@ -25,7 +25,8 @@ const OptionsMenu = ({
   onClose,
   save,
   reset,
-  title
+  title,
+  generateRandomAvatar
 }) => {
   const [open, setMoreMenu] = useState(false);
   const [isSnackbarOpened, setSnackbar] = useState(false);
@@ -67,6 +68,7 @@ const OptionsMenu = ({
       <View style={styles.header}>
         <Button color="#007bff" icon="close" onPress={handleclose}></Button>
         <Text style={[styles.text, { fontWeight: 'bold' }]}> {title} </Text>
+        <Button color="#007bff" icon='shuffle-variant' onPress={generateRandomAvatar}>Random</Button>
         <Menu
           visible={open}
           onDismiss={() => setMoreMenu(false)}
@@ -102,6 +104,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingBottom: 8,
+    paddingLeft: 10,
     backgroundColor: '#ffffff'
   },
   header: {
