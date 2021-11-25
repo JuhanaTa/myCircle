@@ -9,7 +9,7 @@ import {
 //Add your firebase functions/calls here
 
 //create user to database
-export const createUser = async (name, email, id) => {
+export const createUser = async (name, email, fullname, id) => {
   try {
     await db
       .collection('Users')
@@ -17,6 +17,7 @@ export const createUser = async (name, email, id) => {
       .set({
         name: name,
         email: email,
+        fullname: fullname,
         userId: id,
         reportObject: [],
         interests: [],
@@ -24,7 +25,8 @@ export const createUser = async (name, email, id) => {
         transportType: [],
         employmentStatus: '',
         housingType: '',
-        userAvatar: { uri: defaultAvatarUri, options: avatarDefaults }
+        userAvatar: { uri: defaultAvatarUri, options: avatarDefaults },
+        gamePoints: 1
       });
 
     console.log('user added');

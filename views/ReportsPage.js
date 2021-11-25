@@ -61,6 +61,12 @@ const ReportsPage = ({ navigation }) => {
     }
   });
 
+  reportsData.forEach((element) => {
+    if (element.userId == firebase.auth().currentUser.uid) {
+      recentReports.push(element);
+    }
+  });
+  console;
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
@@ -99,20 +105,37 @@ const ReportsPage = ({ navigation }) => {
                     height: '100%'
                   }}
                 >
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      marginLeft: 10,
-                      marginRight: 10
-                    }}
-                  >
-                    <Text style={styles.recentHeader}>Your Reports</Text>
-                  </View>
-                  <EventList
-                    navigation={navigation}
-                    reportsData={recentReports}
-                  ></EventList>
+                  {recentReports.length > 0 ? (
+                    <>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          marginLeft: 10,
+                          marginRight: 10
+                        }}
+                      >
+                        <Text style={styles.recentHeader}>Your Reports</Text>
+                      </View>
+                      <EventList
+                        navigation={navigation}
+                        reportsData={recentReports}
+                      ></EventList>
+                    </>
+                  ) : (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        marginLeft: 10,
+                        marginRight: 10
+                      }}
+                    >
+                      <Text style={styles.emptyData}>
+                        You have not created any reports yet.
+                      </Text>
+                    </View>
+                  )}
                 </View>
               </View>
             </View>
@@ -194,6 +217,15 @@ const styles = StyleSheet.create({
     color: '#112454'
   },
   recentHeader: {
+    paddingLeft: '2%',
+    paddingRight: '2%',
+    paddingBottom: '2%',
+    fontSize: 16,
+    fontFamily: 'Inter_400Regular',
+    color: '#112454'
+  },
+
+  emptyData: {
     paddingLeft: '2%',
     paddingRight: '2%',
     paddingBottom: '2%',

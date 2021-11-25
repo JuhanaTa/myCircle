@@ -26,7 +26,7 @@ import {
   Inter_800ExtraBold,
   Inter_900Black
 } from '@expo-google-fonts/inter';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createNewReport } from '../reducers/reportReducer';
 import getGeocoding from '../controllers/apiCalls';
 import ModalDialog from '../components/globalReUseAbles/ModalDialog';
@@ -47,6 +47,7 @@ const NewReport = ({ navigation }) => {
     description: false,
     location: false
   });
+  const {currentUser} = useSelector(state => state);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -120,7 +121,7 @@ const NewReport = ({ navigation }) => {
   const handleReportSubmission = async () => {
     // push new report to firebase  and updates redux store (asynchronously)
     dispatch(
-      createNewReport(image?.uri, reportLocation, description, checkedTopic)
+      createNewReport(image?.uri, reportLocation, description, checkedTopic, currentUser?.gamePoints)
     );
     navigation.navigate('HomeStack', { screen: 'HomeStack' });
     setPreview(false);

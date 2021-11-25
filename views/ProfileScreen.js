@@ -4,8 +4,14 @@ import {
   Text,
   TouchableOpacity,
   View,
-  ScrollView
+  ScrollView,
+  Image,
+  ImageBackground
 } from 'react-native';
+import startImage from '../assets/game-image/start.png';
+import middleImage from '../assets/game-image/suburb.png';
+import biggestImage from '../assets/game-image/City.png';
+
 import UserAvatar from '../components/profile/UserAvatar';
 import { IconButton } from 'react-native-paper';
 import EditProfile from '../components/profile/EditProfile';
@@ -49,7 +55,6 @@ const ProfileScreen = ({ navigation }) => {
   });
   const { currentUser } = useSelector((state) => state);
   const dispatch = useDispatch();
-  console.log(currentUser);
   const [avatarOptions, setAvatar] = useState({
     ...currentUser.userAvatar.options
   });
@@ -186,6 +191,16 @@ const ProfileScreen = ({ navigation }) => {
       </View>
     );
   };
+  let DEFAULT_IMAGE;
+  if (currentUser?.gamePoints >= 0 && currentUser?.gamePoints < 2000) {
+    DEFAULT_IMAGE = Image.resolveAssetSource(startImage).uri;
+  }
+  if (currentUser?.gamePoints >= 2000 && currentUser?.gamePoints < 30000) {
+    DEFAULT_IMAGE = Image.resolveAssetSource(middleImage).uri;
+  }
+  if (currentUser?.gamePoints > 30000) {
+    DEFAULT_IMAGE = Image.resolveAssetSource(biggestImage).uri;
+  }
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -195,29 +210,35 @@ const ProfileScreen = ({ navigation }) => {
         <BackgroundImage></BackgroundImage>
         <ScrollView contentContainerStyle={styles.list}>
           <View style={styles.container}>
-            <View style={styles.avatarContainer}>
-              <View style={styles.avatar}>
-                <UserAvatar
-                  uri={
-                    visible
-                      ? getAvatarUri(
-                          avatarOptions.avatarStyle,
-                          avatarOptions.topType,
-                          avatarOptions.accessoriesType,
-                          avatarOptions.hairColor,
-                          avatarOptions.facialHairType,
-                          avatarOptions.clotheType,
-                          avatarOptions.eyeType,
-                          avatarOptions.eyebrowType,
-                          avatarOptions.mouthType,
-                          avatarOptions.skinColor
-                        )
-                      : currentUser?.userAvatar.uri
-                  }
-                  transparent={avatarOptions.avatarStyle === 'Transparent'}
-                />
+            <ImageBackground
+              source={{ uri: DEFAULT_IMAGE }}
+              resizeMode="cover"
+              style={styles.image}
+            >
+              <View style={styles.avatarContainer}>
+                <View style={styles.avatar}>
+                  <UserAvatar
+                    uri={
+                      visible
+                        ? getAvatarUri(
+                            avatarOptions.avatarStyle,
+                            avatarOptions.topType,
+                            avatarOptions.accessoriesType,
+                            avatarOptions.hairColor,
+                            avatarOptions.facialHairType,
+                            avatarOptions.clotheType,
+                            avatarOptions.eyeType,
+                            avatarOptions.eyebrowType,
+                            avatarOptions.mouthType,
+                            avatarOptions.skinColor
+                          )
+                        : currentUser?.userAvatar.uri
+                    }
+                    transparent={avatarOptions.avatarStyle === 'Transparent'}
+                  />
+                </View>
               </View>
-            </View>
+            </ImageBackground>
 
             <View
               style={{
@@ -234,6 +255,9 @@ const ProfileScreen = ({ navigation }) => {
               <NavBar />
               <View style={styles.infoContainer}>
                 <Text style={styles.username}>{name ? name : 'User '}</Text>
+                <Text style={styles.points}>
+                  {currentUser?.gamePoints} Points
+                </Text>
               </View>
               <AvatarGenerator
                 generateAvatar={generateAvatar}
@@ -362,7 +386,7 @@ const styles = StyleSheet.create({
   },
 
   infoContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -382,12 +406,25 @@ const styles = StyleSheet.create({
   listsection: {},
   username: {
     color: '#112454',
-    margin: '5%',
+    margin: '1%',
     fontSize: 30,
 
     textAlign: 'center',
     display: 'flex',
     fontFamily: 'Inter_700Bold'
+  },
+  image: {
+    flex: 1,
+    justifyContent: 'center'
+  },
+  points: {
+    color: '#112454',
+    margin: '2%',
+    fontSize: 20,
+
+    textAlign: 'center',
+    display: 'flex',
+    fontFamily: 'Inter_500Medium'
   },
   moreIcon: {
     backgroundColor: '#9042f5',

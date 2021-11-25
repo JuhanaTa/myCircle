@@ -79,7 +79,7 @@ const ProfileSectionContainer = ({ visible, title, action, type }) => {
   const Interests = () => {
     return (
       <View style={styles.interests}>
-        {currentUser.interests.length &&
+        {currentUser.interests.length > 0 &&
           currentUser?.interests?.map((item) => (
             <Text key={item} style={styles.text}>
               {item}
