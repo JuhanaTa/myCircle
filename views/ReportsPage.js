@@ -44,7 +44,7 @@ const ReportsPage = ({navigation}) => {
 
   useEffect(() => {
     (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
+      let {status} = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         console.log('Permission to access location was denied');
         //navigation.popToTop();
@@ -61,12 +61,12 @@ const ReportsPage = ({navigation}) => {
   //this needs some logic to show relevant/newest reports
 
   const recentReports = [];
-  
+
   reportsData.forEach(element => {
-      if(element.userId == firebase.auth().currentUser.uid){
-        recentReports.push(element);
-  }
-      
+    if (element.userId == firebase.auth().currentUser.uid) {
+      recentReports.push(element);
+    }
+
   });
 
 
@@ -75,39 +75,38 @@ const ReportsPage = ({navigation}) => {
   } else {
     return (
       <LinearGradient colors={['#00c6ff', '#0072ff']} style={styles.background}>
-          <>
-            <ScrollView style={styles.list}>
+        <>
+          <ScrollView style={styles.list}>
 
-              <View style={styles.container}>
+            <View style={styles.container}>
 
-                <View style={styles.logoContainer}>
-                  <Image
-                    style={styles.image}
-                    source={require('../assets/Logo.png')}
-                    resizeMode="contain"
-                  />
-                  <Button
-                    style={styles.button}
-                    theme={{colors: {primary: '#007bff'}}}
-                    onPress={async () => {
-                      navigation.navigate('NewStack');
-                    }}
-                  >
-                    CREATE NEW REPORT
-                  </Button>
-                </View>
+              <View style={styles.logoContainer}>
+                <Button
+                  style={styles.button}
+                  theme={{colors: {primary: '#007bff'}}}
+                  onPress={async () => {
+                    navigation.navigate('NewStack');
+                  }}
+                >
+                  CREATE NEW REPORT
+                </Button>
+              </View>
 
-                <View style={styles.listContainer}>
-                    <View
-                      style={{
-                        width: '100%',
-                        backgroundColor: '#f2f4f7',
-                        paddingTop: '8%',
-                        paddingBottom: '5%',
-                        borderTopLeftRadius: 25,
-                        borderTopRightRadius: 25
-                      }}
-                    >
+              <View style={styles.listContainer}>
+                <View
+                  style={{
+                    width: '100%',
+                    backgroundColor: '#f2f4f7',
+                    paddingTop: '8%',
+                    paddingBottom: '5%',
+                    borderTopLeftRadius: 25,
+                    borderTopRightRadius: 25
+                  }}
+                >
+
+
+                  {recentReports.length > 0 ? (
+                    <>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -120,16 +119,31 @@ const ReportsPage = ({navigation}) => {
                           Your Reports
                         </Text>
                       </View>
-                        <EventList
-                          navigation={navigation}
-                          reportsData={recentReports}
-                        ></EventList>
-                      
+                      <EventList
+                        navigation={navigation}
+                        reportsData={recentReports}
+                      ></EventList>
+                    </>
+                  ) : (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        marginLeft: 10,
+                        marginRight: 10
+                      }}
+                    >
+                      <Text style={styles.emptyData}>
+                        You have not created any reports yet.
+                      </Text>
                     </View>
+                  )}
+
                 </View>
               </View>
-            </ScrollView>
-          </>
+            </View>
+          </ScrollView>
+        </>
       </LinearGradient>
     );
   }
@@ -204,6 +218,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Inter_400Regular',
     color: '#112454'
+  },
+
+  emptyData: {
+    paddingLeft: '2%',
+    paddingRight: '2%',
+    paddingBottom: '2%',
+    fontSize: 16,
+    fontFamily: 'Inter_400Regular',
+    color: '#112454',
+    
   },
   content: {
     backgroundColor: '#f4f6f8'
