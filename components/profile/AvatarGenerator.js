@@ -9,14 +9,22 @@ import {
 import { AVATAR_OPTIONS } from './avatarConfig';
 import OptionsMenu from './OptionsMenu';
 
-const AvatarGenerator = ({ generateAvatar, resetAvatar, saveAvatarToDb, setVisible, visible, isAvatarSystemOpened }) => {
-  const [selected, setSelected] = useState({...AVATAR_OPTIONS[0]});
-  const [highlighted, setHighlighted] = useState({...AVATAR_OPTIONS[0]});
+const AvatarGenerator = ({
+  generateAvatar,
+  generateRandomAvatar,
+  resetAvatar,
+  saveAvatarToDb,
+  setVisible,
+  visible,
+  isAvatarSystemOpened
+}) => {
+  const [selected, setSelected] = useState({ ...AVATAR_OPTIONS[0] });
+  const [highlighted, setHighlighted] = useState({ ...AVATAR_OPTIONS[0] });
 
-  if(!isAvatarSystemOpened) return null;
+  if (!isAvatarSystemOpened) return null;
 
   const handleSelectedOption = (selectedMenuItem) => {
-    generateAvatar({varName: selected.varName, value: selectedMenuItem});
+    generateAvatar({ varName: selected.varName, value: selectedMenuItem });
   };
   const openOptionMenu = (item) => () => {
     setSelected(item);
@@ -60,9 +68,10 @@ const AvatarGenerator = ({ generateAvatar, resetAvatar, saveAvatarToDb, setVisib
         visible={visible}
         options={selected.data}
         action={handleSelectedOption}
+        generateRandomAvatar={generateRandomAvatar}
         onClose={closeOptionMenu}
         reset={resetAvatar}
-        save ={saveAvatarToDb}
+        save={saveAvatarToDb}
         title={selected.title}
       />
     </SafeAreaView>

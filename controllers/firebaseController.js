@@ -19,11 +19,11 @@ export const createUser = async (name, email, id) => {
         email: email,
         userId: id,
         reportObject: [],
-        userInterests: {
-          interests: [],
-          hobbies: [],
-          preferences: []
-        },
+        interests: [],
+        pets: [],
+        transportType: [],
+        employmentStatus: '',
+        housingType: '',
         userAvatar: { uri: defaultAvatarUri, options: avatarDefaults }
       });
 

@@ -183,7 +183,28 @@ export const avatarDefaults = {
   skinColor: 'Pale'
 };
 
-export const defaultAvatarUri = 'https://avataaars.io/?avatarStyle=Circle&topType=LongHairNotTooLong&accessoriesType=Prescription02&hairColor=Blonde&facialHairType=Blank&clotheType=BlazerSweater&eyeType=Close&eyebrowType=Default&mouthType=Default&skinColor=Pale';
+export const defaultAvatarUri =
+  'https://avataaars.io/?avatarStyle=Circle&topType=LongHairNotTooLong&accessoriesType=Prescription02&hairColor=Blonde&facialHairType=Blank&clotheType=BlazerSweater&eyeType=Close&eyebrowType=Default&mouthType=Default&skinColor=Pale';
+
+export const getRandomisedAvatarOptions = () => {
+  const randomiser = (upperbound) => Math.floor(Math.random() * upperbound);
+  const randomOptions = {
+    avatarStyle: AVATAR_STYLE[randomiser(AVATAR_STYLE.length)],
+    topType: Top_TYPE[randomiser(Top_TYPE.length)],
+    accessoriesType: ACCESSORIES_TYPE[randomiser(ACCESSORIES_TYPE.length)],
+    hairColor: HAIR_COLOR[randomiser(HAIR_COLOR.length)],
+    facialHairType: FACIAL_HAIR[randomiser(FACIAL_HAIR.length)],
+    clotheType: CLOTHE[randomiser(CLOTHE.length)],
+    eyeType: EYES[randomiser(EYES.length)],
+    eyebrowType: EYE_BROW[randomiser(EYE_BROW.length)],
+    mouthType: MOUTH[randomiser(MOUTH.length)],
+    skinColor: SKINCOLOR[randomiser(SKINCOLOR.length)]
+  };
+
+  //console.log('random', randomOptions);
+
+  return randomOptions;
+};
 
 export const AVATAR_OPTIONS = [
   {
