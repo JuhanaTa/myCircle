@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   },
   text: {
     padding: 10,
-    color: '#566787'
+    color: '#112454'
   }
 });
 

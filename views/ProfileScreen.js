@@ -216,17 +216,12 @@ const ProfileScreen = ({ navigation }) => {
                   }
                   transparent={avatarOptions.avatarStyle === 'Transparent'}
                 />
-                <NavBar />
-              </View>
-              <View style={styles.infoContainer}>
-                <Text style={styles.username}>
-                  {name ? name : 'MyCircle App '}
-                </Text>
               </View>
             </View>
+
             <View
               style={{
-                flex: 0.5,
+                flex: 1,
                 height: '100%',
                 width: '100%',
                 backgroundColor: '#f2f4f7',
@@ -236,6 +231,10 @@ const ProfileScreen = ({ navigation }) => {
                 borderTopRightRadius: 25
               }}
             >
+              <NavBar />
+              <View style={styles.infoContainer}>
+                <Text style={styles.username}>{name ? name : 'User '}</Text>
+              </View>
               <AvatarGenerator
                 generateAvatar={generateAvatar}
                 generateRandomAvatar={generateRandomAvatar}
@@ -343,7 +342,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    width: '100%'
   },
 
   editprofilebutton: {
@@ -384,7 +384,7 @@ const styles = StyleSheet.create({
     color: '#112454',
     margin: '5%',
     fontSize: 30,
-    width: '100%',
+
     textAlign: 'center',
     display: 'flex',
     fontFamily: 'Inter_700Bold'
