@@ -18,7 +18,6 @@ import {
   Inter_900Black
 } from '@expo-google-fonts/inter';
 import EventList from '../components/EventList';
-import firebase from 'firebase';
 
 const ReportsPage = ({ navigation }) => {
   const [location, setLocation] = useState([]);
@@ -49,17 +48,13 @@ const ReportsPage = ({ navigation }) => {
     })();
   }, []);
 
-  const {reports:reportsData, currentUser} = useSelector((store) => store);
+  const { reports, currentUser } = useSelector((store) => store);
   //Show only 5 reports
   //this needs some logic to show relevant/newest reports
 
-  const recentReports = [];
-
-  reportsData.forEach((element) => {
-    if (element.userId == currentUser.userId) {
-      recentReports.push(element);
-    }
-  });
+  const recentReports = reports.filter(
+    (element) => element.userId === currentUser.userId
+  );
 
   console;
   if (!fontsLoaded) {
