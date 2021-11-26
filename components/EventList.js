@@ -13,6 +13,7 @@ export default function EventList({ navigation, reportsData }) {
   return (
     <View style={styles.container}>
       <FlatList
+        style={styles.content}
         data={reportsData}
         renderItem={renderItem}
         keyExtractor={(item) =>
@@ -26,8 +27,13 @@ export default function EventList({ navigation, reportsData }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  content: {
+    flex: 1,
+    width: '100%'
   }
 });

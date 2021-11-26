@@ -16,7 +16,7 @@ import {
   OpenSans_800ExtraBold_Italic
 } from '@expo-google-fonts/open-sans';
 
-const uri = 'https://reactjs.org/logo-og.png' ;
+const uri = 'https://reactjs.org/logo-og.png';
 
 export default function EventListItem({ navigation, item }) {
   let [fontsLoaded] = useFonts({
@@ -41,7 +41,7 @@ export default function EventListItem({ navigation, item }) {
         >
           <View style={styles.content}>
             <View style={styles.imageContainer}>
-             <Image
+              <Image
                 source={{ uri: item.image ? item.image : uri }}
                 resizeMode="cover"
                 style={styles.image}
@@ -69,13 +69,14 @@ export default function EventListItem({ navigation, item }) {
 }
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-start'
+    justifyContent: 'center'
   },
 
   button: {
-    width: 380,
+    width: '100%',
     backgroundColor: '#FFF',
     margin: '2%',
     justifyContent: 'center',
