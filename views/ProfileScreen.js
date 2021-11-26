@@ -246,7 +246,7 @@ const ProfileScreen = ({ navigation }) => {
                 height: '100%',
                 width: '100%',
                 backgroundColor: '#f2f4f7',
-                paddingTop: '8%',
+                paddingTop: '3%',
                 paddingBottom: '5%',
                 borderTopLeftRadius: 25,
                 borderTopRightRadius: 25
@@ -254,7 +254,9 @@ const ProfileScreen = ({ navigation }) => {
             >
               <NavBar />
               <View style={styles.infoContainer}>
-                <Text style={styles.username}>{name ? name : 'User '}</Text>
+                <Text style={styles.username}>
+                  {currentUser?.name ? currentUser?.name : 'User '}
+                </Text>
                 <Text style={styles.points}>
                   {currentUser?.gamePoints} Points
                 </Text>
@@ -363,7 +365,7 @@ const styles = StyleSheet.create({
     position: 'relative'
   },
   avatarContainer: {
-    flex: 1,
+    flex: 0.5,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
@@ -407,20 +409,20 @@ const styles = StyleSheet.create({
   username: {
     color: '#112454',
     margin: '1%',
-    fontSize: 30,
+    fontSize: 25,
 
     textAlign: 'center',
     display: 'flex',
     fontFamily: 'Inter_700Bold'
   },
   image: {
-    flex: 1,
+    flex: 0.6,
     justifyContent: 'center'
   },
   points: {
     color: '#112454',
     margin: '2%',
-    fontSize: 20,
+    fontSize: 16,
 
     textAlign: 'center',
     display: 'flex',
