@@ -69,7 +69,7 @@ export default function HeatMapButton({navigation, location, reportsData}) {
 
               {reportsData.map(marker => (
                 <MapView.Marker
-                  key={marker.location.description}
+                  key={`${marker.key}${marker.description}`}
                   coordinate={marker.location}
 
 

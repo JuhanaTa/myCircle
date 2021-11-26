@@ -111,6 +111,7 @@ export const createReport = async (description, image, location, topic, id) => {
       image,
       location,
       topic,
+      key: `${uuidv4()}`, // to be used as React key prop
       userId: id
     };
     // newly created report object is not contained in the firebase response

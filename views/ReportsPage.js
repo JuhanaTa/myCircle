@@ -49,23 +49,18 @@ const ReportsPage = ({ navigation }) => {
     })();
   }, []);
 
-  const reportsData = useSelector((store) => store.reports);
+  const {reports:reportsData, currentUser} = useSelector((store) => store);
   //Show only 5 reports
   //this needs some logic to show relevant/newest reports
 
   const recentReports = [];
 
   reportsData.forEach((element) => {
-    if (element.userId == firebase.auth().currentUser.uid) {
+    if (element.userId == currentUser.userId) {
       recentReports.push(element);
     }
   });
 
-  reportsData.forEach((element) => {
-    if (element.userId == firebase.auth().currentUser.uid) {
-      recentReports.push(element);
-    }
-  });
   console;
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -73,7 +68,7 @@ const ReportsPage = ({ navigation }) => {
     return (
       <LinearGradient colors={['#00c6ff', '#0072ff']} style={styles.background}>
         <>
-          <ScrollView contentContainerStyle={styles.list}>
+          <View style={styles.list}>
             <View style={styles.container}>
               <View style={styles.logoContainer}>
                 <Image
@@ -139,7 +134,7 @@ const ReportsPage = ({ navigation }) => {
                 </View>
               </View>
             </View>
-          </ScrollView>
+          </View>
         </>
       </LinearGradient>
     );

@@ -42,7 +42,7 @@ export default function EventListItem({ navigation, item }) {
           <View style={styles.content}>
             <View style={styles.imageContainer}>
               <Image
-                source={{ uri: item.image ? item.image : uri }}
+                source={item.image ?{ uri: item.image } : require('../assets/placeholderMap.jpg')}
                 resizeMode="cover"
                 style={styles.image}
               />

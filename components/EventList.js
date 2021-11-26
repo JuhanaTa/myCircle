@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, FlatList } from 'react-native';
 import EventListItem from '../components/EventListItem';
-import { LinearGradient } from 'expo-linear-gradient';
 
 export default function EventList({ navigation, reportsData }) {
   //console.log('reports data in event list',reportsData);
@@ -17,7 +16,7 @@ export default function EventList({ navigation, reportsData }) {
         data={reportsData}
         renderItem={renderItem}
         keyExtractor={(item) =>
-          `${item.description}-${item.image}-${item.topic}-${item.location.address}`
+          `${item.key}${item.description}`
         }
       />
     </View>
