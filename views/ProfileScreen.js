@@ -240,13 +240,13 @@ const ProfileScreen = ({ navigation }) => {
               </View>
             </ImageBackground>
 
-            <View
+            <ScrollView
               style={{
                 flex: 1,
                 height: '100%',
                 width: '100%',
                 backgroundColor: '#f2f4f7',
-                paddingTop: '3%',
+                paddingTop: '8%',
                 paddingBottom: '5%',
                 borderTopLeftRadius: 25,
                 borderTopRightRadius: 25
@@ -315,7 +315,7 @@ const ProfileScreen = ({ navigation }) => {
                 openQuestionnaire={openQuestionnaire}
                 handleTabPress={handleTabPress}
               />
-            </View>
+            </ScrollView>
           </View>
         </ScrollView>
       </LinearGradient>
@@ -365,7 +365,7 @@ const styles = StyleSheet.create({
     position: 'relative'
   },
   avatarContainer: {
-    flex: 0.5,
+    flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
@@ -409,20 +409,20 @@ const styles = StyleSheet.create({
   username: {
     color: '#112454',
     margin: '1%',
-    fontSize: 25,
+    fontSize: 30,
 
     textAlign: 'center',
     display: 'flex',
     fontFamily: 'Inter_700Bold'
   },
   image: {
-    flex: 0.6,
+    flex: 1,
     justifyContent: 'center'
   },
   points: {
     color: '#112454',
     margin: '2%',
-    fontSize: 16,
+    fontSize: 20,
 
     textAlign: 'center',
     display: 'flex',

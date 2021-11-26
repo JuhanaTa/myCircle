@@ -69,7 +69,6 @@ export const updateUser = async (userObject) => {
     // refetch user for redux store update
     const updatedData = await getUser(id);
 
-    console.log('user updated', updatedData);
     return updatedData;
   } catch (e) {
     console.log(e);
