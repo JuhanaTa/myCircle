@@ -69,7 +69,6 @@ export const updateUser = async (userObject) => {
     // refetch user for redux store update
     const updatedData = await getUser(id);
 
-    console.log('user updated', updatedData);
     return updatedData;
   } catch (e) {
     console.log(e);
@@ -112,6 +111,7 @@ export const createReport = async (description, image, location, topic, id) => {
       image,
       location,
       topic,
+      key: `${uuidv4()}`, // to be used as React key prop
       userId: id
     };
     // newly created report object is not contained in the firebase response

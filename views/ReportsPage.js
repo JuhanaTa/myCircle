@@ -18,7 +18,6 @@ import {
   Inter_900Black
 } from '@expo-google-fonts/inter';
 import EventList from '../components/EventList';
-import firebase from 'firebase';
 
 const ReportsPage = ({ navigation }) => {
   const [location, setLocation] = useState([]);
@@ -49,23 +48,14 @@ const ReportsPage = ({ navigation }) => {
     })();
   }, []);
 
-  const reportsData = useSelector((store) => store.reports);
+  const { reports, currentUser } = useSelector((store) => store);
   //Show only 5 reports
   //this needs some logic to show relevant/newest reports
 
-  const recentReports = [];
+  const recentReports = reports.filter(
+    (element) => element.userId === currentUser.userId
+  );
 
-  reportsData.forEach((element) => {
-    if (element.userId == firebase.auth().currentUser.uid) {
-      recentReports.push(element);
-    }
-  });
-
-  reportsData.forEach((element) => {
-    if (element.userId == firebase.auth().currentUser.uid) {
-      recentReports.push(element);
-    }
-  });
   console;
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -73,7 +63,7 @@ const ReportsPage = ({ navigation }) => {
     return (
       <LinearGradient colors={['#00c6ff', '#0072ff']} style={styles.background}>
         <>
-          <ScrollView contentContainerStyle={styles.list}>
+          <View style={styles.list}>
             <View style={styles.container}>
               <View style={styles.logoContainer}>
                 <Image
@@ -139,7 +129,7 @@ const ReportsPage = ({ navigation }) => {
                 </View>
               </View>
             </View>
-          </ScrollView>
+          </View>
         </>
       </LinearGradient>
     );
