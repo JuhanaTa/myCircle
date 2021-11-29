@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
   View,
   ScrollView,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  Dimensions
 } from 'react-native';
-import { Button } from 'react-native-paper';
+import {Button} from 'react-native-paper';
 import AppLoading from 'expo-app-loading';
-import { LinearGradient } from 'expo-linear-gradient';
-import { useSelector } from 'react-redux';
+import {LinearGradient} from 'expo-linear-gradient';
+import {useSelector} from 'react-redux';
 import * as Location from 'expo-location';
 import {
   useFonts,
@@ -26,14 +27,14 @@ import {
 } from '@expo-google-fonts/inter';
 import HeatMapButton from '../components/HeatMapButton';
 import EventListButton from '../components/EventListButton';
-import { logOut } from '../controllers/firebaseController';
+import {logOut} from '../controllers/firebaseController';
 import TickAnimationWrapper from '../components/globalReUseAbles/TickAnimationWrapper.js';
 import EventList from '../components/EventList';
 import BackgroundImage from '../components/BackgorundCircle';
 
-import { calculateDistance } from '../utils/DistanceCalculator';
+import {calculateDistance} from '../utils/DistanceCalculator';
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({navigation}) => {
   const [location, setLocation] = useState([]);
 
   let [fontsLoaded] = useFonts({
@@ -50,7 +51,7 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
+      let {status} = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         console.log('Permission to access location was denied');
         //navigation.popToTop();
@@ -63,9 +64,11 @@ const HomeScreen = ({ navigation }) => {
   }, []);
 
   const reportsData = useSelector((store) => store.reports);
+
+  const sortedActivities = reportsData.sort((a, b) => b.time - a.time);
   //Show only 5 reports
   //this needs some logic to show relevant/newest reports
-  const recentReports = reportsData.slice(0, 4);
+  const recentReports = sortedActivities.slice(0, 4);
 
   //dummy advertisement
   recentReports.unshift({
@@ -79,7 +82,7 @@ const HomeScreen = ({ navigation }) => {
       longitudeDelta: 0
     },
     topic: 'Advertisement',
-    userId: 'ad'
+    userId: 'ad',
   });
 
   if (!fontsLoaded) {
@@ -100,7 +103,7 @@ const HomeScreen = ({ navigation }) => {
                 />
                 <Button
                   style={styles.button}
-                  theme={{ colors: { primary: '#007bff' } }}
+                  theme={{colors: {primary: '#007bff'}}}
                   onPress={async () => {
                     await logOut();
                   }}
@@ -139,11 +142,11 @@ const HomeScreen = ({ navigation }) => {
                         marginRight: 10
                       }}
                     >
-                      <Text style={styles.recentHeader}></Text>
+                      <Text style={styles.recentHeader}>5 most recent reports</Text>
                       <TouchableOpacity
                         onPress={() => {
                           navigation.navigate('EventListScreen'),
-                            { location: location };
+                            {location: location};
                         }}
                       >
                         <Text style={styles.recentHeader}>More</Text>
@@ -252,7 +255,7 @@ const styles = StyleSheet.create({
   listContainer: {
     flex: 1,
     padding: 0,
-    width: '100%',
+    width: Dimensions.get('window').width - 20,
     paddingTop: '3%',
     margin: 0
   },

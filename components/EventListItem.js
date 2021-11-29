@@ -1,7 +1,8 @@
 import React from 'react';
-import { AntDesign } from '@expo/vector-icons';
+import {AntDesign} from '@expo/vector-icons';
 import AppLoading from 'expo-app-loading';
-import { Text, StyleSheet, Pressable, View, Image } from 'react-native';
+import {Text, StyleSheet, Pressable, View, Image} from 'react-native';
+import moment from 'moment';
 import {
   useFonts,
   OpenSans_300Light,
@@ -18,13 +19,24 @@ import {
 
 const uri = 'https://reactjs.org/logo-og.png';
 
-export default function EventListItem({ navigation, item }) {
+export default function EventListItem({navigation, item}) {
+  console.log(item);
   let [fontsLoaded] = useFonts({
     OpenSans_300Light,
     OpenSans_400Regular,
     OpenSans_600SemiBold,
     OpenSans_700Bold
   });
+
+  let timeToShow = 0;
+  moment.locale('fin');
+
+  if(item.time != undefined){
+    timeToShow = moment(item.time.toDate()).format('dddd, h:mm:ss a');
+    console.log('time in item', timeToShow);
+  } else {
+    timeToShow = 'time unknown';
+  }
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -42,7 +54,7 @@ export default function EventListItem({ navigation, item }) {
           <View style={styles.content}>
             <View style={styles.imageContainer}>
               <Image
-                source={item.image ?{ uri: item.image } : require('../assets/placeholderMap.jpg')}
+                source={item.image ? {uri: item.image} : require('../assets/placeholderMap.jpg')}
                 resizeMode="cover"
                 style={styles.image}
               />
@@ -50,6 +62,9 @@ export default function EventListItem({ navigation, item }) {
             <View style={styles.textcontent}>
               <Text style={styles.header}>Topic: {item.topic}</Text>
               <Text style={styles.text}>{item.description}</Text>
+              <Text style={styles.text}>
+                {timeToShow}
+              </Text>
               <View style={styles.containerButton}>
                 <View style={styles.buttonContent}>
                   <AntDesign
@@ -76,7 +91,7 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    width: '100%',
+    width: '95%',
     backgroundColor: '#FFF',
     margin: '2%',
     justifyContent: 'center',
@@ -147,7 +162,7 @@ const styles = StyleSheet.create({
     padding: '3%',
     backgroundColor: '#fff',
     shadowColor: '#888',
-    shadowOffset: { width: 0, height: 0 },
+    shadowOffset: {width: 0, height: 0},
     shadowOpacity: 0.5,
     borderRadius: 25
   }

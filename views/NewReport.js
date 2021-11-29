@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -7,13 +7,13 @@ import {
   TextInput,
   TouchableOpacity
 } from 'react-native';
-import { Button, IconButton } from 'react-native-paper';
+import {Button, IconButton} from 'react-native-paper';
 import ImagePicker from '../components/reports/ImagePicker';
 import PreviewReport from '../components/reports/PreviewReport';
 import ReportTopics from '../components/reports/ReportTopics';
 import AppLoading from 'expo-app-loading';
 import useCamera from '../hooks/useCamera';
-import { LinearGradient } from 'expo-linear-gradient';
+import {LinearGradient} from 'expo-linear-gradient';
 import {
   useFonts,
   Inter_100Thin,
@@ -26,14 +26,15 @@ import {
   Inter_800ExtraBold,
   Inter_900Black
 } from '@expo-google-fonts/inter';
-import { useDispatch, useSelector } from 'react-redux';
-import { createNewReport } from '../reducers/reportReducer';
+import {useDispatch, useSelector} from 'react-redux';
+import {createNewReport} from '../reducers/reportReducer';
 import getGeocoding from '../controllers/apiCalls';
 import ModalDialog from '../components/globalReUseAbles/ModalDialog';
 import BackgroundImage from '../components/BackgorundCircle';
+import firebase from 'firebase';
 
-const NewReport = ({ navigation }) => {
-  const { image, video, getImage, launchCamera, setImage } = useCamera({});
+const NewReport = ({navigation}) => {
+  const {image, video, getImage, launchCamera, setImage} = useCamera({});
   const [isImgPickerMenuOpened, setImgPickerMenu] = useState(false);
   const [description, setDescription] = useState('');
   const [address, setAddress] = useState('');
@@ -119,11 +120,17 @@ const NewReport = ({ navigation }) => {
   };
 
   const handleReportSubmission = async () => {
+    //we will get current date for submission
+
+    const currentTime = firebase.firestore.Timestamp.fromDate(new Date());
+
+    console.log("myTimestamp", currentTime);
+
     // push new report to firebase  and updates redux store (asynchronously)
     dispatch(
-      createNewReport(image?.uri, reportLocation, description, checkedTopic, currentUser?.gamePoints)
+      createNewReport(image?.uri, reportLocation, description, checkedTopic, currentUser?.gamePoints, currentTime)
     );
-    navigation.navigate('HomeStack', { screen: 'HomeStack' });
+    navigation.navigate('HomeStack', {screen: 'HomeStack'});
     setPreview(false);
     setDescription('');
     setCheckedTopic('');
@@ -251,7 +258,7 @@ const NewReport = ({ navigation }) => {
             <View style={styles.submitbuttonContainer}>
               <Button
                 style={styles.submitbutton}
-                theme={{ colors: { primary: '#007bff' } }}
+                theme={{colors: {primary: '#007bff'}}}
                 onPress={openPreview}
                 accessibilityLabel="preview report and send"
               >
@@ -373,7 +380,7 @@ const styles = StyleSheet.create({
 
     elevation: 10,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
+    shadowOffset: {width: 0, height: 3},
     shadowOpacity: 0.15,
     shadowRadius: 5,
     borderRadius: 25
@@ -398,7 +405,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_400Regular',
     elevation: 10,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
+    shadowOffset: {width: 0, height: 3},
     shadowOpacity: 0.15,
     shadowRadius: 5,
     borderRadius: 25

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList, Dimensions } from 'react-native';
 import EventListItem from '../components/EventListItem';
 
 export default function EventList({ navigation, reportsData }) {
@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
     flex: 1,
 
     width: '100%',
+    alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center'
   },

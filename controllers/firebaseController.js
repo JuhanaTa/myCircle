@@ -104,7 +104,7 @@ export const logOut = async () => {
     });
 };
 
-export const createReport = async (description, image, location, topic, id) => {
+export const createReport = async (description, image, location, topic, id, time) => {
   try {
     const reportObject = {
       description,
@@ -112,7 +112,8 @@ export const createReport = async (description, image, location, topic, id) => {
       location,
       topic,
       key: `${uuidv4()}`, // to be used as React key prop
-      userId: id
+      userId: id,
+      time
     };
     // newly created report object is not contained in the firebase response
     await db.collection('Reports').add(reportObject);
