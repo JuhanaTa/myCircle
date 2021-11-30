@@ -156,6 +156,7 @@ const HomeScreen = ({navigation}) => {
                       <EventList
                         navigation={navigation}
                         reportsData={recentReports}
+                        userReports={false}
                       ></EventList>
                     )}
                   </View>

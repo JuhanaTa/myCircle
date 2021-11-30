@@ -11,10 +11,7 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import MapScreen from '../views/MapScreen';
 import EventListScreen from '../views/EventListScreen';
 import EventScreen from '../views/EventScreen';
-
-import { createUser, logOut } from '../controllers/firebaseController';
 import { StyleSheet, Image } from 'react-native';
-import { Button } from 'react-native-paper';
 
 //tab
 const Tab = createBottomTabNavigator();
@@ -46,9 +43,9 @@ const HomeStackScreen = () => {
         options={{ headerShown: false }}
       />
 
-      <HomeStack.Screen name="MapScreen" component={MapScreen} />
+      <HomeStack.Screen name="MapScreen" component={MapScreen}  />
 
-      <HomeStack.Screen name="EventListScreen" component={EventListScreen} />
+      <HomeStack.Screen name="EventListScreen" component={EventListScreen}/>
 
       <HomeStack.Screen name="EventScreen" component={EventScreen} />
     </HomeStack.Navigator>
@@ -69,6 +66,7 @@ const NewStackScreen = () => {
         options={{ headerShown: true }}
       />
       <HomeStack.Screen name="EventScreen" component={EventScreen} />
+      <HomeStack.Screen name="MapScreen" component={MapScreen}  />
     </NewStack.Navigator>
   );
 };

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Dimensions, ScrollView, StatusBar, StyleSheet, Text, View, Image, Platform} from 'react-native';
+import {Dimensions, ScrollView, StatusBar, StyleSheet, Text, View} from 'react-native';
 import MapView, {Callout} from 'react-native-maps';
 import * as Location from 'expo-location';
 import AppLoading from 'expo-app-loading';
@@ -9,8 +9,15 @@ import ModalDialog from '../components/globalReUseAbles/ModalDialog';
 import ReportTopics from '../components/reports/ReportTopics';
 import {useSelector} from 'react-redux';
 
-export default function MapScreen({navigation}) {
+export default function MapScreen({navigation, route}) {
 
+    let locFromItem;
+    
+    if(route.params != undefined){
+        const {oneItemLocation} = route.params;
+        locFromItem = oneItemLocation;
+    }
+    
     //all nearby reports
     const [filteredReports, setFilteredReports] = useState([]);
 
@@ -156,10 +163,10 @@ export default function MapScreen({navigation}) {
                         <MapView style={styles.map}
                             showsUserLocation={true}
                             initialRegion={{
-                                latitude: currentLoc.coords.latitude,
-                                longitude: currentLoc.coords.longitude,
-                                latitudeDelta: 0.11,
-                                longitudeDelta: 0.11
+                                latitude: locFromItem ? locFromItem.latitude : currentLoc.coords.latitude,
+                                longitude: locFromItem ? locFromItem.longitude : currentLoc.coords.longitude,
+                                latitudeDelta: locFromItem ? 0.03 : 0.05,
+                                longitudeDelta: locFromItem ? 0.03 : 0.05
                             }}
                         >
 

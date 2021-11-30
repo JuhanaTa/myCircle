@@ -2,11 +2,11 @@ import React from 'react';
 import { StyleSheet, View, FlatList, Dimensions } from 'react-native';
 import EventListItem from '../components/EventListItem';
 
-export default function EventList({ navigation, reportsData }) {
+export default function EventList({ navigation, reportsData, userReports }) {
   //console.log('reports data in event list',reportsData);
   //item that is rendered
   const renderItem = ({ item }) => (
-    <EventListItem item={item} navigation={navigation} />
+    <EventListItem item={item} navigation={navigation} userReports={userReports} />
   );
 
   return (

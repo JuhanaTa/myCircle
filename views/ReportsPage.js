@@ -49,12 +49,13 @@ const ReportsPage = ({ navigation }) => {
   }, []);
 
   const { reports, currentUser } = useSelector((store) => store);
-  //Show only 5 reports
-  //this needs some logic to show relevant/newest reports
 
   const recentReports = reports.filter(
     (element) => element.userId === currentUser.userId
   );
+
+  console.log('length of reports',recentReports.length);
+  console.log('user reports', recentReports);
 
   console;
   if (!fontsLoaded) {
@@ -110,6 +111,7 @@ const ReportsPage = ({ navigation }) => {
                       <EventList
                         navigation={navigation}
                         reportsData={recentReports}
+                        userReports={true}
                       ></EventList>
                     </>
                   ) : (

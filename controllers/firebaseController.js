@@ -104,19 +104,19 @@ export const logOut = async () => {
     });
 };
 
-export const createReport = async (description, image, location, topic, id, time) => {
+export const createReport = async (description, image, location, topic, id, reportId, time) => {
   try {
     const reportObject = {
       description,
       image,
       location,
       topic,
-      key: `${uuidv4()}`, // to be used as React key prop
+      key: reportId, // to be used as React key prop
       userId: id,
       time
     };
     // newly created report object is not contained in the firebase response
-    await db.collection('Reports').add(reportObject);
+    await db.collection('Reports').doc(reportId).set(reportObject);
 
     const user = await getUser(id);
 
@@ -139,6 +139,37 @@ export const createReport = async (description, image, location, topic, id, time
     // the returned value will be used to update redux store;
     return await getReports();
   } catch (e) {
+    console.log(e);
+  }
+};
+
+export const deleteReport = async (id, userId) => {
+  try {
+    //from reports
+    await db.collection('Reports').doc(id).delete();
+
+    //from users
+    const user = await getUser(userId);
+
+
+    const reportArray = [];
+
+    for (let i = 0; i < user.reportObject.length; i++) {
+      if(user.reportObject[i].key !== id){
+        reportArray.push(user.reportObject[i]);
+      } else {
+        console.log('detected deleted report from user');
+      }
+    }
+
+    await db.collection('Users').doc(userId).update({
+      reportObject: reportArray
+    });
+    console.log('report deleted and user array', reportArray);
+
+    //reports fetched after deletion
+    return await getReports();
+  }catch(e){
     console.log(e);
   }
 };

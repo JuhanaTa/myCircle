@@ -19,7 +19,7 @@ import {
 
 const uri = 'https://reactjs.org/logo-og.png';
 
-export default function EventListItem({navigation, item}) {
+export default function EventListItem({navigation, item, userReports}) {
   console.log(item);
   let [fontsLoaded] = useFonts({
     OpenSans_300Light,
@@ -47,7 +47,8 @@ export default function EventListItem({navigation, item}) {
           style={styles.button}
           onPress={() => {
             navigation.navigate('EventScreen', {
-              data: item
+              data: item,
+              userReports: userReports
             });
           }}
         >

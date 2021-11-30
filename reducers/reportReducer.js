@@ -2,10 +2,12 @@ import firebase from 'firebase';
 import {
   createReport,
   getReports,
-  uploadImageToFirebaseStorage
+  uploadImageToFirebaseStorage,
+  deleteReport
 } from '../controllers/firebaseController';
 import { modifyCurrentUser } from './currentUserReducer';
 import { setSnackbar, setTickAnimation } from './toggleReducers';
+import { v4 as uuidv4 } from 'uuid';
 
 const reportReducer = (state = [], action) => {
   switch (action.type) {
@@ -13,6 +15,8 @@ const reportReducer = (state = [], action) => {
       return action.reports || state;
     case 'NEW_REPORT_ADDED':
       return action.newReportAdded;
+    case 'DELETE_REPORT':
+      return action.reportDeleted;
     default:
       return state;
   }
@@ -43,12 +47,14 @@ const createNewReport = (
       const image = imageUri
         ? await uploadImageToFirebaseStorage(imageUri)
         : '';
+      const reportId = `${uuidv4()}`;
       const newReportAdded = await createReport(
         description,
         image,
         location,
         reportTopic,
         id,
+        reportId,
         time
       );
       dispatch(setTickAnimation());
@@ -67,4 +73,21 @@ const createNewReport = (
   };
 };
 
-export { reportReducer as default, createNewReport, setFetchedReports };
+const deleteOneReport = (
+  id
+) => {
+  return async (dispatch) => {
+    try {
+      const userId = await firebase.auth().currentUser.uid;
+      const reportDeleted = await deleteReport(id, userId);
+      dispatch({
+        type: 'DELETE_REPORT',
+        reportDeleted
+      });
+    } catch(e) {
+      console.log('report deletion error');
+    }
+  };
+};
+
+export { reportReducer as default, createNewReport, setFetchedReports, deleteOneReport };

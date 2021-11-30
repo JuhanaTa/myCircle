@@ -52,8 +52,8 @@ export default function HeatMapButton({navigation, location, reportsData}) {
               initialRegion={{
                 latitude: location.coords.latitude,
                 longitude: location.coords.longitude,
-                latitudeDelta: 0.001,
-                longitudeDelta: 0.001
+                latitudeDelta: 0.004,
+                longitudeDelta: 0.004
               }}
             >
               <MapView.Circle

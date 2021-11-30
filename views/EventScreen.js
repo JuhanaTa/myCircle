@@ -1,7 +1,11 @@
 import React from 'react';
 import AppLoading from 'expo-app-loading';
-import { Text, StyleSheet, View, Image } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import {Text, StyleSheet, View, Image, Pressable, TouchableOpacity, Dimensions, Alert} from 'react-native';
+import {LinearGradient} from 'expo-linear-gradient';
+import {Button} from 'react-native-paper';
+import {AntDesign} from '@expo/vector-icons';
+import {useDispatch} from 'react-redux';
+import {deleteOneReport} from '../reducers/reportReducer';
 
 import {
   useFonts,
@@ -10,8 +14,11 @@ import {
   OpenSans_600SemiBold,
   OpenSans_700Bold
 } from '@expo-google-fonts/open-sans';
+import MapView from 'react-native-maps';
 
-export default function EventScreen({ navigation, route }) {
+export default function EventScreen({navigation, route}) {
+
+  const dispatch = useDispatch();
   let [fontsLoaded] = useFonts({
     OpenSans_300Light,
     OpenSans_400Regular,
@@ -19,9 +26,9 @@ export default function EventScreen({ navigation, route }) {
     OpenSans_700Bold
   });
 
-  const uri = { uri: 'http://placekitten.com/200/300' };
-
-  const { data } = route.params;
+  const {data, userReports} = route.params;
+  console.log('item data', data);
+  console.log('user reports', userReports);
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -32,16 +39,114 @@ export default function EventScreen({ navigation, route }) {
           <View style={styles.content}>
             <View style={styles.textcontent}>
               <Text style={styles.header}>Topic: {data.topic}</Text>
-              <Image
-                source={{ uri: data.image }}
-                style={{
-                  width: '90%',
-                  height: 200,
-                  alignSelf: 'center',
-                  marginTop: 10
-                }}
-                resizeMode="center"
-              ></Image>
+              <Text style={styles.text}>{data.location.address}</Text>
+
+              {data.image ? (
+                <Image
+                  source={{uri: data.image}}
+                  style={{
+                    width: '90%',
+                    height: 200,
+                    alignSelf: 'center',
+                    marginTop: 10
+                  }}
+                  resizeMode="center"
+                ></Image>
+              ) : (
+                <Pressable onPress={async () => {
+                  navigation.navigate('MapScreen', {
+                    oneItemLocation: data.location
+                  });
+                }}>
+                  <View style={styles.mapcontainer} pointerEvents="none">
+                    <MapView style={styles.map}
+                      showsUserLocation={true}
+                      initialRegion={{
+                        latitude: data.location.latitude,
+                        longitude: data.location.longitude,
+                        latitudeDelta: 0.004,
+                        longitudeDelta: 0.004
+                      }}
+                    >
+                      <MapView.Marker
+                        coordinate={data.location}
+                      >
+                      </MapView.Marker>
+                    </MapView>
+                  </View>
+                </Pressable>
+              )}
+              <View style={styles.buttonContainer}>
+                <Button
+
+                  icon="map-outline"
+                  style={{backgroundColor: 'white', alignSelf: 'center'}}
+                  theme={{colors: {primary: '#007bff'}}}
+                  onPress={async () => {
+                    navigation.navigate('MapScreen', {
+                      oneItemLocation: data.location
+                    });
+                  }}
+                >
+                  Show on map
+                </Button>
+
+                {userReports &&
+                  <Button
+                    icon="delete"
+                    style={{backgroundColor: 'white', alignSelf: 'center'}}
+                    theme={{colors: {primary: '#007bff'}}}
+                    onPress={async () => {
+
+                      Alert.alert(
+                        "Confirm deletion",
+                        "Are you sure you want to delete this post?",
+                        [
+                          {
+                            text: "Cancel",
+                            onPress: () => console.log("Cancel Pressed"),
+                            style: "cancel"
+                          },
+                          {
+                            text: "OK", onPress: () => {
+                              dispatch(
+                                deleteOneReport(data.key)
+                              );
+                              navigation.popToTop();
+                            }
+                          }
+                        ]
+                      );
+                    }}
+                  >
+                    Delete
+                  </Button>
+                }
+                <View style={{flexDirection: 'row'}}>
+                  <View style={{flexDirection: 'column'}}>
+                    <TouchableOpacity>
+                      <AntDesign
+                        style={{backgroundColor: 'white', marginBottom: 2}}
+                        name="arrowup"
+                        size={30}
+                        color="#007bff"
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                      <AntDesign
+                        style={{backgroundColor: 'white', marginTop: 2}}
+                        name="arrowdown"
+                        size={30}
+                        color="#007bff"
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  <Text style={{alignSelf: 'center', color: '#007bff', fontFamily: 'OpenSans_600SemiBold', fontSize: 18}}>0</Text>
+                </View>
+
+
+
+              </View>
               <Text style={styles.text}>{data.description}</Text>
             </View>
           </View>
@@ -77,7 +182,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
 
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
+    shadowOffset: {width: 0, height: 3},
     shadowOpacity: 0.15,
     shadowRadius: 5
   },
@@ -95,7 +200,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     elevation: 10,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
+    shadowOffset: {width: 0, height: 3},
     shadowOpacity: 0.15,
     shadowRadius: 5
   },
@@ -114,7 +219,6 @@ const styles = StyleSheet.create({
     color: '#112454',
     paddingLeft: '5%',
     paddingRight: '5%',
-    paddingBottom: '5%',
     paddingTop: '5%',
     fontSize: 20,
     fontFamily: 'OpenSans_600SemiBold'
@@ -141,8 +245,28 @@ const styles = StyleSheet.create({
     padding: '3%',
     backgroundColor: '#fff',
     shadowColor: '#888',
-    shadowOffset: { width: 0, height: 0 },
+    shadowOffset: {width: 0, height: 0},
     shadowOpacity: 0.5,
     borderRadius: 25
-  }
+  },
+
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 5
+  },
+
+  map: {
+    width: '100%',
+    height: 200,
+    borderRadius: 10,
+  },
+  mapcontainer: {
+    width: Dimensions.get('window').width - 20,
+    backgroundColor: "#FFFF",
+    overflow: 'hidden',
+    alignSelf: 'center',
+    justifyContent: "center",
+    borderRadius: 25,
+  },
 });
