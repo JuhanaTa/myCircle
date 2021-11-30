@@ -201,7 +201,7 @@ export default function MapScreen({navigation, route}) {
                                 >
                                     <Callout tooltip onPress={() => {
                                         console.log('clicked marker view', marker);
-                                        navigation.navigate('EventScreen', {
+                                        navigation.push('EventScreen', {
                                             data: marker
                                         });
 
