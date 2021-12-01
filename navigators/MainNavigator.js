@@ -107,7 +107,7 @@ const MainNavigator = () => {
             name="New"
             component={NewStackScreen}
             options={{
-              tabBarLabel: 'New',
+              tabBarLabel: 'Reports',
               tabBarIcon: ({ color }) => (
                 <MaterialCommunityIcons
                   name="plus-circle"
