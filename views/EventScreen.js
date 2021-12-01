@@ -24,6 +24,7 @@ import {
   OpenSans_700Bold
 } from '@expo-google-fonts/open-sans';
 import MapView from 'react-native-maps';
+import BackgroundImage from '../components/BackgorundCircle';
 
 export default function EventScreen({ navigation, route }) {
   const dispatch = useDispatch();
@@ -43,6 +44,7 @@ export default function EventScreen({ navigation, route }) {
   } else {
     return (
       <LinearGradient colors={['#00c6ff', '#0072ff']} style={styles.background}>
+        <BackgroundImage></BackgroundImage>
         <View style={styles.container}>
           <View style={styles.content}>
             <View style={styles.textcontent}>
