@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -8,9 +8,9 @@ import {
   Text,
   Alert
 } from 'react-native';
-import { Button } from 'react-native-paper';
-import { useEffect } from 'react';
-import { LinearGradient } from 'expo-linear-gradient';
+import {Button} from 'react-native-paper';
+import {useEffect} from 'react';
+import {LinearGradient} from 'expo-linear-gradient';
 import {
   registerWithEmailAndPassword,
   createUser
@@ -30,11 +30,15 @@ import {
 import AppLoading from 'expo-app-loading';
 import BackgroundImage from '../components/BackgorundCircle';
 
-export default function RegisterPage({ navigation }) {
+export default function RegisterPage({navigation}) {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullname, setFullName] = useState('');
+  const [error, setError] = useState('');
+
+  // eslint-disable-next-line no-useless-escape
+  const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   console.log(username, password, fullname);
   let [fontsLoaded] = useFonts({
@@ -51,20 +55,32 @@ export default function RegisterPage({ navigation }) {
 
   const handleRegister = async () => {
     try {
-      if (password.length >= 6) {
-        const result = await registerWithEmailAndPassword(email, password);
-        console.log('result', result);
+      if (username.length > 0) {
+        if (emailRegex.test(email)) {
+          if (password.length >= 6) {
+            if(fullname.length > 0){
+              const result = await registerWithEmailAndPassword(email, password);
+              console.log('result', result);
+  
+              //creating User in Firebase
+  
+              await createUser(username, email, fullname, result.user.uid);
+              console.log('user created');
+            }else{
+              setError('Fullname must be at least 1 character long');
+            }
 
-        //creating User in Firebase
-
-        await createUser(username, email, fullname, result.user.uid);
-        console.log('user created');
+          } else {
+            setError('Password must be 6 characters long');
+          }
+        } else {
+          setError('Email not valid');
+        }
       } else {
-        Alert.alert('Check Password', 'Password too short', [
-          { text: 'OK', onPress: () => console.log('OK Pressed') }
-        ]);
+        setError('Username must be at least 1 character long');
       }
     } catch (e) {
+      setError(e.message);
       console.log(e);
     }
   };
@@ -112,15 +128,16 @@ export default function RegisterPage({ navigation }) {
             <Button
               accessibilityLabel="Register to MyCircle"
               style={styles.button}
-              theme={{ colors: { primary: '#007bff' } }}
+              theme={{colors: {primary: '#007bff'}}}
               onPress={() => {
                 handleRegister();
               }}
             >
               Register
             </Button>
-          </View>
-          <View style={{ margin: 30, flex: 1, justifyContent: 'flex-end' }}>
+            {error.length > 0 &&
+              <Text style={{color: 'red', marginTop: 5}}>{error}</Text>
+            }
             <Text
               style={styles.link}
               onPress={() => {
@@ -170,12 +187,13 @@ const styles = StyleSheet.create({
     color: '#fff'
   },
   link: {
-    textAlign: 'left',
     width: '100%',
     paddingBottom: '2%',
     fontSize: 16,
     fontFamily: 'Inter_400Regular',
-    color: '#fff'
+    color: '#fff',
+    textAlign: 'center',
+    marginTop: 10
   },
   input: {
     fontFamily: 'Inter_400Regular',

@@ -66,9 +66,47 @@ export default function EventListItem({ navigation, item, userReports }) {
             </View>
             <View style={styles.textcontent}>
               <Text style={styles.header}>Topic: {item.topic}</Text>
-              <Text style={styles.text}>{item.description}</Text>
+              {item.description.length > 80 ? (
+                <Text style={styles.text}>
+                  {item.description.substring(0, 80)}...
+                </Text>
+              ) : (
+                <Text style={styles.text}>
+                  {item.description.substring(0, 80)}
+                </Text>
+              )}
+
               <Text style={styles.text}>{timeToShow}</Text>
+
               <View style={styles.containerButton}>
+                {item.status == 'pending' && (
+                  <View
+                    style={[styles.statusView, { backgroundColor: 'gray' }]}
+                  >
+                    <Text style={[styles.textStatus, { color: 'white' }]}>
+                      Status: {item.status}
+                    </Text>
+                  </View>
+                )}
+                {item.status == 'processing' && (
+                  <View
+                    style={[styles.statusView, { backgroundColor: 'yellow' }]}
+                  >
+                    <Text style={[styles.textStatus, { color: 'black' }]}>
+                      Status: {item.status}
+                    </Text>
+                  </View>
+                )}
+                {item.status == 'resolved' && (
+                  <View
+                    style={[styles.statusView, { backgroundColor: 'green' }]}
+                  >
+                    <Text style={[styles.textStatus, { color: 'white' }]}>
+                      Status: {item.status}
+                    </Text>
+                  </View>
+                )}
+
                 <View style={styles.buttonContent}>
                   <AntDesign
                     style={styles.buttonArrow}
@@ -162,14 +200,31 @@ const styles = StyleSheet.create({
     padding: '5%',
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
-    borderRadius: 25
+    borderRadius: 25,
+    flexDirection: 'row'
   },
   buttonContent: {
-    padding: '3%',
+    alignSelf: 'center',
     backgroundColor: '#fff',
     shadowColor: '#888',
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.5,
     borderRadius: 25
+  },
+  statusView: {
+    padding: 4,
+    borderRadius: 10,
+    marginRight: 10,
+    width: '80%',
+    alignItems: 'center'
+  },
+  textStatus: {
+    display: 'flex',
+    marginLeft: '5%',
+    marginRight: '5%',
+    marginTop: '1%',
+    marginBottom: '1%',
+    fontFamily: 'OpenSans_400Regular',
+    fontSize: 14
   }
 });

@@ -241,10 +241,11 @@ const styles = StyleSheet.create({
   listContainer: {
     flex: 1,
     padding: 0,
-    width: '100%',
+    width: '95%',
     height: '100%',
     paddingTop: '3%',
-    margin: 0
+    marginRight: '2.5%',
+    marginLeft: '2.5%'
   },
   listHeader: {
     color: '#112454',

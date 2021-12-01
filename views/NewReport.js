@@ -128,7 +128,7 @@ const NewReport = ({navigation}) => {
 
     // push new report to firebase  and updates redux store (asynchronously)
     dispatch(
-      createNewReport(image?.uri, reportLocation, description, checkedTopic, currentUser?.gamePoints, currentTime)
+      createNewReport(image?.uri, reportLocation, description, checkedTopic, currentUser?.gamePoints, currentTime, 'pending')
     );
     navigation.navigate('HomeStack', {screen: 'HomeStack'});
     setPreview(false);
@@ -255,16 +255,14 @@ const NewReport = ({navigation}) => {
               open={isImgPickerMenuOpened}
               setMenu={setImgPickerMenu}
             />
-            <View style={styles.submitbuttonContainer}>
-              <Button
-                style={styles.submitbutton}
-                theme={{colors: {primary: '#007bff'}}}
-                onPress={openPreview}
-                accessibilityLabel="preview report and send"
-              >
-                Submit
-              </Button>
-            </View>
+            <Button
+              style={styles.submitbutton}
+              theme={{colors: {primary: '#007bff'}}}
+              onPress={openPreview}
+              accessibilityLabel="preview report and send"
+            >
+              Submit
+            </Button>
             <PreviewReport
               open={isPreviewOpened}
               closeDialog={handlePreviewClosing}
@@ -393,7 +391,7 @@ const styles = StyleSheet.create({
   },
   submitbutton: {
     width: '90%',
-
+    alignSelf: 'center',
     margin: 10,
 
     display: 'flex',

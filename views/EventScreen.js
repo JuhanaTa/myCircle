@@ -143,7 +143,11 @@ export default function EventScreen({ navigation, route }) {
                     </TouchableOpacity>
                     <TouchableOpacity>
                       <AntDesign
-                        style={{ backgroundColor: 'white', marginTop: 2 }}
+                        style={{
+                          backgroundColor: 'white',
+                          marginTop: 2,
+                          margin: 2
+                        }}
                         name="arrowdown"
                         size={30}
                         color="#007bff"
@@ -162,6 +166,31 @@ export default function EventScreen({ navigation, route }) {
                   </Text>
                 </View>
               </View>
+
+              {data.status == 'pending' && (
+                <View style={[styles.statusView, { backgroundColor: 'gray' }]}>
+                  <Text style={[styles.textStatus, { color: 'white' }]}>
+                    Status: {data.status}
+                  </Text>
+                </View>
+              )}
+              {data.status == 'processing' && (
+                <View
+                  style={[styles.statusView, { backgroundColor: 'yellow' }]}
+                >
+                  <Text style={[styles.textStatus, { color: 'black' }]}>
+                    Status: {data.status}
+                  </Text>
+                </View>
+              )}
+              {data.status == 'resolved' && (
+                <View style={[styles.statusView, { backgroundColor: 'green' }]}>
+                  <Text style={[styles.textStatus, { color: 'white' }]}>
+                    Status: {data.status}
+                  </Text>
+                </View>
+              )}
+
               <Text style={styles.text}>{data.description}</Text>
             </View>
           </View>
@@ -177,7 +206,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: '5%',
+    paddingTop: '3%',
     height: '100%'
   },
   background: {
@@ -201,7 +230,7 @@ const styles = StyleSheet.create({
   content: {
     backgroundColor: '#fff',
     flex: 1,
-    width: '100%',
+    width: '95%',
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
@@ -281,11 +310,28 @@ const styles = StyleSheet.create({
     borderRadius: 10
   },
   mapcontainer: {
-    width: Dimensions.get('window').width - 20,
+    width: Dimensions.get('window').width - 40,
     backgroundColor: '#FFFF',
     overflow: 'hidden',
     alignSelf: 'center',
     justifyContent: 'center',
     borderRadius: 25
+  },
+  statusView: {
+    width: '50%',
+    padding: 4,
+    borderRadius: 10,
+    marginLeft: '5%',
+    alignItems: 'center'
+  },
+  textStatus: {
+    display: 'flex',
+    marginLeft: '5%',
+    marginRight: '5%',
+    marginTop: '1%',
+    marginBottom: '1%',
+    padding: 4,
+    fontFamily: 'OpenSans_400Regular',
+    fontSize: 14
   }
 });

@@ -38,7 +38,8 @@ const createNewReport = (
   description,
   reportTopic,
   userGamepoints,
-  time
+  time,
+  status
 ) => {
   return async (dispatch) => {
     try {
@@ -55,7 +56,8 @@ const createNewReport = (
         reportTopic,
         id,
         reportId,
-        time
+        time,
+        status
       );
       dispatch(setTickAnimation());
       dispatch({

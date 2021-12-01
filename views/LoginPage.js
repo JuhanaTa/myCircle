@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 
 import {
   StyleSheet,
@@ -10,11 +10,11 @@ import {
   Alert,
   Image
 } from 'react-native';
-import { Button } from 'react-native-paper';
+import {Button} from 'react-native-paper';
 import AppLoading from 'expo-app-loading';
-import { loginWithUserAndPassword } from '../controllers/firebaseController';
+import {loginWithUserAndPassword} from '../controllers/firebaseController';
 import BackgroundImage from '../components/BackgorundCircle';
-import { LinearGradient } from 'expo-linear-gradient';
+import {LinearGradient} from 'expo-linear-gradient';
 
 import {
   useFonts,
@@ -29,7 +29,7 @@ import {
   Inter_900Black
 } from '@expo-google-fonts/inter';
 
-export default function LoginPage({ navigation }) {
+export default function LoginPage({navigation}) {
   let [fontsLoaded] = useFonts({
     Inter_900Black,
     Inter_100Thin,
@@ -43,21 +43,32 @@ export default function LoginPage({ navigation }) {
   });
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  // eslint-disable-next-line no-useless-escape
+  const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   console.log(email, password);
 
   const handleLogin = async () => {
     try {
-      if (password.length >= 6) {
-        const result = await loginWithUserAndPassword(email, password);
-        //console.log('result', result);
+
+      if (emailRegex.test(email)) {
+        if (password.length >= 6) {
+          setError('');
+          const result = await loginWithUserAndPassword(email, password);
+          
+          //console.log('result', result);
+        } else {
+          setError('Password must be 6 characters long');
+        }
       } else {
-        Alert.alert('Check Password', 'Password too short', [
-          { text: 'OK', onPress: () => console.log('OK Pressed') }
-        ]);
+        setError('Email not valid');
       }
     } catch (e) {
+      setError(e.message);
       console.log(e);
+      
     }
   };
 
@@ -91,22 +102,26 @@ export default function LoginPage({ navigation }) {
             <Button
               accessibilityLabel="Login to MyCircle"
               style={styles.button}
-              theme={{ colors: { primary: '#007bff' } }}
+              theme={{colors: {primary: '#007bff'}}}
               onPress={() => {
                 handleLogin();
               }}
             >
               Login
             </Button>
+            {error.length > 0 &&
+              <Text style={{color: 'red', marginTop: 5}}>{error}</Text>
+            }
+            <TouchableOpacity
+              style={{margin: 10}}
+              onPress={() => {
+                navigation.navigate('RegisterPage');
+              }}
+            >
+              <Text style={styles.link}>No account yet?</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            style={{ margin: 30 }}
-            onPress={() => {
-              navigation.navigate('RegisterPage');
-            }}
-          >
-            <Text style={styles.link}>No account yet?</Text>
-          </TouchableOpacity>
+
         </View>
       </LinearGradient>
     );
@@ -195,5 +210,6 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0,
     height: '100%'
-  }
+  },
+  
 });
