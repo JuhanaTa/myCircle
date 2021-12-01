@@ -1,11 +1,20 @@
 import React from 'react';
 import AppLoading from 'expo-app-loading';
-import {Text, StyleSheet, View, Image, Pressable, TouchableOpacity, Dimensions, Alert} from 'react-native';
-import {LinearGradient} from 'expo-linear-gradient';
-import {Button} from 'react-native-paper';
-import {AntDesign} from '@expo/vector-icons';
-import {useDispatch} from 'react-redux';
-import {deleteOneReport} from '../reducers/reportReducer';
+import {
+  Text,
+  StyleSheet,
+  View,
+  Image,
+  Pressable,
+  TouchableOpacity,
+  Dimensions,
+  Alert
+} from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Button } from 'react-native-paper';
+import { AntDesign } from '@expo/vector-icons';
+import { useDispatch } from 'react-redux';
+import { deleteOneReport } from '../reducers/reportReducer';
 
 import {
   useFonts,
@@ -15,9 +24,9 @@ import {
   OpenSans_700Bold
 } from '@expo-google-fonts/open-sans';
 import MapView from 'react-native-maps';
+import BackgroundImage from '../components/BackgorundCircle';
 
-export default function EventScreen({navigation, route}) {
-
+export default function EventScreen({ navigation, route }) {
   const dispatch = useDispatch();
   let [fontsLoaded] = useFonts({
     OpenSans_300Light,
@@ -26,7 +35,7 @@ export default function EventScreen({navigation, route}) {
     OpenSans_700Bold
   });
 
-  const {data, userReports} = route.params;
+  const { data, userReports } = route.params;
   console.log('item data', data);
   console.log('user reports', userReports);
 
@@ -35,6 +44,7 @@ export default function EventScreen({navigation, route}) {
   } else {
     return (
       <LinearGradient colors={['#00c6ff', '#0072ff']} style={styles.background}>
+        <BackgroundImage></BackgroundImage>
         <View style={styles.container}>
           <View style={styles.content}>
             <View style={styles.textcontent}>
@@ -43,7 +53,7 @@ export default function EventScreen({navigation, route}) {
 
               {data.image ? (
                 <Image
-                  source={{uri: data.image}}
+                  source={{ uri: data.image }}
                   style={{
                     width: '90%',
                     height: 200,
@@ -53,13 +63,16 @@ export default function EventScreen({navigation, route}) {
                   resizeMode="center"
                 ></Image>
               ) : (
-                <Pressable onPress={async () => {
-                  navigation.navigate('MapScreen', {
-                    oneItemLocation: data.location
-                  });
-                }}>
+                <Pressable
+                  onPress={async () => {
+                    navigation.navigate('MapScreen', {
+                      oneItemLocation: data.location
+                    });
+                  }}
+                >
                   <View style={styles.mapcontainer} pointerEvents="none">
-                    <MapView style={styles.map}
+                    <MapView
+                      style={styles.map}
                       showsUserLocation={true}
                       initialRegion={{
                         latitude: data.location.latitude,
@@ -70,18 +83,16 @@ export default function EventScreen({navigation, route}) {
                     >
                       <MapView.Marker
                         coordinate={data.location}
-                      >
-                      </MapView.Marker>
+                      ></MapView.Marker>
                     </MapView>
                   </View>
                 </Pressable>
               )}
               <View style={styles.buttonContainer}>
                 <Button
-
                   icon="map-outline"
-                  style={{backgroundColor: 'white', alignSelf: 'center'}}
-                  theme={{colors: {primary: '#007bff'}}}
+                  style={styles.buttonContent}
+                  theme={{ colors: { primary: '#007bff' } }}
                   onPress={async () => {
                     navigation.navigate('MapScreen', {
                       oneItemLocation: data.location
@@ -91,27 +102,25 @@ export default function EventScreen({navigation, route}) {
                   Show on map
                 </Button>
 
-                {userReports &&
+                {userReports && (
                   <Button
                     icon="delete"
-                    style={{backgroundColor: 'white', alignSelf: 'center'}}
-                    theme={{colors: {primary: '#007bff'}}}
+                    style={{ backgroundColor: 'white', alignSelf: 'center' }}
+                    theme={{ colors: { primary: '#007bff' } }}
                     onPress={async () => {
-
                       Alert.alert(
-                        "Confirm deletion",
-                        "Are you sure you want to delete this post?",
+                        'Confirm deletion',
+                        'Are you sure you want to delete this post?',
                         [
                           {
-                            text: "Cancel",
-                            onPress: () => console.log("Cancel Pressed"),
-                            style: "cancel"
+                            text: 'Cancel',
+                            onPress: () => console.log('Cancel Pressed'),
+                            style: 'cancel'
                           },
                           {
-                            text: "OK", onPress: () => {
-                              dispatch(
-                                deleteOneReport(data.key)
-                              );
+                            text: 'OK',
+                            onPress: () => {
+                              dispatch(deleteOneReport(data.key));
                               navigation.popToTop();
                             }
                           }
@@ -121,12 +130,12 @@ export default function EventScreen({navigation, route}) {
                   >
                     Delete
                   </Button>
-                }
-                <View style={{flexDirection: 'row', backgroundColor: 'white', margin: 5, borderRadius: 10, padding: 5,}}>
-                  <View style={{flexDirection: 'column'}}>
+                )}
+                <View style={{ flexDirection: 'row' }}>
+                  <View style={{ flexDirection: 'column' }}>
                     <TouchableOpacity>
                       <AntDesign
-                        style={{backgroundColor: 'white', marginBottom: 2, margin: 2}}
+                        style={{ backgroundColor: 'white', marginBottom: 2 }}
                         name="arrowup"
                         size={30}
                         color="#007bff"
@@ -134,42 +143,53 @@ export default function EventScreen({navigation, route}) {
                     </TouchableOpacity>
                     <TouchableOpacity>
                       <AntDesign
-                        style={{backgroundColor: 'white', marginTop: 2, margin: 2}}
+                        style={{
+                          backgroundColor: 'white',
+                          marginTop: 2,
+                          margin: 2
+                        }}
                         name="arrowdown"
                         size={30}
                         color="#007bff"
                       />
                     </TouchableOpacity>
                   </View>
-                  <Text style={{alignSelf: 'center', color: '#007bff', fontFamily: 'OpenSans_600SemiBold', fontSize: 18}}>0</Text>
+                  <Text
+                    style={{
+                      alignSelf: 'center',
+                      color: '#007bff',
+                      fontFamily: 'OpenSans_600SemiBold',
+                      fontSize: 18
+                    }}
+                  >
+                    0
+                  </Text>
                 </View>
-
-
-
               </View>
 
-              {data.status == 'pending' &&
-                <View style={[styles.statusView, {backgroundColor: 'gray'}]}>
-                  <Text style={[styles.textStatus, {color: 'white'}]}>
+              {data.status == 'pending' && (
+                <View style={[styles.statusView, { backgroundColor: 'gray' }]}>
+                  <Text style={[styles.textStatus, { color: 'white' }]}>
                     Status: {data.status}
                   </Text>
                 </View>
-              }
-              {data.status == 'processing' &&
-                <View style={[styles.statusView, {backgroundColor: 'yellow'}]}>
-                  <Text style={[styles.textStatus, {color: 'black'}]}>
+              )}
+              {data.status == 'processing' && (
+                <View
+                  style={[styles.statusView, { backgroundColor: 'yellow' }]}
+                >
+                  <Text style={[styles.textStatus, { color: 'black' }]}>
                     Status: {data.status}
                   </Text>
                 </View>
-              }
-              {data.status == 'resolved' &&
-                <View style={[styles.statusView, {backgroundColor: 'green'}]}>
-                  <Text style={[styles.textStatus, {color: 'white'}]}>
+              )}
+              {data.status == 'resolved' && (
+                <View style={[styles.statusView, { backgroundColor: 'green' }]}>
+                  <Text style={[styles.textStatus, { color: 'white' }]}>
                     Status: {data.status}
                   </Text>
                 </View>
-              }
-
+              )}
 
               <Text style={styles.text}>{data.description}</Text>
             </View>
@@ -198,19 +218,15 @@ const styles = StyleSheet.create({
     height: '100%'
   },
   button: {
-    width: '100%',
-    height: '100%',
-
+    backgroundColor: 'red',
     justifyContent: 'center',
     flexDirection: 'column',
     borderRadius: 25,
-
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 3},
+    shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.15,
     shadowRadius: 5
   },
-
   content: {
     backgroundColor: '#fff',
     flex: 1,
@@ -224,7 +240,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     elevation: 10,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 3},
+    shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.15,
     shadowRadius: 5
   },
@@ -255,7 +271,7 @@ const styles = StyleSheet.create({
     paddingBottom: '2%',
     fontFamily: 'OpenSans_400Regular',
     fontSize: 14,
-    color: '#727aa3'
+    color: '#112454'
   },
   containerButton: {
     display: 'flex',
@@ -266,34 +282,42 @@ const styles = StyleSheet.create({
     borderRadius: 25
   },
   buttonContent: {
-    padding: '3%',
     backgroundColor: '#fff',
     shadowColor: '#888',
-    shadowOffset: {width: 0, height: 0},
+    shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.5,
-    borderRadius: 25
+    borderRadius: 25,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 50
   },
 
   buttonContainer: {
+    width: '90%',
+    marginRight: 'auto',
+    marginLeft: 'auto',
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginTop: 5,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: '5%',
+    marginBottom: '5%'
   },
 
   map: {
     width: '100%',
     height: 200,
-    borderRadius: 10,
+    borderRadius: 10
   },
   mapcontainer: {
     width: Dimensions.get('window').width - 40,
-    backgroundColor: "#FFFF",
+    backgroundColor: '#FFFF',
     overflow: 'hidden',
     alignSelf: 'center',
-    justifyContent: "center",
-    borderRadius: 25,
+    justifyContent: 'center',
+    borderRadius: 25
   },
-    statusView: {
+  statusView: {
     width: '50%',
     padding: 4,
     borderRadius: 10,
@@ -308,6 +332,6 @@ const styles = StyleSheet.create({
     marginBottom: '1%',
     padding: 4,
     fontFamily: 'OpenSans_400Regular',
-    fontSize: 14,
-  },
+    fontSize: 14
+  }
 });

@@ -18,6 +18,7 @@ import {
   Inter_900Black
 } from '@expo-google-fonts/inter';
 import EventList from '../components/EventList';
+import BackgroundImage from '../components/BackgorundCircle';
 
 const ReportsPage = ({ navigation }) => {
   const [location, setLocation] = useState([]);
@@ -67,6 +68,7 @@ const ReportsPage = ({ navigation }) => {
     return (
       <LinearGradient colors={['#00c6ff', '#0072ff']} style={styles.background}>
         <>
+          <BackgroundImage></BackgroundImage>
           <View style={styles.list}>
             <View style={styles.container}>
               <View style={styles.logoContainer}>
@@ -174,7 +176,8 @@ const styles = StyleSheet.create({
   button: {
     width: '100%',
     fontFamily: 'Inter_400Regular',
-    marginTop: 10,
+    marginTop: '10%',
+    margin: '5%',
     marginLeft: 'auto',
     padding: 4,
     backgroundColor: '#fff',
