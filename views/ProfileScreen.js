@@ -348,8 +348,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
 
-    height: '100%',
-    paddingTop: '20%'
+    height: '100%'
   },
   accordion: {
     backgroundColor: '#fff',
@@ -427,7 +426,8 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    paddingTop: '20%'
   },
   points: {
     color: '#112454',

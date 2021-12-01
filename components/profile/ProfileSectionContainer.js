@@ -28,9 +28,9 @@ const ProfileSectionContainer = ({ visible, title, action, type }) => {
             onPress={() => setList(!visibleList)}
             style={[styles.listHeader]}
           >
-            <Text style={[{ color: '#fff' }]}>{text}</Text>
+            <Text style={[{ color: '#007bff' }]}>{text}</Text>
             <IconButton
-              color="#fff"
+              color="#007bff"
               icon={visibleList ? 'menu-up' : 'menu-down'}
             ></IconButton>
           </TouchableOpacity>
@@ -127,6 +127,8 @@ const styles = StyleSheet.create({
   },
   listHeader: {
     flex: 1,
+    marginLeft: '2%',
+    marginRight: '2%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -134,7 +136,7 @@ const styles = StyleSheet.create({
     height: 25,
     marginTop: 4,
     borderRadius: 4,
-    backgroundColor: '#112454'
+    backgroundColor: '#FFF'
   },
   interests: {
     display: 'flex',

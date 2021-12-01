@@ -1,7 +1,7 @@
 import React from 'react';
-import {AntDesign} from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import AppLoading from 'expo-app-loading';
-import {Text, StyleSheet, Pressable, View, Image} from 'react-native';
+import { Text, StyleSheet, Pressable, View, Image } from 'react-native';
 import moment from 'moment';
 import {
   useFonts,
@@ -19,7 +19,7 @@ import {
 
 const uri = 'https://reactjs.org/logo-og.png';
 
-export default function EventListItem({navigation, item, userReports}) {
+export default function EventListItem({ navigation, item, userReports }) {
   console.log(item);
   let [fontsLoaded] = useFonts({
     OpenSans_300Light,
@@ -55,7 +55,11 @@ export default function EventListItem({navigation, item, userReports}) {
           <View style={styles.content}>
             <View style={styles.imageContainer}>
               <Image
-                source={item.image ? {uri: item.image} : require('../assets/placeholderMap.jpg')}
+                source={
+                  item.image
+                    ? { uri: item.image }
+                    : require('../assets/placeholderMap.jpg')
+                }
                 resizeMode="cover"
                 style={styles.image}
               />
@@ -63,41 +67,45 @@ export default function EventListItem({navigation, item, userReports}) {
             <View style={styles.textcontent}>
               <Text style={styles.header}>Topic: {item.topic}</Text>
               {item.description.length > 80 ? (
-                <Text style={styles.text}>{item.description.substring(0, 80)}...</Text>
-              ):(
-                <Text style={styles.text}>{item.description.substring(0, 80)}</Text>
+                <Text style={styles.text}>
+                  {item.description.substring(0, 80)}...
+                </Text>
+              ) : (
+                <Text style={styles.text}>
+                  {item.description.substring(0, 80)}
+                </Text>
               )}
-              
-              <Text style={styles.text}>
-                {timeToShow}
-              </Text>
+
+              <Text style={styles.text}>{timeToShow}</Text>
 
               <View style={styles.containerButton}>
-
-
-                    {item.status == 'pending' &&
-                      <View style={[styles.statusView, {backgroundColor: 'gray'}]}>
-                        <Text style={[styles.textStatus, {color: 'white'}]}>
-                          Status: {item.status}
-                        </Text>
-                      </View>
-                    }
-                    {item.status == 'processing' &&
-                      <View style={[styles.statusView, {backgroundColor: 'yellow'}]}>
-                        <Text style={[styles.textStatus, {color: 'black'}]}>
-                          Status: {item.status}
-                        </Text>
-                      </View>
-                    }
-                    {item.status == 'resolved' &&
-                      <View style={[styles.statusView, {backgroundColor: 'green'}]}>
-                        <Text style={[styles.textStatus, {color: 'white'}]}>
-                          Status: {item.status}
-                        </Text>
-                      </View>
-                    }
-
-
+                {item.status == 'pending' && (
+                  <View
+                    style={[styles.statusView, { backgroundColor: 'gray' }]}
+                  >
+                    <Text style={[styles.textStatus, { color: 'white' }]}>
+                      Status: {item.status}
+                    </Text>
+                  </View>
+                )}
+                {item.status == 'processing' && (
+                  <View
+                    style={[styles.statusView, { backgroundColor: 'yellow' }]}
+                  >
+                    <Text style={[styles.textStatus, { color: 'black' }]}>
+                      Status: {item.status}
+                    </Text>
+                  </View>
+                )}
+                {item.status == 'resolved' && (
+                  <View
+                    style={[styles.statusView, { backgroundColor: 'green' }]}
+                  >
+                    <Text style={[styles.textStatus, { color: 'white' }]}>
+                      Status: {item.status}
+                    </Text>
+                  </View>
+                )}
 
                 <View style={styles.buttonContent}>
                   <AntDesign
@@ -107,9 +115,7 @@ export default function EventListItem({navigation, item, userReports}) {
                     color="#007bff"
                   />
                 </View>
-
               </View>
-
             </View>
           </View>
         </Pressable>
@@ -133,7 +139,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     borderRadius: 25,
     elevation: 10,
-    shadowColor: '#000'
+    shadowColor: '#000',
+    padding: '1%'
   },
 
   content: {
@@ -146,18 +153,19 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start'
   },
   imageContainer: {
-    margin: '3%',
+    paddingTop: '5%',
     width: '50%',
     flex: 1,
     height: '100%',
     overflow: 'hidden',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+
+    justifyContent: 'flex-start'
   },
   image: {
-    height: 90,
-    width: 90,
+    height: 100,
+    width: 100,
     overflow: 'hidden',
     borderRadius: 25
   },
@@ -165,13 +173,14 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 2,
     display: 'flex',
+    justifyContent: 'center',
     flexDirection: 'column'
   },
   header: {
     color: '#112454',
     paddingLeft: '5%',
     paddingRight: '5%',
-    paddingTop: '5%',
+    paddingTop: '7%',
     fontSize: 16,
     fontFamily: 'OpenSans_600SemiBold'
   },
@@ -179,11 +188,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     paddingLeft: '5%',
     paddingRight: '5%',
-    paddingTop: '2%',
-    paddingBottom: '2%',
+    paddingTop: '1%',
+    paddingBottom: '1%',
     fontFamily: 'OpenSans_400Regular',
     fontSize: 14,
-    color: '#727aa3'
+    color: '#112454'
   },
   containerButton: {
     display: 'flex',
@@ -198,9 +207,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: '#fff',
     shadowColor: '#888',
-    shadowOffset: {width: 0, height: 0},
+    shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.5,
-    borderRadius: 25,
+    borderRadius: 25
   },
   statusView: {
     padding: 4,
@@ -208,7 +217,6 @@ const styles = StyleSheet.create({
     marginRight: 10,
     width: '80%',
     alignItems: 'center'
-    
   },
   textStatus: {
     display: 'flex',
@@ -217,6 +225,6 @@ const styles = StyleSheet.create({
     marginTop: '1%',
     marginBottom: '1%',
     fontFamily: 'OpenSans_400Regular',
-    fontSize: 14,
-  },
+    fontSize: 14
+  }
 });
