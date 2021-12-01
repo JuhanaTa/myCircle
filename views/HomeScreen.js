@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
   listContainer: {
     flex: 1,
     padding: 0,
-    width: '100%',
+    width: Dimensions.get('window').width - 20,
     paddingTop: '3%',
     margin: 0
   },
