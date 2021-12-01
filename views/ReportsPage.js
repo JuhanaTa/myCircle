@@ -50,9 +50,12 @@ const ReportsPage = ({ navigation }) => {
 
   const { reports, currentUser } = useSelector((store) => store);
 
-  const recentReports = reports.filter(
+  let recentReports = reports.filter(
     (element) => element.userId === currentUser.userId
   );
+
+  recentReports = recentReports.sort((a, b) => b.time - a.time);
+
 
   console.log('length of reports',recentReports.length);
   console.log('user reports', recentReports);

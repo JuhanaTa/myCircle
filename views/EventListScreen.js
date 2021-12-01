@@ -59,7 +59,7 @@ export default function EventListScreen({navigation}) {
 
   const deleteFilters = async () => {
 
-    const loopedReports = [];
+    let loopedReports = [];
     const location = await getLocation();
 
     reportsData.forEach(element => {
@@ -74,14 +74,14 @@ export default function EventListScreen({navigation}) {
 
 
     });
-
+    loopedReports = loopedReports.sort((a, b) => b.time - a.time);
     setFilteredReports(loopedReports);
     setCheckedTopic('');
   };
 
   const applyFilterToReports = async (topic) => {
 
-    const loopedReports = [];
+    let loopedReports = [];
 
     const location = await getLocation();
 
@@ -89,6 +89,7 @@ export default function EventListScreen({navigation}) {
 
       if (element.location != '') {
         if (calculateDistance(element.location.latitude, element.location.longitude, location.coords.latitude, location.coords.longitude) <= 10) {
+          console.log('distance',element.description ,calculateDistance(element.location.latitude, element.location.longitude, location.coords.latitude, location.coords.longitude));
           if (element.topic == topic) {
             loopedReports.push(element);
           } else {
@@ -100,7 +101,25 @@ export default function EventListScreen({navigation}) {
       }
 
     });
+    loopedReports = loopedReports.sort((a, b) => b.time - a.time);
+    setFilteredReports(loopedReports);
+  };
 
+  const defaultReports = async() => {
+    let loopedReports = [];
+    const location = await getLocation();
+
+    reportsData.forEach(element => {
+
+      if (element.location != '') {
+        if (calculateDistance(element.location.latitude, element.location.longitude, location.coords.latitude, location.coords.longitude) <= 10) {
+          loopedReports.push(element);
+        } else {
+          console.log('too far');
+        }
+      }
+    });
+    loopedReports = loopedReports.sort((a, b) => b.time - a.time);
     setFilteredReports(loopedReports);
   };
 
@@ -118,7 +137,8 @@ export default function EventListScreen({navigation}) {
   });
 
   useEffect(() => {
-    setFilteredReports(reportsData);
+    defaultReports();
+    //setFilteredReports(reportsData);
   }, []);
 
   if (!fontsLoaded) {

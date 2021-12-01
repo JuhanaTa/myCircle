@@ -41,62 +41,112 @@ export default function HeatMapButton({navigation, location, reportsData}) {
     Inter_700Bold,
     Inter_800ExtraBold,
   });
+  console.log('reports data',reportsData);
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
     return (
       <Pressable style={styles.container} onPress={() => {navigation.navigate('MapScreen');}}>
-          <Pressable style={styles.button} pointerEvents="none">
-            <MapView style={styles.map} 
-              showsUserLocation={true}
-              initialRegion={{
+        <Pressable style={styles.button} pointerEvents="none">
+          <MapView style={styles.map}
+            showsUserLocation={true}
+            initialRegion={{
+              latitude: location.coords.latitude,
+              longitude: location.coords.longitude,
+              latitudeDelta: 0.004,
+              longitudeDelta: 0.004
+            }}
+          >
+            <MapView.Circle
+              center={{
                 latitude: location.coords.latitude,
                 longitude: location.coords.longitude,
-                latitudeDelta: 0.004,
-                longitudeDelta: 0.004
               }}
-            >
-              <MapView.Circle
-                center={{
-                  latitude: location.coords.latitude,
-                  longitude: location.coords.longitude,
-                }}
-                radius={10000}
-                strokeWidth={1}
-                strokeColor={'#1a66ff'}
-                fillColor={'rgba(230,238,255,0.5)'}
-              />
+              radius={10000}
+              strokeWidth={1}
+              strokeColor={'#1a66ff'}
+              fillColor={'rgba(230,238,255,0.5)'}
+            />
 
-              {reportsData.map(marker => (
-                <MapView.Marker
-                  key={`${marker.key}${marker.description}`}
-                  coordinate={marker.location}
+            {reportsData.map(marker => (
+              <>
+                {console.log('keys',marker.key)}
+                {marker.topic === 'Maintenance' &&
+                  <MapView.Marker
+                    key={marker.key}
+                    coordinate={marker.location}
+                    title={marker.description}
+                    image={require('../assets/icons/maintenance/cogwheel.png')}
+                  >
+                  </MapView.Marker>
+                }
+                {marker.topic === 'Event' &&
+                  <MapView.Marker
+                    key={marker.key}
+                    coordinate={marker.location}
+                    title={marker.description}
+                    image={require('../assets/icons/events/favorite-place.png')}
+                  >
+                  </MapView.Marker>
+                }
+                {marker.topic === 'Traffic' &&
+                  <MapView.Marker
+                    key={marker.key}
+                    coordinate={marker.location}
+                    title={marker.description}
+                    image={require('../assets/icons/traffic/car(1).png')}
+                  >
+                  </MapView.Marker>
+                }
+                {marker.topic === 'Health' &&
+                  <MapView.Marker
+                    key={marker.key}
+                    coordinate={marker.location}
+                    title={marker.description}
+                    image={require('../assets/icons/health/icons8-find-clinic-96(1).png')}
+                  >
+                  </MapView.Marker>
+                }
+                {marker.topic === 'Feedback' &&
+                  <MapView.Marker
+                    key={marker.key}
+                    coordinate={marker.location}
+                    title={marker.description}
+                    image={require('../assets/icons/feedback/icons8-new-topic-96.png')}
+                  >
+                  </MapView.Marker>
+                }
+                {marker.topic === 'General' &&
+                  <MapView.Marker
+                    key={marker.key}
+                    coordinate={marker.location}
+                    title={marker.description}
+                    image={require('../assets/icons/general/icons8-location-pin-96(1).png')}
+                  >
+                  </MapView.Marker>
+                }
+              </>
+            ))}
 
+          </MapView>
 
-                >
+          <View style={{position: 'absolute', bottom: 0, left: 0, right: 0, justifyContent: 'flex-end', flexDirection: 'row'}}>
 
-                </MapView.Marker>
-              ))}
-
-            </MapView>
-
-            <View style={{position: 'absolute', bottom: 0, left: 0, right: 0, justifyContent: 'flex-end', flexDirection: 'row'}}>
-
-              <View style={styles.containerButton}>
-                <View style={styles.buttonContent}>
-                  <AntDesign
-                    style={styles.buttonArrow}
-                    name="right"
-                    size={18}
-                    color="#007bff"
-                  />
-                </View>
+            <View style={styles.containerButton}>
+              <View style={styles.buttonContent}>
+                <AntDesign
+                  style={styles.buttonArrow}
+                  name="right"
+                  size={18}
+                  color="#007bff"
+                />
               </View>
-
             </View>
 
+          </View>
 
-          </Pressable>
+
+        </Pressable>
       </Pressable>
     );
   }

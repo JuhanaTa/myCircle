@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,10 +8,10 @@ import {
   TouchableOpacity,
   Dimensions
 } from 'react-native';
-import {Button} from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import AppLoading from 'expo-app-loading';
-import {LinearGradient} from 'expo-linear-gradient';
-import {useSelector} from 'react-redux';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useSelector } from 'react-redux';
 import * as Location from 'expo-location';
 import {
   useFonts,
@@ -27,16 +27,18 @@ import {
 } from '@expo-google-fonts/inter';
 import HeatMapButton from '../components/HeatMapButton';
 import EventListButton from '../components/EventListButton';
-import {logOut} from '../controllers/firebaseController';
+import { logOut } from '../controllers/firebaseController';
 import TickAnimationWrapper from '../components/globalReUseAbles/TickAnimationWrapper.js';
 import EventList from '../components/EventList';
 import BackgroundImage from '../components/BackgorundCircle';
 
-import {calculateDistance} from '../utils/DistanceCalculator';
+import { calculateDistance } from '../utils/DistanceCalculator';
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({ navigation }) => {
+  const reportsData = useSelector((store) => store.reports);
+
   const [location, setLocation] = useState([]);
-
+  const [reports, setReports] = useState([]);
   let [fontsLoaded] = useFonts({
     Inter_900Black,
     Inter_100Thin,
@@ -49,41 +51,58 @@ const HomeScreen = ({navigation}) => {
     Inter_800ExtraBold
   });
 
-  useEffect(() => {
-    (async () => {
-      let {status} = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        console.log('Permission to access location was denied');
-        //navigation.popToTop();
-        return;
+  const getLocation = async () => {
+    let {status} = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      console.log('Permission to access location was denied');
+      //navigation.popToTop();
+      return;
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    console.log(location);
+
+    return location;
+  };
+
+  const defaultReports = async() => {
+    let loopedReports = [];
+    const location = await getLocation();
+
+    reportsData.forEach(element => {
+
+      if (element.location != '') {
+        if (calculateDistance(element.location.latitude, element.location.longitude, location.coords.latitude, location.coords.longitude) <= 10) {
+          loopedReports.push(element);
+        } else {
+          console.log('too far');
+        }
       }
+    });
+    loopedReports = loopedReports.sort((a, b) => b.time - a.time);
+    loopedReports = loopedReports.slice(0, 4);
 
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-    })();
-  }, []);
+    loopedReports.unshift({
+      description: 'Tule ja maista Lassen pullat!',
+      image:
+        'https://firebasestorage.googleapis.com/v0/b/mycircle-ca851.appspot.com/o/images%2FlassenLeipomo.png?alt=media&token=8cbda895-1832-40b8-8136-410fea11c9ef',
+      location: {
+        latitude: 60.4032739,
+        latitudeDelta: 0,
+        longitude: 24.8564713,
+        longitudeDelta: 0
+      },
+      topic: 'Advertisement',
+      userId: 'ad'
+    });
 
-  const reportsData = useSelector((store) => store.reports);
+    setReports(loopedReports);
+    setLocation(location);
+  };
 
-  const sortedActivities = reportsData.sort((a, b) => b.time - a.time);
-  //Show only 5 reports
-  //this needs some logic to show relevant/newest reports
-  const recentReports = sortedActivities.slice(0, 4);
-
-  //dummy advertisement
-  recentReports.unshift({
-    description: 'Tule ja maista Lassen pullat!',
-    image:
-      'https://firebasestorage.googleapis.com/v0/b/mycircle-ca851.appspot.com/o/images%2FlassenLeipomo.png?alt=media&token=8cbda895-1832-40b8-8136-410fea11c9ef',
-    location: {
-      latitude: 60.4032739,
-      latitudeDelta: 0,
-      longitude: 24.8564713,
-      longitudeDelta: 0
-    },
-    topic: 'Advertisement',
-    userId: 'ad',
-  });
+  useEffect(() => {
+    defaultReports();
+  }, [reportsData]);
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -103,7 +122,7 @@ const HomeScreen = ({navigation}) => {
                 />
                 <Button
                   style={styles.button}
-                  theme={{colors: {primary: '#007bff'}}}
+                  theme={{ colors: { primary: '#007bff' } }}
                   onPress={async () => {
                     await logOut();
                   }}
@@ -123,7 +142,6 @@ const HomeScreen = ({navigation}) => {
                 ></HeatMapButton>
               )}
               <View style={styles.listContainer}>
-                {reportsData && (
                   <View
                     style={{
                       width: '100%',
@@ -142,25 +160,27 @@ const HomeScreen = ({navigation}) => {
                         marginRight: 10
                       }}
                     >
-                      <Text style={styles.recentHeader}>5 most recent reports</Text>
+                      <Text style={styles.recentHeader}>
+                        5 most recent reports
+                      </Text>
                       <TouchableOpacity
                         onPress={() => {
                           navigation.navigate('EventListScreen'),
-                            {location: location};
+                            { location: location };
                         }}
                       >
                         <Text style={styles.recentHeader}>More</Text>
                       </TouchableOpacity>
                     </View>
-                    {recentReports.length > 0 && (
+                    {reports && 
                       <EventList
                         navigation={navigation}
-                        reportsData={recentReports}
+                        reportsData={reports}
                         userReports={false}
                       ></EventList>
-                    )}
+                    }
                   </View>
-                )}
+                
               </View>
             </View>
           </ScrollView>
@@ -256,7 +276,7 @@ const styles = StyleSheet.create({
   listContainer: {
     flex: 1,
     padding: 0,
-    width: Dimensions.get('window').width - 20,
+    width: '100%',
     paddingTop: '3%',
     margin: 0
   },
