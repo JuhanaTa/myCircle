@@ -19,6 +19,87 @@ const Top_TYPE = [
   'Eyepatch',
   'Hat',
   'Hijab',
+  'LongHairStraight2',
+  'ShortHairDreads01',
+];
+
+const ACCESSORIES_TYPE = [
+  'Blank',
+  'Kurt',
+  'Prescription01',
+  'Sunglasses',
+];
+
+const HAT_COLOR = [
+  'Black',
+  'Blue01',
+  'Gray01',
+  'Pink',
+  'Red',
+  'White'
+];
+
+const FACIAL_HAIR = [
+  'Blank',
+  'BeardMedium',
+  'BeardLight',
+  'MoustacheFancy',
+];
+
+const CLOTHE = [
+  'BlazerShirt',
+  'BlazerSweater',
+  'GraphicShirt',
+  'Hoodie',
+  'Overall',
+];
+
+const EYES = [
+  'Close',
+  'Cry',
+  'Dizzy',
+  'Happy',
+  'Hearts',
+  'Surprised',
+];
+
+const EYE_BROW = [
+  'Angry',
+  'Default',
+  'FlatNatural',
+  'RaisedExcited',
+];
+
+const MOUTH = [
+  'Default',
+  'Eating',
+  'Sad',
+  'Serious',
+  'Smile',
+  'Tongue',
+];
+
+const SKINCOLOR = [
+  'Pale',
+  'Light',
+  'Brown',
+  'DarkBrown',
+  'Black'
+];
+
+const HAIR_COLOR = [
+  'Black',
+  'Blonde',
+  'Brown',
+  'Blue',
+  'Red',
+];
+
+const Top_TYPE_ALL_OPTIONS = [
+  'NoHair',
+  'Eyepatch',
+  'Hat',
+  'Hijab',
   'Turban',
   'WinterHat1',
   'WinterHat2',
@@ -52,7 +133,7 @@ const Top_TYPE = [
   'ShortHairTheCaesarSidePart'
 ];
 
-const ACCESSORIES_TYPE = [
+const ACCESSORIES_TYPE_ALL_OPTIONS = [
   'Blank',
   'Kurt',
   'Prescription01',
@@ -62,7 +143,7 @@ const ACCESSORIES_TYPE = [
   'Wayfarers'
 ];
 
-const HAT_COLOR = [
+const HAT_COLOR_ALL_OPTIONS = [
   'Black',
   'Blue01',
   'Blue02',
@@ -80,7 +161,7 @@ const HAT_COLOR = [
   'White'
 ];
 
-const FACIAL_HAIR = [
+const FACIAL_HAIR_ALL_OPTIONS = [
   'Blank',
   'BeardMedium',
   'BeardLight',
@@ -89,7 +170,7 @@ const FACIAL_HAIR = [
   'MoustacheMagnum'
 ];
 
-const CLOTHE = [
+const CLOTHE_ALL_OPTIONS = [
   'BlazerShirt',
   'BlazerSweater',
   'CollarSweater',
@@ -101,7 +182,7 @@ const CLOTHE = [
   'ShirtVNeck'
 ];
 
-const EYES = [
+const EYES_ALL_OPTIONS = [
   'Close',
   'Cry',
   'Default',
@@ -116,7 +197,7 @@ const EYES = [
   'WinkWacky'
 ];
 
-const EYE_BROW = [
+const EYE_BROW_ALL_OPTIONS = [
   'Angry',
   'AngryNatural',
   'Default',
@@ -131,7 +212,7 @@ const EYE_BROW = [
   'UpDownNatural'
 ];
 
-const MOUTH = [
+const MOUTH_ALL_OPTIONS = [
   'Concerned',
   'Default',
   'Disbelief',
@@ -146,7 +227,7 @@ const MOUTH = [
   'Vomit'
 ];
 
-const SKINCOLOR = [
+const SKINCOLOR_ALL_OPTIONS = [
   'Tanned',
   'Yellow',
   'Pale',
@@ -156,7 +237,7 @@ const SKINCOLOR = [
   'Black'
 ];
 
-const HAIR_COLOR = [
+const HAIR_COLOR_ALL_OPTIONS = [
   'Auburn',
   'Black',
   'Blonde',
@@ -190,15 +271,15 @@ export const getRandomisedAvatarOptions = () => {
   const randomiser = (upperbound) => Math.floor(Math.random() * upperbound);
   const randomOptions = {
     avatarStyle: AVATAR_STYLE[randomiser(AVATAR_STYLE.length)],
-    topType: Top_TYPE[randomiser(Top_TYPE.length)],
-    accessoriesType: ACCESSORIES_TYPE[randomiser(ACCESSORIES_TYPE.length)],
-    hairColor: HAIR_COLOR[randomiser(HAIR_COLOR.length)],
-    facialHairType: FACIAL_HAIR[randomiser(FACIAL_HAIR.length)],
-    clotheType: CLOTHE[randomiser(CLOTHE.length)],
-    eyeType: EYES[randomiser(EYES.length)],
-    eyebrowType: EYE_BROW[randomiser(EYE_BROW.length)],
-    mouthType: MOUTH[randomiser(MOUTH.length)],
-    skinColor: SKINCOLOR[randomiser(SKINCOLOR.length)]
+    topType: Top_TYPE_ALL_OPTIONS[randomiser(Top_TYPE_ALL_OPTIONS.length)],
+    accessoriesType: ACCESSORIES_TYPE_ALL_OPTIONS[randomiser(ACCESSORIES_TYPE_ALL_OPTIONS.length)],
+    hairColor: HAIR_COLOR_ALL_OPTIONS[randomiser(HAIR_COLOR_ALL_OPTIONS.length)],
+    facialHairType: FACIAL_HAIR_ALL_OPTIONS[randomiser(FACIAL_HAIR_ALL_OPTIONS.length)],
+    clotheType: CLOTHE_ALL_OPTIONS[randomiser(CLOTHE_ALL_OPTIONS.length)],
+    eyeType: EYES_ALL_OPTIONS[randomiser(EYES_ALL_OPTIONS.length)],
+    eyebrowType: EYE_BROW_ALL_OPTIONS[randomiser(EYE_BROW_ALL_OPTIONS.length)],
+    mouthType: MOUTH_ALL_OPTIONS[randomiser(MOUTH_ALL_OPTIONS.length)],
+    skinColor: SKINCOLOR_ALL_OPTIONS[randomiser(SKINCOLOR_ALL_OPTIONS.length)]
   };
 
   //console.log('random', randomOptions);
