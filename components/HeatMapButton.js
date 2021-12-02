@@ -70,7 +70,7 @@ export default function HeatMapButton({ navigation, location, reportsData }) {
 
             {reportsData.map(marker => (
               <>
-                {console.log('keys',marker.key)}
+              {console.log('marker keys', marker.key)}
                 {marker.topic === 'Maintenance' &&
                   <MapView.Marker
                     key={marker.key}

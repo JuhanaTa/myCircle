@@ -36,7 +36,6 @@ import { calculateDistance } from '../utils/DistanceCalculator';
 
 const HomeScreen = ({ navigation }) => {
   const reportsData = useSelector((store) => store.reports);
-
   const [location, setLocation] = useState([]);
   const [reports, setReports] = useState([]);
   let [fontsLoaded] = useFonts({

@@ -202,15 +202,16 @@ export default function MapScreen({navigation, route}) {
                                             title={marker.description}
                                             image={require('../assets/icons/maintenance/cogwheel.png')}
                                         >
-                                            <Callout tooltip onPress={() => {
+                                            <Callout tooltip key={marker.key} onPress={() => {
+                                                
                                                 console.log('clicked marker view', marker);
                                                 navigation.push('EventScreen', {
                                                     data: marker
                                                 });
                                             }}>
-                                                <View style={{width: 200, height: 200, padding: 10, borderRadius: 20, backgroundColor: 'white'}}>
-                                                    <Text>Topic: {marker.topic}</Text>
-                                                    <Text>Description: {marker.description}</Text>
+                                                <View key={marker.key} style={{width: 200, height: 200, padding: 10, borderRadius: 20, backgroundColor: 'white'}}>
+                                                    <Text key={marker.key} >Topic: {marker.topic}</Text>
+                                                    <Text key={marker.key} >Description: {marker.description}</Text>
                                                 </View>
                                             </Callout>
                                         </MapView.Marker>
@@ -222,15 +223,15 @@ export default function MapScreen({navigation, route}) {
                                             title={marker.description}
                                             image={require('../assets/icons/events/favorite-place.png')}
                                         >
-                                            <Callout tooltip onPress={() => {
+                                            <Callout key={marker.key} tooltip onPress={() => {
                                                 console.log('clicked marker view', marker);
                                                 navigation.push('EventScreen', {
                                                     data: marker
                                                 });
                                             }}>
-                                                <View style={{width: 200, height: 200, padding: 10, borderRadius: 20, backgroundColor: 'white'}}>
-                                                    <Text>Topic: {marker.topic}</Text>
-                                                    <Text>Description: {marker.description}</Text>
+                                                <View key={marker.key} style={{width: 200, height: 200, padding: 10, borderRadius: 20, backgroundColor: 'white'}}>
+                                                    <Text key={marker.key}>Topic: {marker.topic}</Text>
+                                                    <Text key={marker.key}>Description: {marker.description}</Text>
                                                 </View>
                                             </Callout>
                                         </MapView.Marker>
@@ -242,15 +243,15 @@ export default function MapScreen({navigation, route}) {
                                             title={marker.description}
                                             image={require('../assets/icons/traffic/car(1).png')}
                                         >
-                                            <Callout tooltip onPress={() => {
+                                            <Callout key={marker.key} tooltip onPress={() => {
                                                 console.log('clicked marker view', marker);
                                                 navigation.push('EventScreen', {
                                                     data: marker
                                                 });
                                             }}>
-                                                <View style={{width: 200, height: 200, padding: 10, borderRadius: 20, backgroundColor: 'white'}}>
-                                                    <Text>Topic: {marker.topic}</Text>
-                                                    <Text>Description: {marker.description}</Text>
+                                                <View key={marker.key} style={{width: 200, height: 200, padding: 10, borderRadius: 20, backgroundColor: 'white'}}>
+                                                    <Text key={marker.key}>Topic: {marker.topic}</Text>
+                                                    <Text key={marker.key}>Description: {marker.description}</Text>
                                                 </View>
                                             </Callout>
                                         </MapView.Marker>
@@ -262,15 +263,15 @@ export default function MapScreen({navigation, route}) {
                                             title={marker.description}
                                             image={require('../assets/icons/health/icons8-find-clinic-96(1).png')}
                                         >
-                                            <Callout tooltip onPress={() => {
+                                            <Callout key={marker.key} tooltip onPress={() => {
                                                 console.log('clicked marker view', marker);
                                                 navigation.push('EventScreen', {
                                                     data: marker
                                                 });
                                             }}>
-                                                <View style={{width: 200, height: 200, padding: 10, borderRadius: 20, backgroundColor: 'white'}}>
-                                                    <Text>Topic: {marker.topic}</Text>
-                                                    <Text>Description: {marker.description}</Text>
+                                                <View key={marker.key} style={{width: 200, height: 200, padding: 10, borderRadius: 20, backgroundColor: 'white'}}>
+                                                    <Text key={marker.key}>Topic: {marker.topic}</Text>
+                                                    <Text key={marker.key}>Description: {marker.description}</Text>
                                                 </View>
                                             </Callout>
                                         </MapView.Marker>
@@ -282,15 +283,15 @@ export default function MapScreen({navigation, route}) {
                                             title={marker.description}
                                             image={require('../assets/icons/feedback/icons8-new-topic-96.png')}
                                         >
-                                            <Callout tooltip onPress={() => {
+                                            <Callout key={marker.key} tooltip onPress={() => {
                                                 console.log('clicked marker view', marker);
                                                 navigation.push('EventScreen', {
                                                     data: marker
                                                 });
                                             }}>
-                                                <View style={{width: 200, height: 200, padding: 10, borderRadius: 20, backgroundColor: 'white'}}>
-                                                    <Text>Topic: {marker.topic}</Text>
-                                                    <Text>Description: {marker.description}</Text>
+                                                <View key={marker.key} style={{width: 200, height: 200, padding: 10, borderRadius: 20, backgroundColor: 'white'}}>
+                                                    <Text key={marker.key}>Topic: {marker.topic}</Text>
+                                                    <Text key={marker.key}>Description: {marker.description}</Text>
                                                 </View>
                                             </Callout>
                                         </MapView.Marker>
@@ -302,15 +303,15 @@ export default function MapScreen({navigation, route}) {
                                             title={marker.description}
                                             image={require('../assets/icons/general/icons8-location-pin-96(1).png')}
                                         >
-                                            <Callout tooltip onPress={() => {
+                                            <Callout key={marker.key} tooltip onPress={() => {
                                                 console.log('clicked marker view', marker);
                                                 navigation.push('EventScreen', {
                                                     data: marker
                                                 });
                                             }}>
-                                                <View style={{width: 200, height: 200, padding: 10, borderRadius: 20, backgroundColor: 'white'}}>
-                                                    <Text>Topic: {marker.topic}</Text>
-                                                    <Text>Description: {marker.description}</Text>
+                                                <View key={marker.key} style={{width: 200, height: 200, padding: 10, borderRadius: 20, backgroundColor: 'white'}}>
+                                                    <Text key={marker.key}>Topic: {marker.topic}</Text>
+                                                    <Text key={marker.key}>Description: {marker.description}</Text>
                                                 </View>
                                             </Callout>
                                         </MapView.Marker>

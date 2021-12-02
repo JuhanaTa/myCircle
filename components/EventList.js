@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, FlatList, Dimensions } from 'react-native';
+import { StyleSheet, View, FlatList } from 'react-native';
 import EventListItem from '../components/EventListItem';
 
 export default function EventList({ navigation, reportsData, userReports }) {
@@ -16,7 +16,7 @@ export default function EventList({ navigation, reportsData, userReports }) {
         data={reportsData}
         renderItem={renderItem}
         keyExtractor={(item) =>
-          `${item.key}${item.description}`
+          `${item.key}`
         }
       />
     </View>
