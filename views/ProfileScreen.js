@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -11,14 +11,14 @@ import {
 import startImage from '../assets/game-image/start.png';
 import middleImage from '../assets/game-image/suburb.png';
 import biggestImage from '../assets/game-image/City.png';
-import {Button} from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import UserAvatar from '../components/profile/UserAvatar';
-import {IconButton} from 'react-native-paper';
+import { IconButton } from 'react-native-paper';
 import EditProfile from '../components/profile/EditProfile';
 import AppLoading from 'expo-app-loading';
 import BackgroundImage from '../components/BackgorundCircle';
 
-import {LinearGradient} from 'expo-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 import {
   useFonts,
   Inter_100Thin,
@@ -32,17 +32,18 @@ import {
   Inter_900Black
 } from '@expo-google-fonts/inter';
 import UserInterestsQuestionnaire from '../components/profile/UserInterestsQuestionnaire';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AvatarGenerator from '../components/profile/AvatarGenerator';
 import getAvatarUri, {
   avatarDefaults,
   getRandomisedAvatarOptions
 } from '../components/profile/avatarConfig';
-import {modifyCurrentUser} from '../reducers/currentUserReducer';
+import { modifyCurrentUser } from '../reducers/currentUserReducer';
 import ProfileSectionContainer from '../components/profile/ProfileSectionContainer';
-import {logOut} from '../controllers/firebaseController';
+import { logOut } from '../controllers/firebaseController';
+import TickAnimationWrapper from '../components/globalReUseAbles/TickAnimationWrapper';
 
-const ProfileScreen = ({navigation}) => {
+const ProfileScreen = ({ navigation }) => {
   let [fontsLoaded] = useFonts({
     Inter_900Black,
     Inter_100Thin,
@@ -54,7 +55,7 @@ const ProfileScreen = ({navigation}) => {
     Inter_700Bold,
     Inter_800ExtraBold
   });
-  const {currentUser} = useSelector((state) => state);
+  const { currentUser } = useSelector((state) => state);
   const dispatch = useDispatch();
   const [avatarOptions, setAvatar] = useState({
     ...currentUser.userAvatar.options
@@ -67,27 +68,40 @@ const ProfileScreen = ({navigation}) => {
   const [isEditDialogOpen, setEditDialog] = useState(false);
   const [isQuestionnaireOpened, setQuestionnaire] = useState(false);
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [fullname, setFullname] = useState('');
+  const [error, setError] = useState(false);
 
   const handleNameChange = (text) => setName(text);
-  const handleEmailChange = (text) => setEmail(text);
-  const handlePasswordChange = (text) => setPassword(text);
+  const handleFullnameChange = (text) => setFullname(text);
 
   // opens a dialog for user to edit their profile info
   const openEditDialog = () => setEditDialog(true);
-  const closeEditDialog = () => setEditDialog(false);
+  const closeEditDialog = () => {
+    setEditDialog(false);
+    setError(false);
+  };
 
   // launches questionnaire for user's interests and preferences
   const openQuestionnaire = () => setQuestionnaire(true);
   const closeQuestionnaire = () => setQuestionnaire(false);
 
   const handleProfileUpdate = () => {
-    closeEditDialog();
+    if (name || fullname) {
+      dispatch(
+        modifyCurrentUser({
+          name: name ? name : currentUser.name,
+          fullname: fullname ? fullname : currentUser.fullname
+        })
+      );
+      setName('');
+      setFullname('');
+      return closeEditDialog();
+    }
+    return setError(true);
   };
 
   const generateAvatar = (option) => {
-    setAvatar({...avatarOptions, [option.varName]: option.value});
+    setAvatar({ ...avatarOptions, [option.varName]: option.value });
   };
   // generate a random avatar
   const generateRandomAvatar = () => {
@@ -160,14 +174,14 @@ const ProfileScreen = ({navigation}) => {
     );
 
   const resetAvatar = () => {
-    setAvatar({...avatarDefaults});
+    setAvatar({ ...avatarDefaults });
   };
 
   const navBarItems = [
-    {type: 'avatar', icon: 'pencil', state: isAvatarSystemOpened},
-    {type: 'interests', icon: 'account-cog-outline', state: isInterestOpened},
-    {type: 'personalData', icon: 'account', state: isPersonalDataOpened},
-    {type: 'events', icon: 'calendar-heart', state: isEventOpened}
+    { type: 'avatar', icon: 'pencil', state: isAvatarSystemOpened },
+    { type: 'interests', icon: 'account-cog-outline', state: isInterestOpened },
+    { type: 'personalData', icon: 'account', state: isPersonalDataOpened },
+    { type: 'events', icon: 'calendar-heart', state: isEventOpened }
   ];
 
   const NavBar = () => {
@@ -179,10 +193,10 @@ const ProfileScreen = ({navigation}) => {
             onPress={() => handleTabPress(item.type)}
           >
             <IconButton
-              labelStyle={{fontSize: 30}}
+              labelStyle={{ fontSize: 30 }}
               style={[
                 styles.editprofilebutton,
-                item.state && {backgroundColor: '#112454'}
+                item.state && { backgroundColor: '#112454' }
               ]}
               color={item.state ? '#ffffff' : '#007bff'}
               icon={item.icon}
@@ -211,37 +225,38 @@ const ProfileScreen = ({navigation}) => {
         <BackgroundImage></BackgroundImage>
         <ScrollView contentContainerStyle={styles.list}>
           <View style={styles.container}>
-                <Button
-                  style={styles.button}
-                  theme={{colors: {primary: '#007bff'}}}
-                  onPress={async () => {
-                    await logOut();
-                  }}
-                >
-                  Log out
-                </Button>
+            <Button
+              style={styles.button}
+              theme={{ colors: { primary: '#007bff' } }}
+              onPress={async () => {
+                await logOut();
+              }}
+            >
+              Log out
+            </Button>
             <ImageBackground
-              source={{uri: DEFAULT_IMAGE}}
+              source={{ uri: DEFAULT_IMAGE }}
               resizeMode="cover"
               style={styles.image}
             >
+              <TickAnimationWrapper />
               <View style={styles.avatarContainer}>
                 <View style={styles.avatar}>
                   <UserAvatar
                     uri={
                       visible
                         ? getAvatarUri(
-                          avatarOptions.avatarStyle,
-                          avatarOptions.topType,
-                          avatarOptions.accessoriesType,
-                          avatarOptions.hairColor,
-                          avatarOptions.facialHairType,
-                          avatarOptions.clotheType,
-                          avatarOptions.eyeType,
-                          avatarOptions.eyebrowType,
-                          avatarOptions.mouthType,
-                          avatarOptions.skinColor
-                        )
+                            avatarOptions.avatarStyle,
+                            avatarOptions.topType,
+                            avatarOptions.accessoriesType,
+                            avatarOptions.hairColor,
+                            avatarOptions.facialHairType,
+                            avatarOptions.clotheType,
+                            avatarOptions.eyeType,
+                            avatarOptions.eyebrowType,
+                            avatarOptions.mouthType,
+                            avatarOptions.skinColor
+                          )
                         : currentUser?.userAvatar.uri
                     }
                     transparent={avatarOptions.avatarStyle === 'Transparent'}
@@ -249,7 +264,6 @@ const ProfileScreen = ({navigation}) => {
                 </View>
               </View>
             </ImageBackground>
-
             <ScrollView
               style={{
                 flex: 1,
@@ -309,12 +323,11 @@ const ProfileScreen = ({navigation}) => {
               />
 
               <EditProfile
-                email={email}
                 name={name}
-                password={password}
-                handleEmailChange={handleEmailChange}
+                fullname={fullname}
+                error={error}
                 handleNameChange={handleNameChange}
-                handlePasswordChange={handlePasswordChange}
+                handleFullnameChange={handleFullnameChange}
                 open={isEditDialogOpen}
                 closeDialog={closeEditDialog}
                 action={handleProfileUpdate}
@@ -391,7 +404,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 400,
     borderBottomLeftRadius: 400,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 3},
+    shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.15,
     shadowRadius: 5
   },
@@ -457,7 +470,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
     elevation: 2
-  },
+  }
 });
 
 export default ProfileScreen;

@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 import { getUser, updateUser } from '../controllers/firebaseController';
-import { loginOff, loginOn, toggleCheckedOn } from './toggleReducers';
+import { loginOff, loginOn, setTickAnimation, toggleCheckedOn } from './toggleReducers';
 
 const currentUserReducer = (state = {}, action) => {
   switch (action.type) {
@@ -42,6 +42,7 @@ const modifyCurrentUser = (userData) => {
         type: 'MODIFY_USER',
         modifiedUser
       });
+      dispatch(setTickAnimation());
     } catch (error) {
       console.log('user update error', error);
     }

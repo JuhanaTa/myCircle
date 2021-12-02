@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -8,13 +8,13 @@ import {
   TouchableOpacity
 } from 'react-native';
 import * as Location from 'expo-location';
-import {Button, IconButton} from 'react-native-paper';
+import { Button, IconButton } from 'react-native-paper';
 import ImagePicker from '../components/reports/ImagePicker';
 import PreviewReport from '../components/reports/PreviewReport';
 import ReportTopics from '../components/reports/ReportTopics';
 import AppLoading from 'expo-app-loading';
 import useCamera from '../hooks/useCamera';
-import {LinearGradient} from 'expo-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 import {
   useFonts,
   Inter_100Thin,
@@ -27,8 +27,8 @@ import {
   Inter_800ExtraBold,
   Inter_900Black
 } from '@expo-google-fonts/inter';
-import {useDispatch, useSelector} from 'react-redux';
-import {createNewReport} from '../reducers/reportReducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { createNewReport } from '../reducers/reportReducer';
 import getGeocoding from '../controllers/apiCalls';
 import getAddress from '../controllers/searchAddress';
 import ModalDialog from '../components/globalReUseAbles/ModalDialog';
@@ -36,8 +36,8 @@ import BackgroundImage from '../components/BackgorundCircle';
 import firebase from 'firebase';
 import ReportLocationHow from '../components/reports/ReportLocationHow';
 
-const NewReport = ({navigation}) => {
-  const {image, video, getImage, launchCamera, setImage} = useCamera({});
+const NewReport = ({ navigation }) => {
+  const { image, video, getImage, launchCamera, setImage } = useCamera({});
   const [isImgPickerMenuOpened, setImgPickerMenu] = useState(false);
   const [description, setDescription] = useState('');
   const [address, setAddress] = useState('');
@@ -53,7 +53,7 @@ const NewReport = ({navigation}) => {
     description: false,
     location: false
   });
-  const {currentUser} = useSelector(state => state);
+  const { currentUser } = useSelector((state) => state);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -109,9 +109,6 @@ const NewReport = ({navigation}) => {
         location: !reportLocation && true
       });
     }
-
-
-
   };
 
   const validateDescription = () => {
@@ -147,12 +144,14 @@ const NewReport = ({navigation}) => {
 
     const currentTime = firebase.firestore.Timestamp.fromDate(new Date());
 
-    console.log("myTimestamp", currentTime);
+    console.log('myTimestamp', currentTime);
 
     if (useLocation) {
-
       const userLoc = await getLocation();
-      const address = await getAddress(userLoc.coords.latitude, userLoc.coords.longitude);
+      const address = await getAddress(
+        userLoc.coords.latitude,
+        userLoc.coords.longitude
+      );
       console.log('address from api', address);
       const locationOfReport = {
         address: `${address.features[0].properties.name}, ${address.features[0].properties.locality}`,
@@ -161,18 +160,33 @@ const NewReport = ({navigation}) => {
         latitudeDelta: 0,
         longitudeDelta: 0
       };
+      // push new report to firebase  and updates redux store (asynchronously)
       dispatch(
-        createNewReport(image?.uri, locationOfReport, description, checkedTopic, currentUser?.gamePoints, currentTime, 'pending')
+        createNewReport(
+          image?.uri,
+          locationOfReport,
+          description,
+          checkedTopic,
+          currentUser?.gamePoints,
+          currentTime,
+          'pending'
+        )
       );
     } else {
       dispatch(
-        createNewReport(image?.uri, reportLocation, description, checkedTopic, currentUser?.gamePoints, currentTime, 'pending')
+        createNewReport(
+          image?.uri,
+          reportLocation,
+          description,
+          checkedTopic,
+          currentUser?.gamePoints,
+          currentTime,
+          'pending'
+        )
       );
     }
 
-    // push new report to firebase  and updates redux store (asynchronously)
-
-    navigation.navigate('HomeStack', {screen: 'HomeStack'});
+    navigation.navigate('HomeStack', { screen: 'HomeStack' });
     setPreview(false);
     setDescription('');
     setCheckedTopic('');
@@ -227,7 +241,7 @@ const NewReport = ({navigation}) => {
   });
 
   const getLocation = async () => {
-    let {status} = await Location.requestForegroundPermissionsAsync();
+    let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
       console.log('Permission to access location was denied');
       //navigation.popToTop();
@@ -237,9 +251,7 @@ const NewReport = ({navigation}) => {
     let location = await Location.getCurrentPositionAsync({});
     console.log(location);
     return location;
-
   };
-
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -285,10 +297,15 @@ const NewReport = ({navigation}) => {
               />
               <Text style={styles.subHeader}>How to locate this report?</Text>
               <View style={styles.radioButtonGroup}>
-                <ReportLocationHow useAddress={useAddress} useLocation={useLocation} setUseAdress={setUseAdress} setUseLocation={setUseLocation} />
+                <ReportLocationHow
+                  useAddress={useAddress}
+                  useLocation={useLocation}
+                  setUseAdress={setUseAdress}
+                  setUseLocation={setUseLocation}
+                />
               </View>
 
-              {useAddress &&
+              {useAddress && (
                 <>
                   <Text style={styles.subHeader}> Where is this report?</Text>
                   {reportLocation && (
@@ -300,7 +317,9 @@ const NewReport = ({navigation}) => {
 
                   {error.location && (
                     <View style={[styles.helperText]}>
-                      <Text style={styles.errorText}>This field is required!</Text>
+                      <Text style={styles.errorText}>
+                        This field is required!
+                      </Text>
                     </View>
                   )}
                   <InvalidAddress />
@@ -311,18 +330,23 @@ const NewReport = ({navigation}) => {
                     value={address}
                   />
                 </>
-              }
-              {useLocation &&
-                <Text style={[styles.subHeader, {alignSelf: 'center', textAlign: 'center'}]}>We will use your gps location for this report.</Text>
-              }
+              )}
+              {useLocation && (
+                <Text
+                  style={[
+                    styles.subHeader,
+                    { alignSelf: 'center', textAlign: 'center' }
+                  ]}
+                >
+                  We will use your gps location for this report.
+                </Text>
+              )}
 
-              {useAddress &&
-                <LocationPicker />
-              }
+              {useAddress && <LocationPicker />}
 
               <Button
                 style={styles.submitbutton}
-                theme={{colors: {primary: '#007bff'}}}
+                theme={{ colors: { primary: '#007bff' } }}
                 onPress={openPreview}
                 accessibilityLabel="preview report and send"
               >
@@ -345,14 +369,16 @@ const NewReport = ({navigation}) => {
                 image={image}
               />
               <ModalDialog
-
                 open={recommendImage}
                 closeDialog={() => setImageRecommendation(false)}
                 action={previewReportWithoutImage}
                 label="Continue"
                 title=" A Picture is worth a thousand words!"
                 secondaryAction={
-                  <Button icon="camera" onPress={closeImageRecommendationDialog}>
+                  <Button
+                    icon="camera"
+                    onPress={closeImageRecommendationDialog}
+                  >
                     Pick Image
                   </Button>
                 }
@@ -364,7 +390,6 @@ const NewReport = ({navigation}) => {
                 </Text>
               </ModalDialog>
             </View>
-
           </View>
         </ScrollView>
       </LinearGradient>
@@ -453,7 +478,7 @@ const styles = StyleSheet.create({
 
     elevation: 10,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 3},
+    shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.15,
     shadowRadius: 5,
     borderRadius: 25
@@ -478,7 +503,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_400Regular',
     elevation: 10,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 3},
+    shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.15,
     shadowRadius: 5,
     borderRadius: 25

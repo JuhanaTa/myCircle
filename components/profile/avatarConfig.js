@@ -32,11 +32,10 @@ const ACCESSORIES_TYPE = [
 
 const HAT_COLOR = [
   'Black',
-  'Blue01',
-  'Gray01',
   'Pink',
   'Red',
-  'White'
+  'White',
+  'Blue01',
 ];
 
 const FACIAL_HAIR = [

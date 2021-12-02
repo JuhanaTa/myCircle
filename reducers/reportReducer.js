@@ -7,9 +7,9 @@ import {
   likeOneReport,
   dislikeOneReport
 } from '../controllers/firebaseController';
-import {modifyCurrentUser} from './currentUserReducer';
-import {setSnackbar, setTickAnimation} from './toggleReducers';
-import {v4 as uuidv4} from 'uuid';
+import { modifyCurrentUser } from './currentUserReducer';
+import { setSnackbar, setTickAnimation } from './toggleReducers';
+import { v4 as uuidv4 } from 'uuid';
 
 const reportReducer = (state = [], action) => {
   switch (action.type) {
@@ -85,9 +85,7 @@ const createNewReport = (
   };
 };
 
-const deleteOneReport = (
-  id
-) => {
+const deleteOneReport = (id) => {
   return async (dispatch) => {
     try {
       const userId = await firebase.auth().currentUser.uid;
@@ -102,9 +100,7 @@ const deleteOneReport = (
   };
 };
 
-const likeReport = (
-  reportKey
-) => {
+const likeReport = (reportKey) => {
   return async (dispatch) => {
     try {
       const userId = await firebase.auth().currentUser.uid;
@@ -119,9 +115,7 @@ const likeReport = (
   };
 };
 
-const dislikeReport = (
-  reportKey
-) => {
+const dislikeReport = (reportKey) => {
   return async (dispatch) => {
     try {
       const userId = await firebase.auth().currentUser.uid;
@@ -136,4 +130,11 @@ const dislikeReport = (
   };
 };
 
-export {reportReducer as default, createNewReport, setFetchedReports, deleteOneReport, likeReport, dislikeReport};
+export {
+  reportReducer as default,
+  createNewReport,
+  setFetchedReports,
+  deleteOneReport,
+  likeReport,
+  dislikeReport
+};
