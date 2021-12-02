@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import AppLoading from 'expo-app-loading';
 import {
   Text,
@@ -10,12 +10,12 @@ import {
   Dimensions,
   Alert
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Button } from 'react-native-paper';
-import { AntDesign } from '@expo/vector-icons';
-import { useDispatch } from 'react-redux';
-import { deleteOneReport } from '../reducers/reportReducer';
-
+import {LinearGradient} from 'expo-linear-gradient';
+import {Button} from 'react-native-paper';
+import {AntDesign} from '@expo/vector-icons';
+import {useDispatch} from 'react-redux';
+import {deleteOneReport, dislikeReport, likeReport} from '../reducers/reportReducer';
+import firebase from 'firebase';
 import {
   useFonts,
   OpenSans_300Light,
@@ -26,8 +26,26 @@ import {
 import MapView from 'react-native-maps';
 import BackgroundImage from '../components/BackgorundCircle';
 
-export default function EventScreen({ navigation, route }) {
+export default function EventScreen({navigation, route}) {
   const dispatch = useDispatch();
+  const {data, userReports} = route.params;
+
+  let activation;
+  console.log(data);
+
+  const userId = firebase.auth().currentUser.uid;
+  if (data.votedPeople.includes(userId)) {
+    activation = true;
+    console.log('includes');
+  } else {
+    activation = false;
+    console.log('not include');
+  }
+
+
+  const [likes, setLikes] = useState(data.points);
+  const [likeDisabled, setLikeDisabled] = useState(activation);
+
   let [fontsLoaded] = useFonts({
     OpenSans_300Light,
     OpenSans_400Regular,
@@ -35,9 +53,26 @@ export default function EventScreen({ navigation, route }) {
     OpenSans_700Bold
   });
 
-  const { data, userReports } = route.params;
+
   console.log('item data', data);
   console.log('user reports', userReports);
+
+  const handleLiked = () => {
+    dispatch(
+      likeReport(data.key)
+    );
+    setLikes(likes + 1);
+    setLikeDisabled(true);
+  };
+
+  const handleDislike = () => {
+    dispatch(
+      dislikeReport(data.key)
+    );
+    setLikes(likes - 1);
+    setLikeDisabled(true);
+  };
+
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -53,7 +88,7 @@ export default function EventScreen({ navigation, route }) {
 
               {data.image ? (
                 <Image
-                  source={{ uri: data.image }}
+                  source={{uri: data.image}}
                   style={{
                     width: '90%',
                     height: 200,
@@ -92,7 +127,7 @@ export default function EventScreen({ navigation, route }) {
                 <Button
                   icon="map-outline"
                   style={styles.buttonContent}
-                  theme={{ colors: { primary: '#007bff' } }}
+                  theme={{colors: {primary: '#007bff'}}}
                   onPress={async () => {
                     navigation.navigate('MapScreen', {
                       oneItemLocation: data.location
@@ -105,8 +140,8 @@ export default function EventScreen({ navigation, route }) {
                 {userReports && (
                   <Button
                     icon="delete"
-                    style={{ backgroundColor: 'white', alignSelf: 'center' }}
-                    theme={{ colors: { primary: '#007bff' } }}
+                    style={{backgroundColor: 'white', alignSelf: 'center'}}
+                    theme={{colors: {primary: '#007bff'}}}
                     onPress={async () => {
                       Alert.alert(
                         'Confirm deletion',
@@ -131,26 +166,29 @@ export default function EventScreen({ navigation, route }) {
                     Delete
                   </Button>
                 )}
-                <View style={{ flexDirection: 'row' }}>
-                  <View style={{ flexDirection: 'column' }}>
-                    <TouchableOpacity>
+                <View style={{flexDirection: 'row'}}>
+                  <View style={{flexDirection: 'column'}}>
+                    <TouchableOpacity disabled={likeDisabled} onPress={() => {
+                      handleLiked();
+                    }}>
                       <AntDesign
-                        style={{ backgroundColor: 'white', marginBottom: 2 }}
+                        style={{backgroundColor: 'white', marginBottom: 2}}
                         name="arrowup"
                         size={30}
-                        color="#007bff"
+                        color= {likeDisabled ? 'gray' : "#007bff"}
                       />
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity disabled={likeDisabled} onPress={() => {
+                      handleDislike();
+                    }}>
                       <AntDesign
                         style={{
                           backgroundColor: 'white',
                           marginTop: 2,
-                          margin: 2
                         }}
                         name="arrowdown"
                         size={30}
-                        color="#007bff"
+                        color= {likeDisabled ? 'gray' : "#007bff"} 
                       />
                     </TouchableOpacity>
                   </View>
@@ -162,30 +200,30 @@ export default function EventScreen({ navigation, route }) {
                       fontSize: 18
                     }}
                   >
-                    0
+                    {likes}
                   </Text>
                 </View>
               </View>
 
               {data.status == 'pending' && (
-                <View style={[styles.statusView, { backgroundColor: 'gray' }]}>
-                  <Text style={[styles.textStatus, { color: 'white' }]}>
+                <View style={[styles.statusView, {backgroundColor: 'gray'}]}>
+                  <Text style={[styles.textStatus, {color: 'white'}]}>
                     Status: {data.status}
                   </Text>
                 </View>
               )}
               {data.status == 'processing' && (
                 <View
-                  style={[styles.statusView, { backgroundColor: 'yellow' }]}
+                  style={[styles.statusView, {backgroundColor: 'yellow'}]}
                 >
-                  <Text style={[styles.textStatus, { color: 'black' }]}>
+                  <Text style={[styles.textStatus, {color: 'black'}]}>
                     Status: {data.status}
                   </Text>
                 </View>
               )}
               {data.status == 'resolved' && (
-                <View style={[styles.statusView, { backgroundColor: 'green' }]}>
-                  <Text style={[styles.textStatus, { color: 'white' }]}>
+                <View style={[styles.statusView, {backgroundColor: 'green'}]}>
+                  <Text style={[styles.textStatus, {color: 'white'}]}>
                     Status: {data.status}
                   </Text>
                 </View>
@@ -223,7 +261,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     borderRadius: 25,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
+    shadowOffset: {width: 0, height: 3},
     shadowOpacity: 0.15,
     shadowRadius: 5
   },
@@ -240,7 +278,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     elevation: 10,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
+    shadowOffset: {width: 0, height: 3},
     shadowOpacity: 0.15,
     shadowRadius: 5
   },
@@ -284,7 +322,7 @@ const styles = StyleSheet.create({
   buttonContent: {
     backgroundColor: '#fff',
     shadowColor: '#888',
-    shadowOffset: { width: 0, height: 0 },
+    shadowOffset: {width: 0, height: 0},
     shadowOpacity: 0.5,
     borderRadius: 25,
     display: 'flex',

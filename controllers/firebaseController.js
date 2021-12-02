@@ -104,7 +104,7 @@ export const logOut = async () => {
     });
 };
 
-export const createReport = async (description, image, location, topic, id, reportId, time, status) => {
+export const createReport = async (description, image, location, topic, id, reportId, time, status, points, votedPeople) => {
   try {
     const reportObject = {
       description,
@@ -114,7 +114,9 @@ export const createReport = async (description, image, location, topic, id, repo
       key: reportId, // to be used as React key prop
       userId: id,
       time,
-      status
+      status,
+      points,
+      votedPeople
     };
     // newly created report object is not contained in the firebase response
     await db.collection('Reports').doc(reportId).set(reportObject);
@@ -167,6 +169,86 @@ export const deleteReport = async (id, userId) => {
       reportObject: reportArray
     });
     console.log('report deleted and user array', reportArray);
+
+    //reports fetched after deletion
+    return await getReports();
+  }catch(e){
+    console.log(e);
+  }
+};
+
+export const likeOneReport = async (reportKey, userId) => {
+  try {
+
+    const data = await db.collection('Reports').doc(reportKey).get();
+    const reportToUpdate = data.data();
+
+    console.log('found report to be updated',reportToUpdate);
+    //new user to votedPeople
+    reportToUpdate.votedPeople.push(userId);
+    reportToUpdate.points++;
+
+    console.log('updates applied',reportToUpdate);
+    //from reports
+    await db.collection('Reports').doc(reportKey).set(reportToUpdate);
+
+    //from users
+    const user = await getUser(reportToUpdate.userId);
+
+    const reportArray = [];
+
+    for (let i = 0; i < user.reportObject.length; i++) {
+      if(user.reportObject[i].key === reportKey){
+        reportArray.push(reportToUpdate);
+      } else {
+        reportArray.push(user.reportObject[i]);
+      }
+    }
+
+    await db.collection('Users').doc(reportToUpdate.userId).update({
+      reportObject: reportArray
+    });
+    console.log('updated and liked', reportArray);
+
+    //reports fetched after deletion
+    return await getReports();
+  }catch(e){
+    console.log(e);
+  }
+};
+
+export const dislikeOneReport = async (reportKey, userId) => {
+  try {
+
+    const data = await db.collection('Reports').doc(reportKey).get();
+    const reportToUpdate = data.data();
+
+    console.log('found report to be updated',reportToUpdate);
+    //new user to votedPeople
+    reportToUpdate.votedPeople.push(userId);
+    reportToUpdate.points--;
+
+    console.log('updates applied',reportToUpdate);
+    //from reports
+    await db.collection('Reports').doc(reportKey).set(reportToUpdate);
+
+    //from users
+    const user = await getUser(reportToUpdate.userId);
+
+    const reportArray = [];
+
+    for (let i = 0; i < user.reportObject.length; i++) {
+      if(user.reportObject[i].key === reportKey){
+        reportArray.push(reportToUpdate);
+      } else {
+        reportArray.push(user.reportObject[i]);
+      }
+    }
+
+    await db.collection('Users').doc(reportToUpdate.userId).update({
+      reportObject: reportArray
+    });
+    console.log('updated and liked', reportArray);
 
     //reports fetched after deletion
     return await getReports();

@@ -3,11 +3,13 @@ import {
   createReport,
   getReports,
   uploadImageToFirebaseStorage,
-  deleteReport
+  deleteReport,
+  likeOneReport,
+  dislikeOneReport
 } from '../controllers/firebaseController';
-import { modifyCurrentUser } from './currentUserReducer';
-import { setSnackbar, setTickAnimation } from './toggleReducers';
-import { v4 as uuidv4 } from 'uuid';
+import {modifyCurrentUser} from './currentUserReducer';
+import {setSnackbar, setTickAnimation} from './toggleReducers';
+import {v4 as uuidv4} from 'uuid';
 
 const reportReducer = (state = [], action) => {
   switch (action.type) {
@@ -17,6 +19,10 @@ const reportReducer = (state = [], action) => {
       return action.newReportAdded;
     case 'DELETE_REPORT':
       return action.reportDeleted;
+    case 'LIKE_REPORT':
+      return action.reportLiked;
+    case 'DISLIKE_REPORT':
+      return action.reportDisliked;
     default:
       return state;
   }
@@ -43,6 +49,8 @@ const createNewReport = (
 ) => {
   return async (dispatch) => {
     try {
+      const reportPoints = 0;
+      const votedPeople = [];
       const points = userGamepoints || 0;
       const id = await firebase.auth().currentUser.uid;
       const image = imageUri
@@ -57,7 +65,9 @@ const createNewReport = (
         id,
         reportId,
         time,
-        status
+        status,
+        reportPoints,
+        votedPeople
       );
       dispatch(setTickAnimation());
       dispatch({
@@ -86,10 +96,44 @@ const deleteOneReport = (
         type: 'DELETE_REPORT',
         reportDeleted
       });
-    } catch(e) {
+    } catch (e) {
       console.log('report deletion error');
     }
   };
 };
 
-export { reportReducer as default, createNewReport, setFetchedReports, deleteOneReport };
+const likeReport = (
+  reportKey
+) => {
+  return async (dispatch) => {
+    try {
+      const userId = await firebase.auth().currentUser.uid;
+      const reportLiked = await likeOneReport(reportKey, userId);
+      dispatch({
+        type: 'LIKE_REPORT',
+        reportLiked
+      });
+    } catch (e) {
+      console.log('report deletion error');
+    }
+  };
+};
+
+const dislikeReport = (
+  reportKey
+) => {
+  return async (dispatch) => {
+    try {
+      const userId = await firebase.auth().currentUser.uid;
+      const reportDisliked = await dislikeOneReport(reportKey, userId);
+      dispatch({
+        type: 'DISLIKE_REPORT',
+        reportDisliked
+      });
+    } catch (e) {
+      console.log('report deletion error');
+    }
+  };
+};
+
+export {reportReducer as default, createNewReport, setFetchedReports, deleteOneReport, likeReport, dislikeReport};
