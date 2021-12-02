@@ -1,6 +1,11 @@
 import firebase from 'firebase';
 import { getUser, updateUser } from '../controllers/firebaseController';
-import { loginOff, loginOn, toggleCheckedOn } from './toggleReducers';
+import {
+  loginOff,
+  loginOn,
+  setTickAnimation,
+  toggleCheckedOn
+} from './toggleReducers';
 
 const currentUserReducer = (state = {}, action) => {
   switch (action.type) {
@@ -17,7 +22,7 @@ const setCurrentUser = () => {
   return async (dispatch) => {
     await firebase.auth().onAuthStateChanged(async (user) => {
       if (user != null) {
-       // console.log('current user', user);
+        // console.log('current user', user);
         dispatch(loginOff());
         dispatch(toggleCheckedOn());
         const currentUser = await getUser(user.uid);
@@ -34,7 +39,7 @@ const setCurrentUser = () => {
   };
 };
 // user data is of type object, {...userData}
-const modifyCurrentUser = (userData) => {
+const modifyCurrentUser = (userData, tick) => {
   return async (dispatch) => {
     try {
       const modifiedUser = await updateUser(userData);
@@ -42,6 +47,7 @@ const modifyCurrentUser = (userData) => {
         type: 'MODIFY_USER',
         modifiedUser
       });
+      if (tick) dispatch(setTickAnimation());
     } catch (error) {
       console.log('user update error', error);
     }

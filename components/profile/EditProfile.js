@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ScrollView, View, TextInput } from 'react-native';
+import { StyleSheet, ScrollView, View, TextInput, Text } from 'react-native';
 import ModalDialog from '../globalReUseAbles/ModalDialog';
 
 const EditProfile = ({
@@ -7,11 +7,10 @@ const EditProfile = ({
   closeDialog,
   action,
   name,
-  email,
-  password,
+  fullname,
+  error,
   handleNameChange,
-  handleEmailChange,
-  handlePasswordChange
+  handleFullnameChange,
 }) => {
   // dialog for editing user's profile
 
@@ -27,26 +26,18 @@ const EditProfile = ({
       <ScrollView>
         <View style={styles.container}>
           <TextInput
-            onChangeText={handleNameChange}
+            onChangeText={handleFullnameChange}
             style={styles.textInput}
             placeholder="Fullname"
+            value={fullname}
+          />
+          <TextInput
+            onChangeText={handleNameChange}
+            style={styles.textInput}
+            placeholder="Username"
             value={name}
           />
-          <TextInput
-            placeholder="Email"
-            value={email}
-            style={styles.textInput}
-            theme={{ colors: { primary: '#112454' } }}
-            onChangeText={handleEmailChange}
-            label="email"
-          />
-          <TextInput
-            placeholder="Password"
-            value={password}
-            style={styles.textInput}
-            onChangeText={handleEmailChange}
-            label="password"
-          />
+          {!name && !fullname && error && <Text style={styles.errorText}> Missing fields! No changes to update!</Text>}
         </View>
       </ScrollView>
     </ModalDialog>
@@ -55,8 +46,9 @@ const EditProfile = ({
 
 const styles = StyleSheet.create({
   container: {},
-  text: {
-    padding: 10
+  errorText: {
+    color: '#d32f2f',
+    textAlign: 'center'
   },
   avatar: {
     flex: 0.8,

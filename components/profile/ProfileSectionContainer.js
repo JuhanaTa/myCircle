@@ -51,6 +51,7 @@ const ProfileSectionContainer = ({ visible, title, action, type }) => {
     return (
       <View style={{ flex: 1 }}>
         <Text style={[styles.text]}> {currentUser?.email} </Text>
+        <Text style={[styles.text]}> full name:  {currentUser?.fullname} </Text>
 
         {currentUser?.pets.length > 0 && (
           <DataList text="Pets" data={currentUser?.pets} />
