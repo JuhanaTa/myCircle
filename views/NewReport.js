@@ -141,10 +141,26 @@ const NewReport = ({ navigation }) => {
 
   const handleReportSubmission = async () => {
     //we will get current date for submission
-
     const currentTime = firebase.firestore.Timestamp.fromDate(new Date());
-
-    console.log('myTimestamp', currentTime);
+    const createReport = (currentOrProvidedLocation) => {
+      dispatch(
+        createNewReport(
+          image?.uri,
+          currentOrProvidedLocation,
+          description,
+          checkedTopic,
+          currentUser?.gamePoints,
+          currentTime,
+          'pending'
+        )
+      );
+      navigation.navigate('HomeStack', { screen: 'HomeStack' });
+      setPreview(false);
+      setDescription('');
+      setCheckedTopic('');
+      setImage(null);
+      setReportLocation(null);
+    };
 
     if (useLocation) {
       const userLoc = await getLocation();
@@ -152,7 +168,7 @@ const NewReport = ({ navigation }) => {
         userLoc.coords.latitude,
         userLoc.coords.longitude
       );
-      console.log('address from api', address);
+      //console.log('address from api', address);
       const locationOfReport = {
         address: `${address.features[0].properties.name}, ${address.features[0].properties.locality}`,
         latitude: userLoc.coords.latitude,
@@ -161,37 +177,9 @@ const NewReport = ({ navigation }) => {
         longitudeDelta: 0
       };
       // push new report to firebase  and updates redux store (asynchronously)
-      dispatch(
-        createNewReport(
-          image?.uri,
-          locationOfReport,
-          description,
-          checkedTopic,
-          currentUser?.gamePoints,
-          currentTime,
-          'pending'
-        )
-      );
-    } else {
-      dispatch(
-        createNewReport(
-          image?.uri,
-          reportLocation,
-          description,
-          checkedTopic,
-          currentUser?.gamePoints,
-          currentTime,
-          'pending'
-        )
-      );
+      return createReport(locationOfReport);
     }
-
-    navigation.navigate('HomeStack', { screen: 'HomeStack' });
-    setPreview(false);
-    setDescription('');
-    setCheckedTopic('');
-    setImage(null);
-    setReportLocation(null);
+    return createReport(reportLocation);
   };
 
   const onReportLocationSelected = (location) => {

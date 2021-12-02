@@ -77,7 +77,7 @@ const createNewReport = (
       dispatch(
         modifyCurrentUser({
           gamePoints: imageUri ? points + 5 : points + 3
-        })
+        }, false)
       );
     } catch (error) {
       console.log('new report error', error);
