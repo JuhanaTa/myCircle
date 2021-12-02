@@ -7,4 +7,9 @@ const reportTopics = [
   'General'
 ];
 
-export { reportTopics };
+const locationHow = [
+  'Use location',
+  'Input address'
+];
+
+export { reportTopics, locationHow };

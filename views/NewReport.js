@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity
 } from 'react-native';
+import * as Location from 'expo-location';
 import {Button, IconButton} from 'react-native-paper';
 import ImagePicker from '../components/reports/ImagePicker';
 import PreviewReport from '../components/reports/PreviewReport';
@@ -29,9 +30,11 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import {createNewReport} from '../reducers/reportReducer';
 import getGeocoding from '../controllers/apiCalls';
+import getAddress from '../controllers/searchAddress';
 import ModalDialog from '../components/globalReUseAbles/ModalDialog';
 import BackgroundImage from '../components/BackgorundCircle';
 import firebase from 'firebase';
+import ReportLocationHow from '../components/reports/ReportLocationHow';
 
 const NewReport = ({navigation}) => {
   const {image, video, getImage, launchCamera, setImage} = useCamera({});
@@ -43,6 +46,8 @@ const NewReport = ({navigation}) => {
   const [recommendImage, setImageRecommendation] = useState(false);
   const [isPreviewOpened, setPreview] = useState(false);
   const [checkedTopic, setCheckedTopic] = useState();
+  const [useLocation, setUseLocation] = useState(true);
+  const [useAddress, setUseAdress] = useState(false);
   const [error, setError] = useState({
     topic: false,
     description: false,
@@ -78,17 +83,35 @@ const NewReport = ({navigation}) => {
   const handlePreviewClosing = () => setPreview(false);
   const openPreview = () => {
     // validates report form before submission
-    if (checkedTopic && description && reportLocation) {
-      if (image?.uri) {
-        return setPreview(true);
+
+    if (useLocation) {
+      if (checkedTopic && description) {
+        if (image?.uri) {
+          return setPreview(true);
+        }
+        return setImageRecommendation(true);
       }
-      return setImageRecommendation(true);
+      setError({
+        topic: !checkedTopic && true,
+        description: !description && true,
+        location: !reportLocation && true
+      });
+    } else {
+      if (checkedTopic && description && reportLocation) {
+        if (image?.uri) {
+          return setPreview(true);
+        }
+        return setImageRecommendation(true);
+      }
+      setError({
+        topic: !checkedTopic && true,
+        description: !description && true,
+        location: !reportLocation && true
+      });
     }
-    setError({
-      topic: !checkedTopic && true,
-      description: !description && true,
-      location: !reportLocation && true
-    });
+
+
+
   };
 
   const validateDescription = () => {
@@ -126,10 +149,29 @@ const NewReport = ({navigation}) => {
 
     console.log("myTimestamp", currentTime);
 
+    if (useLocation) {
+
+      const userLoc = await getLocation();
+      const address = await getAddress(userLoc.coords.latitude, userLoc.coords.longitude);
+      console.log('address from api', address);
+      const locationOfReport = {
+        address: `${address.features[0].properties.name}, ${address.features[0].properties.locality}`,
+        latitude: userLoc.coords.latitude,
+        longitude: userLoc.coords.longitude,
+        latitudeDelta: 0,
+        longitudeDelta: 0
+      };
+      dispatch(
+        createNewReport(image?.uri, locationOfReport, description, checkedTopic, currentUser?.gamePoints, currentTime, 'pending')
+      );
+    } else {
+      dispatch(
+        createNewReport(image?.uri, reportLocation, description, checkedTopic, currentUser?.gamePoints, currentTime, 'pending')
+      );
+    }
+
     // push new report to firebase  and updates redux store (asynchronously)
-    dispatch(
-      createNewReport(image?.uri, reportLocation, description, checkedTopic, currentUser?.gamePoints, currentTime, 'pending')
-    );
+
     navigation.navigate('HomeStack', {screen: 'HomeStack'});
     setPreview(false);
     setDescription('');
@@ -184,6 +226,21 @@ const NewReport = ({navigation}) => {
     Inter_800ExtraBold
   });
 
+  const getLocation = async () => {
+    let {status} = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      console.log('Permission to access location was denied');
+      //navigation.popToTop();
+      return;
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    console.log(location);
+    return location;
+
+  };
+
+
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
@@ -207,7 +264,7 @@ const NewReport = ({navigation}) => {
               <ReportTopics checked={checkedTopic} setChecked={handleChecked} />
             </View>
             <View style={styles.description}>
-              <Text style={styles.subHeader}> Add description to issue</Text>
+              <Text style={styles.subHeader}> Add description to report.</Text>
               {error.description && (
                 <View style={[styles.helperText]}>
                   <Text style={styles.errorText}>Description is required!</Text>
@@ -226,69 +283,88 @@ const NewReport = ({navigation}) => {
                 placeholder="Description"
                 value={description}
               />
-              <Text style={styles.subHeader}> Where did this issue occur?</Text>
-              {reportLocation && (
-                <View style={[styles.helperText]}>
-                  <Text>{reportLocation.address}</Text>
-                  <IconButton icon="check" />
-                </View>
-              )}
-              {error.location && (
-                <View style={[styles.helperText]}>
-                  <Text style={styles.errorText}>This field is required!</Text>
-                </View>
-              )}
-              <InvalidAddress />
-              <TextInput
-                style={styles.textInput}
-                onChangeText={(address) => setAddress(address)}
-                placeholder="Street adress, city"
-                value={address}
-              />
-            </View>
-            <LocationPicker />
-            <ImagePicker
-              image={image}
-              video={video}
-              getImage={getImage}
-              launchCamera={launchCamera}
-              open={isImgPickerMenuOpened}
-              setMenu={setImgPickerMenu}
-            />
-            <Button
-              style={styles.submitbutton}
-              theme={{colors: {primary: '#007bff'}}}
-              onPress={openPreview}
-              accessibilityLabel="preview report and send"
-            >
-              Submit
-            </Button>
-            <PreviewReport
-              open={isPreviewOpened}
-              closeDialog={handlePreviewClosing}
-              action={handleReportSubmission}
-              topic={checkedTopic}
-              description={description}
-              image={image}
-            />
-            <ModalDialog
-              open={recommendImage}
-              closeDialog={() => setImageRecommendation(false)}
-              action={previewReportWithoutImage}
-              label="Continue"
-              title=" A Picture is worth a thousand words!"
-              secondaryAction={
-                <Button icon="camera" onPress={closeImageRecommendationDialog}>
-                  Pick Image
-                </Button>
+              <Text style={styles.subHeader}>How to locate this report?</Text>
+              <View style={styles.radioButtonGroup}>
+                <ReportLocationHow useAddress={useAddress} useLocation={useLocation} setUseAdress={setUseAdress} setUseLocation={setUseLocation} />
+              </View>
+
+              {useAddress &&
+                <>
+                  <Text style={styles.subHeader}> Where is this report?</Text>
+                  {reportLocation && (
+                    <View style={[styles.helperText]}>
+                      <Text>{reportLocation.address}</Text>
+                      <IconButton icon="check" />
+                    </View>
+                  )}
+
+                  {error.location && (
+                    <View style={[styles.helperText]}>
+                      <Text style={styles.errorText}>This field is required!</Text>
+                    </View>
+                  )}
+                  <InvalidAddress />
+                  <TextInput
+                    style={styles.textInput}
+                    onChangeText={(address) => setAddress(address)}
+                    placeholder="Street adress, city"
+                    value={address}
+                  />
+                </>
               }
-            >
-              <Text style={styles.dialogText}>
-                Support your description with an image! If you choose to
-                continue without an image, press &#39; Continue &#39; below to
-                submit your report.
-              </Text>
-            </ModalDialog>
+              {useLocation &&
+                <Text style={[styles.subHeader, {alignSelf: 'center', textAlign: 'center'}]}>We will use your gps location for this report.</Text>
+              }
+
+              {useAddress &&
+                <LocationPicker />
+              }
+
+              <Button
+                style={styles.submitbutton}
+                theme={{colors: {primary: '#007bff'}}}
+                onPress={openPreview}
+                accessibilityLabel="preview report and send"
+              >
+                Submit
+              </Button>
+              <ImagePicker
+                image={image}
+                video={video}
+                getImage={getImage}
+                launchCamera={launchCamera}
+                open={isImgPickerMenuOpened}
+                setMenu={setImgPickerMenu}
+              />
+              <PreviewReport
+                open={isPreviewOpened}
+                closeDialog={handlePreviewClosing}
+                action={handleReportSubmission}
+                topic={checkedTopic}
+                description={description}
+                image={image}
+              />
+              <ModalDialog
+
+                open={recommendImage}
+                closeDialog={() => setImageRecommendation(false)}
+                action={previewReportWithoutImage}
+                label="Continue"
+                title=" A Picture is worth a thousand words!"
+                secondaryAction={
+                  <Button icon="camera" onPress={closeImageRecommendationDialog}>
+                    Pick Image
+                  </Button>
+                }
+              >
+                <Text style={styles.dialogText}>
+                  Support your description with an image! If you choose to
+                  continue without an image, press &#39; Continue &#39; below to
+                  submit your report.
+                </Text>
+              </ModalDialog>
+            </View>
+
           </View>
         </ScrollView>
       </LinearGradient>
@@ -344,8 +420,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_400Regular',
     paddingLeft: '4%',
     paddingRight: '4%',
-    maxHeight: 240,
-    width: '90%',
+    width: '100%',
     marginTop: 8
   },
   textInput: {
@@ -364,7 +439,7 @@ const styles = StyleSheet.create({
     margin: 12,
 
     padding: 10,
-
+    alignSelf: 'center',
     backgroundColor: '#fff'
   },
   button: {
@@ -425,6 +500,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf: 'center',
     paddingLeft: '8%',
     fontSize: 12,
     fontFamily: 'Inter_400Regular',

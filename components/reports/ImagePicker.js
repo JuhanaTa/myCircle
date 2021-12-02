@@ -56,7 +56,7 @@ const ImagePicker = ({ image, getImage, launchCamera, open, setMenu }) => {
 
 const styles = StyleSheet.create({
   imageContainer: {
-    marginTop: 8,
+    marginTop: 5,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
