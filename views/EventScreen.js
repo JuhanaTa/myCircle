@@ -117,6 +117,7 @@ export default function EventScreen({navigation, route}) {
                       }}
                     >
                       <MapView.Marker
+                        image={require('../assets/icons/general/icons8-location-pin-96(1).png')}
                         coordinate={data.location}
                       ></MapView.Marker>
                     </MapView>
