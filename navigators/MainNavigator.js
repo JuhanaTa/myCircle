@@ -43,11 +43,11 @@ const HomeStackScreen = () => {
         options={{ headerShown: false }}
       />
 
-      <HomeStack.Screen name="MapScreen" component={MapScreen}  />
+      <HomeStack.Screen name="MapScreen" component={MapScreen} options={{ headerTitle: 'Map' }}  />
 
-      <HomeStack.Screen name="EventListScreen" component={EventListScreen}/>
+      <HomeStack.Screen name="EventListScreen" component={EventListScreen} options={{ headerTitle: 'All Events' }}/>
 
-      <HomeStack.Screen name="EventScreen" component={EventScreen} />
+      <HomeStack.Screen name="EventScreen" component={EventScreen} options={{ headerTitle: 'Report' }} />
     </HomeStack.Navigator>
   );
 };
@@ -63,10 +63,10 @@ const NewStackScreen = () => {
       <NewStack.Screen
         name="NewStack"
         component={NewReport}
-        options={{ headerShown: true }}
+        options={{ headerShown: true, headerTitle: 'New Report' }}
       />
-      <HomeStack.Screen name="EventScreen" component={EventScreen} />
-      <HomeStack.Screen name="MapScreen" component={MapScreen}  />
+      <HomeStack.Screen name="EventScreen" component={EventScreen} options={{ headerTitle: 'Report' }}/>
+      <HomeStack.Screen name="MapScreen" component={MapScreen} options={{ headerTitle: 'Map' }}  />
     </NewStack.Navigator>
   );
 };

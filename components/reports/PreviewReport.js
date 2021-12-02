@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Image, ScrollView } from 'react-native';
-import { Paragraph, Subheading, Title } from 'react-native-paper';
+import { Paragraph, Title } from 'react-native-paper';
 import ModalDialog from '../globalReUseAbles/ModalDialog';
 
 const PreviewReport = ({
@@ -17,14 +17,13 @@ const PreviewReport = ({
       open={open}
       closeDialog={closeDialog}
       action={action}
-      label="Send"
-      title=" Report Preview"
+      label="Looks good"
+      title="How does it look?"
     >
       <ScrollView style={styles.container}>
-        <Title style={styles.text}> {topic} </Title>
-        <Subheading style={styles.text}> Content </Subheading>
-        <Paragraph style={styles.text}> {description} </Paragraph>
+        <Title style={styles.text}> Topic: {topic} </Title>
         {image && <Image source={{ uri: image.uri }} style={styles.image} />}
+        <Paragraph style={styles.text}> {description} </Paragraph>
       </ScrollView>
     </ModalDialog>
   );
