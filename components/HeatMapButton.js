@@ -3,6 +3,7 @@ import { AntDesign } from '@expo/vector-icons';
 import AppLoading from 'expo-app-loading';
 import { LinearGradient } from 'expo-linear-gradient';
 import MapView, { Callout } from 'react-native-maps';
+import { v4 as uuidv4 } from 'uuid';
 import {
   Text,
   StyleSheet,
@@ -48,7 +49,7 @@ export default function HeatMapButton({ navigation, location, reportsData }) {
     return (
       <Pressable style={styles.container} onPress={() => {navigation.navigate('MapScreen');}}>
         <Pressable style={styles.button} pointerEvents="none">
-          <MapView style={styles.map}
+          <MapView  style={styles.map}
             showsUserLocation={true}
             initialRegion={{
               latitude: location.coords.latitude,
@@ -70,7 +71,6 @@ export default function HeatMapButton({ navigation, location, reportsData }) {
 
             {reportsData.map(marker => (
               <>
-              {console.log('marker keys', marker.key)}
                 {marker.topic === 'Maintenance' &&
                   <MapView.Marker
                     key={marker.key}
