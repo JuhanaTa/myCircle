@@ -14,7 +14,10 @@ To raise residents' awareness ​of actions and events in the community and help
 
 ## App Preview
 <hr/>
-
+<img src="./assets/readme-gifs/mycircle-home.gif" alt="home screen" /> 
+<img src="./assets/readme-gifs/mycircle-maps.gif" alt="map view" /> 
+<img src="./assets/readme-gifs/mycircle-reports.gif" alt="report screen" /> 
+<img src="./assets/readme-gifs/mycircle-profile.gif" alt="profile screen" /> 
 
 <hr/>
 
