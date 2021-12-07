@@ -86,15 +86,15 @@ const HomeScreen = ({ navigation }) => {
       image:
         'https://firebasestorage.googleapis.com/v0/b/mycircle-ca851.appspot.com/o/images%2FlassenLeipomo.png?alt=media&token=8cbda895-1832-40b8-8136-410fea11c9ef',
       location: {
-        latitude: 60.4032739,
+        latitude: 60.213719,
         latitudeDelta: 0,
-        longitude: 24.8564713,
+        longitude: 24.826749,
         longitudeDelta: 0
       },
       topic: 'Advertisement',
       userId: 'ad',
-      votedPeople: [],
-      points: 0
+      votedPeople: ['no voting'],
+      points: 'Ad'
     });
 
     setReports(loopedReports);

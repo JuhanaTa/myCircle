@@ -1,9 +1,9 @@
 import React from 'react';
-import { AntDesign } from '@expo/vector-icons';
+import {AntDesign} from '@expo/vector-icons';
 import AppLoading from 'expo-app-loading';
-import { LinearGradient } from 'expo-linear-gradient';
-import MapView, { Callout } from 'react-native-maps';
-import { v4 as uuidv4 } from 'uuid';
+import {LinearGradient} from 'expo-linear-gradient';
+import MapView, {Callout} from 'react-native-maps';
+import {v4 as uuidv4} from 'uuid';
 import {
   Text,
   StyleSheet,
@@ -28,9 +28,9 @@ import {
   Inter_800ExtraBold,
   Inter_900Black
 } from '@expo-google-fonts/inter';
-const image = { uri: 'https://reactjs.org/logo-og.png' };
+const image = {uri: 'https://reactjs.org/logo-og.png'};
 
-export default function HeatMapButton({ navigation, location, reportsData }) {
+export default function HeatMapButton({navigation, location, reportsData}) {
   let [fontsLoaded] = useFonts({
     Inter_900Black,
     Inter_100Thin,
@@ -42,14 +42,15 @@ export default function HeatMapButton({ navigation, location, reportsData }) {
     Inter_700Bold,
     Inter_800ExtraBold
   });
-  console.log('reports data',reportsData);
+  console.log('reports data', reportsData);
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
     return (
-      <Pressable style={styles.container} onPress={() => {navigation.navigate('MapScreen');}}>
-        <Pressable style={styles.button} pointerEvents="none">
-          <MapView  style={styles.map}
+      <Pressable style={styles.container} key={uuidv4()} onPress={() => {navigation.navigate('MapScreen');}}>
+        <Pressable style={styles.button} key={uuidv4()} pointerEvents="none">
+          <MapView style={styles.map}
+            key={uuidv4()}
             showsUserLocation={true}
             initialRegion={{
               latitude: location.coords.latitude,
@@ -63,17 +64,19 @@ export default function HeatMapButton({ navigation, location, reportsData }) {
                 latitude: location.coords.latitude,
                 longitude: location.coords.longitude,
               }}
+              key={uuidv4()}
               radius={10000}
               strokeWidth={1}
               strokeColor={'#1a66ff'}
               fillColor={'rgba(230,238,255,0.5)'}
             />
 
-            {reportsData.map(marker => (
-              <>
+            {reportsData.map((marker, index) => (
+              <View key={index+'cont'}>
+              {console.log('indexes', index)}
                 {marker.topic === 'Maintenance' &&
                   <MapView.Marker
-                    key={marker.key}
+                    key={index}
                     coordinate={marker.location}
                     title={marker.description}
                     image={require('../assets/icons/maintenance/cogwheel.png')}
@@ -82,7 +85,7 @@ export default function HeatMapButton({ navigation, location, reportsData }) {
                 }
                 {marker.topic === 'Event' &&
                   <MapView.Marker
-                    key={marker.key}
+                    key={index}
                     coordinate={marker.location}
                     title={marker.description}
                     image={require('../assets/icons/events/favorite-place.png')}
@@ -91,7 +94,7 @@ export default function HeatMapButton({ navigation, location, reportsData }) {
                 }
                 {marker.topic === 'Traffic' &&
                   <MapView.Marker
-                    key={marker.key}
+                    key={index}
                     coordinate={marker.location}
                     title={marker.description}
                     image={require('../assets/icons/traffic/car(1).png')}
@@ -100,7 +103,7 @@ export default function HeatMapButton({ navigation, location, reportsData }) {
                 }
                 {marker.topic === 'Health' &&
                   <MapView.Marker
-                    key={marker.key}
+                    key={index}
                     coordinate={marker.location}
                     title={marker.description}
                     image={require('../assets/icons/health/icons8-find-clinic-96(1).png')}
@@ -109,7 +112,7 @@ export default function HeatMapButton({ navigation, location, reportsData }) {
                 }
                 {marker.topic === 'Feedback' &&
                   <MapView.Marker
-                    key={marker.key}
+                    key={index}
                     coordinate={marker.location}
                     title={marker.description}
                     image={require('../assets/icons/feedback/icons8-new-topic-96.png')}
@@ -118,14 +121,14 @@ export default function HeatMapButton({ navigation, location, reportsData }) {
                 }
                 {marker.topic === 'General' &&
                   <MapView.Marker
-                    key={marker.key}
+                    key={index}
                     coordinate={marker.location}
                     title={marker.description}
                     image={require('../assets/icons/general/icons8-location-pin-96(1).png')}
                   >
                   </MapView.Marker>
                 }
-              </>
+              </View>
             ))}
 
           </MapView>
@@ -159,7 +162,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     elevation: 10,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
+    shadowOffset: {width: 0, height: 3},
     shadowOpacity: 0.15,
     shadowRadius: 5,
     borderRadius: 25,
@@ -201,7 +204,7 @@ const styles = StyleSheet.create({
     padding: '3%',
     backgroundColor: '#fff',
     shadowColor: '#888',
-    shadowOffset: { width: 0, height: 0 },
+    shadowOffset: {width: 0, height: 0},
     shadowOpacity: 0.5,
     borderRadius: 25
   },

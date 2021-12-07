@@ -28,12 +28,15 @@ const useCamera = ({ aspect }) => {
     }
   };
   // editing is set if the aspect(aspect ratio) prop is passed to hook
-  const editOptions = aspect ? { allowsEditing: true, aspect, quality: 1 } : null;
+  const editOptions = aspect ? { allowsEditing: true, aspect, quality: 0.55, maxWidth: 1920, maxHeight: 1080 } : null;
 
   const getImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
-      ...editOptions,
+      quality: 0.55,
+      maxWidth: 1920,
+      maxHeight: 1080,
+      aspect
     });
     console.log(result);
     setMedia(result);
@@ -42,7 +45,10 @@ const useCamera = ({ aspect }) => {
   const launchCamera = async () => {
     let result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
-      ...editOptions,
+      quality: 0.55,
+      maxWidth: 1920,
+      maxHeight: 1080,
+      aspect
     
     });
     console.log(result);

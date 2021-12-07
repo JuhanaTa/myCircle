@@ -27,7 +27,7 @@ export default function EventListItem({ navigation, item, userReports }) {
     timeToShow = moment(item.time.toDate()).format('dddd, h:mm:ss a');
     console.log('time in item', timeToShow);
   } else {
-    timeToShow = 'time unknown';
+    timeToShow = '';
   }
 
   if (!fontsLoaded) {

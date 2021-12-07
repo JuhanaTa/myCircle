@@ -38,8 +38,13 @@ export default function EventScreen({navigation, route}) {
     activation = true;
     console.log('includes');
   } else {
-    activation = false;
-    console.log('not include');
+    if(data.votedPeople[0] === 'no voting'){
+      activation = true;
+    } else {
+      activation = false;
+      console.log('not include');
+    }
+
   }
 
 
