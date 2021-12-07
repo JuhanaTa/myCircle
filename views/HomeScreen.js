@@ -92,7 +92,9 @@ const HomeScreen = ({ navigation }) => {
         longitudeDelta: 0
       },
       topic: 'Advertisement',
-      userId: 'ad'
+      userId: 'ad',
+      votedPeople: [],
+      points: 0
     });
 
     setReports(loopedReports);
