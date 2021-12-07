@@ -8,7 +8,7 @@ To raise residents' awareness ​of actions and events in the community and help
 ## Links
 <hr/>
 
- [MyCircle 📁](https://github.com/JuhanaTa/myCircle) &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; [Demo ▶️](https://youtu.be/rT5Wi81qlJc) &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; [Issues Page 🐛](https://github.com/JuhanaTa/myCircle/issues)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;[Install]()
+ [MyCircle 📁](https://github.com/JuhanaTa/myCircle) &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; [Demo ▶️](https://youtu.be/rT5Wi81qlJc) &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; [Issues Page 🐛](https://github.com/JuhanaTa/myCircle/issues)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;[Install](https://expo.dev/@tamanji%20/myCircle)
 
 <hr/>
 
