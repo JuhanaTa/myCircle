@@ -13,13 +13,12 @@ To raise residents' awareness ​of actions and events in the community and help
 <hr/>
 
 ## App Preview
-<hr/>
-<img src="./assets/readme-gifs/mycircle-home.gif" alt="home screen" /> 
-<img src="./assets/readme-gifs/mycircle-maps.gif" alt="map view" /> 
-<img src="./assets/readme-gifs/mycircle-reports.gif" alt="report screen" /> 
-<img src="./assets/readme-gifs/mycircle-profile.gif" alt="profile screen" /> 
 
-<hr/>
+<img src="./assets/readme-gifs/mycircle-home.gif" alt="home screen"  height="600" width="310"/>&emsp;&emsp;<img src="./assets/readme-gifs/mycircle-maps.gif" alt="map view" height="600" width="310" /> 
+
+<img src="./assets/readme-gifs/mycircle-report.gif" alt="report screen" height="600" width="310" />&emsp;&emsp;<img src="./assets/readme-gifs/mycircle-profile.gif" alt="profile screen" height="600" width="310" /> 
+
+
 
 ## Technologies Used
 
