@@ -1,12 +1,14 @@
-# <img src="./assets/Logo.png" height="32" width="32"/>
+ <img src="./assets/Logo.png" alt="MyCircle" /> 
+ 
 
 A  Smart-City application that generates real-time, contextual information and content for residents and gives residents a chance to take part in elevating their neighborhood.​
+
 To raise residents' awareness ​of actions and events in the community and help build dynamic communities where the city and residents work together.​
 
 ## Links
 <hr/>
 
- [MyCircl 📁](https://github.com/JuhanaTa/myCircle) &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; [Demo ▶️](https://github.com/JuhanaTa/myCircle) &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; [Issues Page 🐛](https://github.com/JuhanaTa/myCircle/issues)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;[Install]()
+ [MyCircle 📁](https://github.com/JuhanaTa/myCircle) &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; [Demo ▶️](https://youtu.be/rT5Wi81qlJc) &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; [Issues Page 🐛](https://github.com/JuhanaTa/myCircle/issues)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;[Install]()
 
 <hr/>
 
@@ -27,11 +29,11 @@ To raise residents' awareness ​of actions and events in the community and help
 
 ## Authors
 
-**[Juhana Tamminen](https://github.com/JuhanaTa)**
-**[Mari Seppänen](https://github.com/mariksep)**
-**[Tamanji Che](https://github.com/ambeche)**
-**[Sakari Leinonen](https://www.linkedin.com/in/sakari-leinonen/)**
-**[Victor Thors](https://www.linkedin.com/in/victorthors/)**
+- **[Juhana Tamminen](https://github.com/JuhanaTa)**
+- **[Mari Seppänen](https://github.com/mariksep)**
+- **[Tamanji Che](https://github.com/ambeche)**
+- **[Sakari Leinonen](https://www.linkedin.com/in/sakari-leinonen/)**
+- **[Victor Thors](https://www.linkedin.com/in/victorthors/)**
 
 ## 🤝 Support
 
